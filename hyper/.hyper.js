@@ -1,0 +1,1 @@
+/Users/kyosuke.aradono/.hyper.js

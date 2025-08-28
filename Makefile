@@ -4,10 +4,9 @@ init:
 init-linux:
 	sudo apt-get install build-essential procps curl file git
 	echo 'Install Homebrew'
-	echo >> /home/runner/.bashrc
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
+	eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $$HOME/.bashrc
-	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $$HOME/.bash_profile
 	eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	brew bundle
 

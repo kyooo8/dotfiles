@@ -6,15 +6,10 @@ init:
 
 init-linux:
 	sudo apt-get install build-essential procps curl file git
-		if test ! $(which brew); then
-		echo 'Install Homebrew'
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
-		echo 'eval' $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $HOME/.bash_profile
-		eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-		else
-		echo "Already installed Homebrew"
-		fi
-	fi
+	echo 'Install Homebrew'
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
+	echo 'eval' $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $(HOME)/.bash_profile
+	eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 	brew bundle
 
 check-hyper:

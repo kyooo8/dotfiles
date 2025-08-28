@@ -23,7 +23,7 @@ link:
 	ln -fnsv "$(HOME)/dotfiles/starship.toml" "$(HOME)/.config/starship.toml"
 	ln -fnsv "$(HOME)/dotfiles/zshrc" "$(HOME)/.zshrc"
 	ln -fnsv "$(HOME)/dotfiles/zimrc" "$(HOME)/.zimrc"
-S
+
 unlink:
 	rm -f "$(HOME)/.hyper.js"
 	rm -f "$(HOME)/.config/starship.toml"

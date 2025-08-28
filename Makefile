@@ -9,7 +9,7 @@ init-linux:
 	echo 'Install Homebrew'
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
 	echo 'eval' $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $(HOME)/.bash_profile
-	eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	brew bundle
 
 check-hyper:

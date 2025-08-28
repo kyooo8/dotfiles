@@ -8,14 +8,14 @@ init-linux:
 	sudo apt-get install build-essential procps curl file git
 	echo 'Install Homebrew'
 	echo >> /home/runner/.bashrc
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
-	echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc
-	echo 'eval' $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $(HOME)/.bash_profile
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
+	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc
+	echo 'eval' $$(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $$(HOME)/.bash_profile
+	eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	brew bundle
 
 check-hyper:
-	hyper --version
+	hyper version
 	hyper list	
 
 link:
@@ -23,7 +23,7 @@ link:
 	ln -fnsv "$(HOME)/dotfiles/starship.toml" "$(HOME)/.config/starship.toml"
 	ln -fnsv "$(HOME)/dotfiles/zshrc" "$(HOME)/.zshrc"
 	ln -fnsv "$(HOME)/dotfiles/zimrc" "$(HOME)/.zimrc"
-
+S
 unlink:
 	rm -f "$(HOME)/.hyper.js"
 	rm -f "$(HOME)/.config/starship.toml"

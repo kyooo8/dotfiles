@@ -9,6 +9,11 @@ jobs:
   install:
     runs-on: macos-latest
     steps:
+      - name: Check if Homebrew is installed
+        run: |
+          echo "Checking brew..."
+          which brew
+          brew --version || echo "brew not installed"
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install dependencies

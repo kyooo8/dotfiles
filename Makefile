@@ -1,7 +1,4 @@
 init:
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
-	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $(HOME)/.zprofile
-	eval $(/opt/homebrew/bin/brew shellenv)
 	brew bundle
 
 init-linux:
@@ -9,8 +6,8 @@ init-linux:
 	echo 'Install Homebrew'
 	echo >> /home/runner/.bashrc
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
-	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc
-	echo 'eval' $$(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $$(HOME)/.bash_profile
+	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $$HOME/.bashrc
+	echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $$HOME/.bash_profile
 	eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 	brew bundle
 

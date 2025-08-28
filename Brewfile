@@ -1,0 +1,8 @@
+brew "deno"
+brew "eza"
+brew "node"
+brew "starship"
+brew "zimfw"
+cask "font-hack-nerd-font"
+cask "hyper"
+cask "raycast"

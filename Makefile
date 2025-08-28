@@ -4,6 +4,23 @@ init:
 	eval $(/opt/homebrew/bin/brew shellenv)
 	brew bundle
 
+init-linux:
+	sudo apt-get install build-essential procps curl file git
+		if test ! $(which brew); then
+		echo 'Install Homebrew'
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
+		echo 'eval' $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) >> $HOME/.bash_profile
+		eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+		else
+		echo "Already installed Homebrew"
+		fi
+	fi
+	brew bundle
+
+check-hyper:
+	hyper --version
+	hyper list	
+
 link:
 	ln -fnsv "$(HOME)/dotfiles/hyper/.hyper.js" "$(HOME)/.hyper.js"
 	ln -fnsv "$(HOME)/dotfiles/starship.toml" "$(HOME)/.config/starship.toml"

@@ -1,0 +1,19 @@
+name: Ubuntu
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: make init-linux
+      - name: Link files
+        run: make link
+      - name: Check hyper
+        run: make check-hyper

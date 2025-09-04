@@ -145,7 +145,8 @@ module.exports = {
         "hyperborder",
         "gitrocket",
         "hyper-highlight-active-pane",
-        "hyper-tabs-enhanced"
+        "hyper-tabs-enhanced",
+        "hyper-opacity"
     ],
     // in development, you can create a directory under
     // `~/.hyper_plugins/local/` and include it here

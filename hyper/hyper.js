@@ -20,7 +20,7 @@ module.exports = {
         // letter spacing as a relative unit
         letterSpacing: 0,
         // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
-        cursorColor: 'rgba(248,28,229,0.8)',
+        cursorColor: 'rgba(255, 217, 0, 0.8)',
         // terminal text color under BLOCK cursor
         cursorAccentColor: '#000',
         // `'BEAM'` for |, `'UNDERLINE'` for _, `'BLOCK'` for █
@@ -33,9 +33,9 @@ module.exports = {
         // opacity is only supported on macOS
         backgroundColor: '#000',
         // terminal selection color
-        selectionColor: 'rgba(248,28,229,0.3)',
+        selectionColor: 'rgba(255,215,0,0.3)',
         // border color (window, tabs)
-        borderColor: '#333',
+        borderColor: '#E63946',
         // custom CSS to embed in the main window
         css: '',
         // custom CSS to embed in the terminal window
@@ -130,6 +130,18 @@ module.exports = {
         // set to true to preserve working directory when creating splits or tabs
         preserveCWD: true,
         // for advanced config flags please refer to https://hyper.is/#cfg
+
+        // hyper opacity setting
+        opacity: {
+            focus: 0.8,
+            blur: 0.5
+        },
+        // hyper border setting
+        hyperBorder: {
+            borderColors: ['#333333','#FFD700'],
+            animate: false,
+            borderAngles: '45deg'
+        }
     },
     // a list of plugins to fetch and install from npm
     // format: [@org/]project[#version]

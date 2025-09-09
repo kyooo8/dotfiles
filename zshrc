@@ -6,29 +6,12 @@ fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
-# バツ丸ターミナルに切り替えて起動
-hello-bat() {
-  ln -fnsv ~/.hyper-batsumaru.js ~/.hyper.js
-  ln -fnsv ~/.config/starship-batsumaru.toml ~/.config/starship.toml
-  hyper
-}
-
-# 通常ターミナルに戻して起動
-bey-bat() {
-  ln -fnsv ~/dotfiles/hyper/.hyper.js ~/.hyper.js
-  ln -fnsv ~/dotfiles/starship.toml ~/.config/starship.toml
-  hyper
-}
-
-bat_art() {
-  cat << 'EOF'
-EOF
-}
-
 alias ls='eza --group-directories-first --icons'
 
 eval "$(starship init zsh)"
-# 起動時に表示（バツ丸モードのときだけ）
-if [[ -L ~/.config/starship.toml && "$(readlink ~/.config/starship.toml)" == *"starship-batsumaru.toml" ]]; then
-  bat_art
-fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/kyosuke.aradono/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/kyosuke.aradono/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/kyosuke.aradono/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/kyosuke.aradono/google-cloud-sdk/completion.zsh.inc'; fi

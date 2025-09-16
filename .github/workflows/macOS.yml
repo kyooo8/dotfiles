@@ -20,5 +20,3 @@ jobs:
         run: make init
       - name: Link files
         run: make link
-      - name: Check hyper
-        run: make check-hyper

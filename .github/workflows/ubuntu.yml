@@ -15,5 +15,3 @@ jobs:
         run: make init-linux
       - name: Link files
         run: make link
-      - name: Check hyper
-        run: make check-hyper

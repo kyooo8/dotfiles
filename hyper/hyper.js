@@ -138,9 +138,8 @@ module.exports = {
         },
         // hyper border setting
         hyperBorder: {
-            borderColors: ['#333333','#FFD700'],
+            borderColors: ['#888888',"#333333"],
             animate: false,
-            borderAngles: '45deg'
         }
     },
     // a list of plugins to fetch and install from npm

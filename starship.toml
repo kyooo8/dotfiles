@@ -4,8 +4,6 @@ $os\
 $username\
 [](bg:#333333 fg:#FFFFFF)\
 $directory\
-[](fg:#333333 bg:#FFD700)\
-[](bg:#FFD700)\
 [](fg:#FFD700 bg:#333333)\
 $git_branch\
 $git_status\

@@ -26,6 +26,8 @@ jobs:
           yadm status
       - name: run bootstrap
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
           yadm bootstrap
       - name: Check nvim
         run: |

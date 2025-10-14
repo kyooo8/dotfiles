@@ -3,19 +3,19 @@
 system_type=$(uname -s)
 
 if [ "$system_type" = "Darwin" ]; then
-
   # install homebrew if it's missing
   if ! command -v brew >/dev/null 2>&1; then
     echo "Installing homebrew"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  REPO=$(yadm rev-parse --show-toplevel)
-  cd "$REPO" 
-  if [ -f "$REPO/Brewfile" ]; then
-    echo "Updating homebrew bundle"
-    brew bundle --file "$REPO/Brewfile"
-  else
-    echo "no brewfile found at $REPO"
-  fi
-
 fi
+
+REPO=$(yadm rev-parse --show-toplevel)
+cd "$REPO" 
+if [ -f "$REPO/Brewfile" ]; then
+  echo "Updating homebrew bundle"
+  brew bundle --file "$REPO/Brewfile"
+else
+  echo "no brewfile found at $REPO"
+fi
+

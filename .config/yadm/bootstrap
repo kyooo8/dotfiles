@@ -9,10 +9,13 @@ if [ "$system_type" = "Darwin" ]; then
     echo "Installing homebrew"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-
-  if [ -f "$HOME/dotfiles/Brewfile" ]; then
+  REPO=$(yadm rev-parse --show-toplevel)
+  cd "$REPO" 
+  if [ -f "$REPO/Brewfile" ]; then
     echo "Updating homebrew bundle"
-    brew bundle --file"$HOME/dotfiles/Brewfile"
+    brew bundle --file "$REPO/Brewfile"
+  else
+    echo "no brewfile found at $REPO"
   fi
 
 fi

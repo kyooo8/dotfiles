@@ -3,6 +3,8 @@ export LC_ALL=ja_JP.UTF-8
 
 export EDITOR=nvim
 
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="$(gem env home)/bin:$PATH"
 # Volta
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -59,3 +61,8 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+
+
+# if (which zprof > /dev/null) ;then
+#     zprof | less
+# fi

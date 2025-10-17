@@ -28,10 +28,10 @@ $cmd_duration\
 $line_break\
 \n$character"""
 
-palette = 'catppuccin_frappe'
+palette = 'catppuccin_macchiato'
 
 [os]
-disabled = false
+disabled = true
 style = "bg:red fg:crust"
 
 [os.symbols]

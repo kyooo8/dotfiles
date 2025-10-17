@@ -10,7 +10,7 @@ return {
 	},
 	config = function()
 		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
+		local mason_conf = require("conf.mason_conf")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 		local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -47,29 +47,19 @@ return {
 		-- Mason をセットアップ
 		mason.setup()
 
-		-- Mason LSP Config をセットアップ
-		mason_lspconfig.setup({
-			ensure_installed = { "lua_ls", "emmet_ls", "svelte", "graphql" },
-		})
+		local lspconfig = require("lspconfig")
+		for _, server in ipairs(mason_conf.lsp_servers) do
+			local opts = { capabilities = capabilities }
 
-		-- インストール済み LSP を順に有効化
-		for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
-			vim.lsp.config(server_name, {
-				capabilities = capabilities,
-			})
-			vim.lsp.enable(server_name)
+			if server == "lua_ls" then
+				opts.settings = {
+					Lua = {
+						diagnostics = { globals = { "vim" } },
+						completion = { callSnippet = "Replace" },
+					},
+				}
+			end
+			lspconfig[server].setup(opts)
 		end
-
-		-- 特殊な設定が必要なサーバーは個別に上書き
-		vim.lsp.config("lua_ls", {
-			capabilities = capabilities,
-			settings = {
-				Lua = {
-					diagnostics = { globals = { "vim" } },
-					completion = { callSnippet = "Replace" },
-				},
-			},
-		})
-		vim.lsp.enable("lua_ls")
 	end,
 }

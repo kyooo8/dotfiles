@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
-config.color_scheme = "Catppuccin Frappe" -- or Macchiato, Frappe, Latte, Mocha
+config.color_scheme = "Catppuccin Macchiato" -- or Macchiato, Frappe, Latte, Mocha
 
 config.font = wezterm.font_with_fallback({ "JetBrainsMono Nerd Font", "Cica" }, { weight = "Bold" })
 config.font_size = 12

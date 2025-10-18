@@ -1,3 +1,7 @@
+if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 
@@ -16,9 +20,9 @@ if [ -f '${HOME}/google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-
 # Zimfw
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
-  source /opt/homebrew/opt/zimfw/share/zimfw.zsh init
+  source "$(brew --prefix zimfw)/share/zimfw.zsh" init
 fi
-source ${ZIM_HOME}/init.zsh
+source "${ZIM_HOME}/init.zsh"
 
 # Starship
 eval "$(starship init zsh)"
@@ -61,3 +65,4 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 eval "$(zoxide init zsh)"
 alias cd="z"
 
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

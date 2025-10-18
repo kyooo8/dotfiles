@@ -5,7 +5,7 @@ return {
 		priority = 1000,
 		config = function()
 			require("catppuccin").setup({
-				flavour = "frappe", -- latte, frappe, macchiato, mocha
+				flavour = "macchiato", -- latte, frappe, macchiato, mocha
 
 				transparent_background = true, -- disables setting the background color.
 				float = {
@@ -52,8 +52,8 @@ return {
 					},
 					mason = true,
 					which_key = true,
-					-- lualine = true,
-					-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+					lualine = true,
+					bufferline = true,
 				},
 			})
 

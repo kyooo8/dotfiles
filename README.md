@@ -19,7 +19,9 @@ macOSとUbuntu用の個人的な開発環境設定ファイル集です。
 このリポジトリをクローンしてインストールスクリプトを実行してください：
 
 ```bash
-bash -c "$(curl -fsSL https://github.com/yadm-dev/yadm/raw/master/yadm)" && yadm clone https://github.com/kyooo8/dotfiles.git
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yadm-dev/yadm/master/yadm)" && \
+yadm clone https://github.com/kyooo8/dotfiles.git
+
 ```
 
 ## 設定ファイル

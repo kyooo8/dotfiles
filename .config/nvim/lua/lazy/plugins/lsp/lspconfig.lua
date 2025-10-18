@@ -9,18 +9,19 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
-		local mason = require("mason")
 		local mason_lspconfig = require("mason-lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local lspconfig = require("lspconfig")
+		local mason_conf = require("lazy.config.mason")
 
 		local capabilities = cmp_nvim_lsp.default_capabilities()
-		local keymap = vim.keymap
 
 		-- 🔑 キーマップ設定
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
 				local opts = { buffer = ev.buf, silent = true }
+				local keymap = vim.keymap
 				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
@@ -43,33 +44,30 @@ return {
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
-
-		-- Mason をセットアップ
-		mason.setup()
-
 		-- Mason LSP Config をセットアップ
 		mason_lspconfig.setup({
-			ensure_installed = { "lua_ls", "emmet_ls", "svelte", "graphql" },
-		})
+			ensure_installed = mason_conf.lsp_servers,
+			handlers = {
+				-- デフォルトハンドラ：全サーバー共通設定
+				function(server_name)
+					lspconfig[server_name].setup({
+						capabilities = capabilities,
+					})
+				end,
 
-		-- インストール済み LSP を順に有効化
-		for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
-			vim.lsp.config(server_name, {
-				capabilities = capabilities,
-			})
-			vim.lsp.enable(server_name)
-		end
-
-		-- 特殊な設定が必要なサーバーは個別に上書き
-		vim.lsp.config("lua_ls", {
-			capabilities = capabilities,
-			settings = {
-				Lua = {
-					diagnostics = { globals = { "vim" } },
-					completion = { callSnippet = "Replace" },
-				},
+				-- 特殊設定: Lua LS
+				["lua_ls"] = function()
+					lspconfig.lua_ls.setup({
+						capabilities = capabilities,
+						settings = {
+							Lua = {
+								diagnostics = { globals = { "vim" } },
+								completion = { callSnippet = "Replace" },
+							},
+						},
+					})
+				end,
 			},
 		})
-		vim.lsp.enable("lua_ls")
 	end,
 }

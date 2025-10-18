@@ -13,6 +13,8 @@ return {
 
 		local mason_tool_installer = require("mason-tool-installer")
 
+		local mason_conf = require("lazy.config.mason")
+
 		-- enable mason and configure icons
 		mason.setup({
 			ui = {
@@ -26,29 +28,11 @@ return {
 
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
-			ensure_installed = {
-				"ts_ls",
-				"html",
-				"cssls",
-				"tailwindcss",
-				"svelte",
-				"lua_ls",
-				"graphql",
-				"emmet_ls",
-				"prismals",
-				"pyright",
-			},
+			ensure_installed = mason_conf.lsp_servers,
 		})
 
 		mason_tool_installer.setup({
-			ensure_installed = {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"black", -- python formatter
-				"pylint", -- python linter
-				"eslint_d", -- js linter
-			},
+			ensure_installed = mason_conf.tools,
 		})
 	end,
 }

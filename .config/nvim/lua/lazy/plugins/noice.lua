@@ -7,7 +7,8 @@ return {
 	},
 	config = function()
 		require("notify").setup({
-			background_colour = "#000000", -- ← 透過通知の背景を明示的に黒に設定
+			background_colour = "#000000",
+			top_down = false,
 		})
 		require("noice").setup({
 

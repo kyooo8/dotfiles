@@ -1,9 +1,6 @@
 name: macOS
 
 on:
-name: macOS
-
-on:
   push:
 
 jobs:
@@ -28,4 +25,3 @@ jobs:
           :Lazy health
           :qa
           EOF
-

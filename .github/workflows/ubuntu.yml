@@ -9,29 +9,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: install homebrew
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-      - name: install yadm
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew install yadm
-          yadm --version
-      - name: clone dotfiles
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          yadm clone --branch use-yadm https://github.com/kyooo8/dotfiles.git
-          yadm status
-      - name: run bootstrap
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-          yadm bootstrap
-      - name: Check nvim
+      - name: Install yadm and clone dotfiles
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          mkdir -p "$HOME/bin"
+          curl -fsSL https://github.com/yadm-dev/yadm/raw/master/yadm -o "$HOME/bin/yadm"
+          chmod +x "$HOME/bin/yadm"
+          export PATH="$HOME/bin:$PATH"
+          yadm clone https://github.com/kyooo8/dotfiles.git
+          yadm bootstrap
+
+      - name: Check Neovim setup
+        run: |
           nvim -E -s <<'EOF'
           :source $HOME/.config/nvim/init.lua
           :Lazy install

@@ -1,26 +1,26 @@
 name: macOS
 
 on:
+name: macOS
+
+on:
   push:
 
 jobs:
   install:
     runs-on: macos-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: install yadm
+
+      - name: Install yadm and clone dotfiles
         run: |
-          brew install yadm
-          yadm --version
-      - name: clone dotfiles
-        run: |
-          yadm clone --branch use-yadm https://github.com/kyooo8/dotfiles.git
-          yadm status
-      - name: run bootstrap
-        run: |
-          yadm bootstrap
-      - name: Check nvim
+          curl -fsSL https://github.com/yadm-dev/yadm/raw/master/yadm -o /usr/local/bin/yadm
+          chmod +x /usr/local/bin/yadm
+          yadm clone https://github.com/kyooo8/dotfiles.git --bootstrap
+
+      - name: Check Neovim setup
         run: |
           nvim -E -s <<'EOF'
           :source $HOME/.config/nvim/init.lua
@@ -28,3 +28,4 @@ jobs:
           :Lazy health
           :qa
           EOF
+

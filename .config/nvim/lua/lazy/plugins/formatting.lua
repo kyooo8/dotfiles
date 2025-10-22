@@ -20,6 +20,9 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        ruby = { "rubocop" },
+        go = { "gofmt", "goimports" },
+        php = { "phpcbf", "php_cs_fixer" },
       },
       format_on_save = {
         lsp_fallback = true,

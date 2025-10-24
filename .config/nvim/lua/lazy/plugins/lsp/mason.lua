@@ -16,6 +16,7 @@ return {
 				"intelephense",
 				"ruby_lsp",
 				"terraformls",
+				"marksman",
 			},
 		},
 		dependencies = {
@@ -49,6 +50,7 @@ return {
 				"gofumpt",
 				"phpcbf",
 				"php-cs-fixer",
+				"markdownlint",
 			},
 		},
 		dependencies = {

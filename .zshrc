@@ -1,14 +1,27 @@
-if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
+case "$(uname -s)" in
+  Darwin*)
+    # macOS用Homebrew
+    if [[ -x "/opt/homebrew/bin/brew" ]]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+    ;;
+  Linux*)
+    # WSL / Linux用Homebrew (Linuxbrew)
+    if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    fi
+    ;;
+esac
 
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 
 export EDITOR=nvim
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+
+
 # Volta
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -65,4 +78,5 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 eval "$(zoxide init zsh)"
 alias cd="z"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+alias tf='terraform'
+

@@ -48,9 +48,8 @@ return {
 				"rubocop",
 				"goimports",
 				"gofumpt",
-				"phpcbf",
-				"php-cs-fixer",
 				"markdownlint",
+				"php-cs-fixer",
 			},
 		},
 		dependencies = {

@@ -33,6 +33,7 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = true
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
+
 -- ウィンドウ分割関連
 opt.splitright = true
 opt.splitbelow = true
@@ -40,6 +41,8 @@ opt.splitbelow = true
 -- ファイル
 opt.swapfile = false
 opt.fileencoding = "utf-8"
+opt.exrc = true
+opt.secure = true
 
 -- メニューとコマンド
 opt.wildmenu = true

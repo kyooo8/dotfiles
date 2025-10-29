@@ -16,6 +16,11 @@ esac
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 
+export TMPDIR="$HOME/tmp"
+export TMP="$TMPDIR"
+export TEMP="$TMPDIR"
+export COMPOSER_TMP_DIR="$TMPDIR"
+
 export EDITOR=nvim
 
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

@@ -28,6 +28,7 @@ return {
         "tsx",
         "yaml",
         "html",
+        "php",
         "css",
         "prisma",
         "markdown",

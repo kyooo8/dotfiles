@@ -10,6 +10,7 @@ return {
 		"svelte",
 		"vue",
 		"php",
+		"eruby",
 	},
 	init_options = {
 		html = { options = { ["bem.enabled"] = true } },

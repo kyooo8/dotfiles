@@ -147,6 +147,7 @@ return {
 				"gofumpt",
 				"markdownlint",
 				"php-cs-fixer",
+				"htmlbeautifier",
 			},
 		},
 		dependencies = {

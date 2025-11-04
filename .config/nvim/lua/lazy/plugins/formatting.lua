@@ -99,6 +99,7 @@ return {
 			lua = { "stylua" },
 			python = { "isort", "black" },
 			ruby = { "rubocop" },
+			eruby = { "htmlbeautifier" },
 			go = { "gofmt", "goimports" },
 			terraform = { "terraform_fmt" },
 		}

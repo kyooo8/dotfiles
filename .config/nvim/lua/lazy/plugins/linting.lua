@@ -4,11 +4,33 @@ return {
   config = function()
     local lint = require("lint")
 
+    local function detect_deno_project()
+      local cwd = vim.fn.getcwd()
+      local markers = {
+        "/deno.json",
+        "/deno.jsonc",
+        "/deno.lock",
+        "/import_map.json",
+        "/fresh.config.ts",
+        "/fresh.gen.ts",
+      }
+
+      for _, marker in ipairs(markers) do
+        if vim.fn.filereadable(cwd .. marker) == 1 then
+          return true
+        end
+      end
+
+      return false
+    end
+
+    local is_deno = detect_deno_project()
+
     lint.linters_by_ft = {
-      javascript = { "eslint_d" },
-      typescript = { "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
+      javascript = is_deno and { "deno" } or { "eslint_d" },
+      typescript = is_deno and { "deno" } or { "eslint_d" },
+      javascriptreact = is_deno and { "deno" } or { "eslint_d" },
+      typescriptreact = is_deno and { "deno" } or { "eslint_d" },
       svelte = { "eslint_d" },
       python = { "pylint" },
     }

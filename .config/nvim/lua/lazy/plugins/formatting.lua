@@ -6,6 +6,26 @@ return {
 		local conform = require("conform")
 		local util = require("conform.util")
 
+		local function detect_deno_project()
+			local cwd = vim.fn.getcwd()
+			local markers = {
+				"/deno.json",
+				"/deno.jsonc",
+				"/deno.lock",
+				"/import_map.json",
+				"/fresh.config.ts",
+				"/fresh.gen.ts",
+			}
+
+			for _, marker in ipairs(markers) do
+				if vim.fn.filereadable(cwd .. marker) == 1 then
+					return true
+				end
+			end
+
+			return false
+		end
+
 		local function detect_wp_project()
 			if vim.g.wp_project ~= nil then
 				return vim.g.wp_project == true
@@ -37,6 +57,7 @@ return {
 			return false
 		end
 
+		local is_deno = detect_deno_project()
 		local is_wp = detect_wp_project()
 
 		local php_cs_fixer = require("conform.formatters.php_cs_fixer")
@@ -83,6 +104,21 @@ return {
 		}
 
 		formatters_by_ft.php = is_wp and { "phpcbf_wordpress", "phpcsfixer" } or { "phpcsfixer" }
+
+		if is_deno then
+			local deno_targets = {
+				"javascript",
+				"typescript",
+				"javascriptreact",
+				"typescriptreact",
+				"json",
+				"jsonc",
+			}
+
+			for _, ft in ipairs(deno_targets) do
+				formatters_by_ft[ft] = { "deno_fmt" }
+			end
+		end
 
 		conform.setup({
 			formatters = formatters,

@@ -3,6 +3,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
+				"denols",
 				"ts_ls",
 				"html",
 				"cssls",
@@ -19,6 +20,102 @@ return {
 				"marksman",
 			},
 		},
+		config = function(_, opts)
+			local util = require("lspconfig.util")
+
+			local deno_root = util.root_pattern(
+				"deno.json",
+				"deno.jsonc",
+				"deno.lock",
+				"import_map.json",
+				"fresh.config.ts",
+				"fresh.gen.ts"
+			)
+			local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
+
+			local function is_deno_project(path)
+				return deno_root(path) ~= nil
+			end
+
+			local function configure_ts(server)
+				vim.lsp.config(server, {
+					root_dir = function(fname)
+						if is_deno_project(fname) then
+							return nil
+						end
+
+						return ts_root(fname)
+					end,
+					workspace_required = true,
+				})
+			end
+
+			configure_ts("ts_ls")
+			configure_ts("tsserver")
+
+			vim.lsp.config("tailwindcss", {
+				root_dir = function(bufnr, on_dir)
+					local root_files = {
+						"tailwind.config.js",
+						"tailwind.config.cjs",
+						"tailwind.config.mjs",
+						"tailwind.config.ts",
+						"tailwind.config.json",
+						"postcss.config.js",
+						"postcss.config.cjs",
+						"postcss.config.mjs",
+						"postcss.config.ts",
+						"fresh.config.ts",
+						"fresh.gen.ts",
+						"deno.json",
+						"deno.jsonc",
+						"deno.lock",
+						"import_map.json",
+						".git",
+					}
+
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					root_files = util.insert_package_json(root_files, "tailwindcss", fname)
+					root_files = util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
+
+					local found = vim.fs.find(root_files, { path = fname, upward = true })
+					on_dir(found[1] and vim.fs.dirname(found[1]) or nil)
+				end,
+				settings = {
+					tailwindCSS = {
+						experimental = {
+							classRegex = {
+								"tw`([^`]*)`",
+								"tw\\(([^)]*)\\)",
+								{ "cva\\(([^)]*)\\)", "['\"`]([^'\"`]*)['\"`]" },
+							},
+						},
+					},
+				},
+				workspace_required = true,
+			})
+
+			vim.lsp.config("denols", {
+				root_dir = deno_root,
+				workspace_required = true,
+				settings = {
+					deno = {
+						lint = true,
+						unstable = true,
+						suggest = {
+							imports = {
+								hosts = {
+									["https://deno.land"] = true,
+									["https://esm.sh"] = true,
+								},
+							},
+						},
+					},
+				},
+			})
+
+			require("mason-lspconfig").setup(opts)
+		end,
 		dependencies = {
 			{
 				"williamboman/mason.nvim",

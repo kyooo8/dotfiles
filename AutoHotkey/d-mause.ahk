@@ -1,4 +1,5 @@
-﻿#SingleInstance Force
+﻿
+#SingleInstance Force
 ; ===============================
 ; Mouse Keys Mode v15
 ; （d + hjklでON、単押しdは入力OK、フォーカス中でも誤入力防止）
@@ -33,25 +34,27 @@ $d::
     global dPressed, dUsedForMouse
     dPressed := true
     dUsedForMouse := false
-    Sleep 10
-    if (dPressed && !dUsedForMouse)
-        Send "d" ; 普通に入力
 }
+
 $d up::
 {
     global dPressed, dUsedForMouse, mouseKeysMode, scrollMode, moveDir
     dPressed := false
 
-    if dUsedForMouse {
-        mouseKeysMode := false
-        scrollMode := false
-        moveDir.x := 0
-        moveDir.y := 0
-        UpdateGui(false)
-        mouseGui.Hide()
+    ; マウスモードを使わなかったなら普通にd入力
+    if !dUsedForMouse {
+        Send "d"
+        return
     }
-}
 
+    ; マウスモード解除処理
+    mouseKeysMode := false
+    scrollMode := false
+    moveDir.x := 0
+    moveDir.y := 0
+    UpdateGui(false)
+    mouseGui.Hide()
+}
 ; ===============================
 ; 条件付きホットキー（d押してる間）
 ; ===============================
@@ -156,15 +159,6 @@ n::
     MouseClick "Right"
 }
 
-; ====== 中央へ戻す ======
-u::
-{
-    global mouseKeysMode, dUsedForMouse
-    dUsedForMouse := true
-    mouseKeysMode := true
-    CenterMouse()
-}
-
 #HotIf
 
 ; ===============================
@@ -204,10 +198,3 @@ UpdateMouse() {
     MouseMove dx, dy, 0, "R"
 }
 
-; ===============================
-; 関数
-; ===============================
-CenterMouse() {
-    mon := SysGet("MonitorWorkArea")
-    MouseMove (mon.Right + mon.Left) // 2, (mon.Bottom + mon.Top) // 2
-}

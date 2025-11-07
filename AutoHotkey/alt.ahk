@@ -240,21 +240,21 @@ IME_GetConverting(WinTitle := "A", ConvCls := "", CandCls := "") {
 ;---------------------------
 ; 左 Alt 空打ち → IME OFF
 ;---------------------------
-; LAlt up:: {
-;     if (A_PriorHotkey = "*~LAlt") {
-;         IME_SET(0)
-;     }
-; }
+LAlt up:: {
+    if (A_PriorHotkey = "*~LAlt") {
+        IME_SET(0)
+    }
+}
 
 ;---------------------------
 ; 右 Alt 空打ち → IME ON
 ;---------------------------
-; RAlt up:: {
-;     if (A_PriorHotkey = "*~RAlt") {
-;         IME_SET(1)
-;     }
-; }
-;
+RAlt up:: {
+    if (A_PriorHotkey = "*~RAlt") {
+        IME_SET(1)
+    }
+}
+
 
 
 

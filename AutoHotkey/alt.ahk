@@ -236,6 +236,9 @@ IME_GetConverting(WinTitle := "A", ConvCls := "", CandCls := "") {
 *~RAlt:: {
     Send "{Blind}{vk07}"
 }
+*~RCtrl:: {
+    Send "{Blind}{vk07}"
+}
 
 ;---------------------------
 ; 左 Alt 空打ち → IME OFF
@@ -254,4 +257,8 @@ RAlt up:: {
         IME_SET(1)
     }
 }
-
+RCtrl up:: {
+    if (A_PriorHotkey = "*~RCtrl") {
+        IME_SET(1)
+    }
+}

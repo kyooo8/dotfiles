@@ -1,5 +1,5 @@
 ﻿#SingleInstance Force
-#Include "C:\Users\kyosu\Documents\AutoHotkey\getIme.ahk"
+#Include ".\AutoHotkey\getIme.ahk"
 ;--- Alt + Q → アプリを閉じる（macの⌘+Q）---
 !q::WinClose("A")
 ; --- Alt → Ctrlマッピング系（macっぽく操作統一）---
@@ -254,8 +254,4 @@ RAlt up:: {
         IME_SET(1)
     }
 }
-
-
-
-
 

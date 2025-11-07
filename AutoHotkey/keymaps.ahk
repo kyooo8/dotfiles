@@ -1,4 +1,3 @@
-
 [:: {
     Send "{Backspace}"
 }

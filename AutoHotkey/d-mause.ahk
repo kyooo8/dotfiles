@@ -1,5 +1,4 @@
-﻿
-#SingleInstance Force
+﻿#SingleInstance Force
 ; ===============================
 ; Mouse Keys Mode v15
 ; （d + hjklでON、単押しdは入力OK、フォーカス中でも誤入力防止）

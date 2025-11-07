@@ -67,3 +67,4 @@ IME_SET(SetSts, WinTitle := "A") {
     return DllCall("User32\SendMessageW"
         , "Ptr", def, "UInt", 0x0283, "Ptr", 0x0006, "Ptr", SetSts, "Ptr")
 }
+

@@ -80,3 +80,4 @@ CapsLock & l:: ToggleApp("LINE.exe"
 
 CapsLock & o:: ToggleApp("Obsidian.exe"
     , "C:\Users\" A_UserName "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Obsidian.lnk")
+

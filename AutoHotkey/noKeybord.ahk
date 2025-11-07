@@ -1,4 +1,4 @@
 ﻿#SingleInstance Force
-#Include "C:\Users\kyosu\Documents\AutoHotkey\layer1.ahk"
-#Include "C:\Users\kyosu\Documents\AutoHotkey\layer2.ahk"
-#Include "C:\Users\kyosu\Documents\AutoHotkey\keymaps.ahk"
+#Include ".\layer1.ahk"
+#Include ".\layer2.ahk"
+#Include ".\keymaps.ahk"

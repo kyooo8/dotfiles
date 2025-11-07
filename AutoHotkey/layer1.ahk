@@ -1,41 +1,17 @@
-﻿#Include "C:\Users\kyosu\Documents\AutoHotkey\getime.ahk"
-; =====================================================
+﻿#Include ".\getime.ahk"
+
 ; === Layer1 ===
-; =====================================================
-SendTilde(*) {
-    if IME_Get() {
-        Send("{Text}～")  ; 日本語モード → 全角
-    } else {
-        Send("{Text}~")   ; 英語モード → 半角
-    }
-}SendAt(*)         => Send("{@}")
+SendTilde(*)       { Send(IME_Get() ? "{Text}～" : "{Text}~")}
+}SendAt(*)        => Send("{@}")
 SendExclam(*)     => Send("{!}")
 SendHash(*)       => Send("{#}")
 SendStar(*)       => Send("{*}")
 SendEqual(*)      => Send("{=}")
-SendDollar(*) {
-    if IME_Get() {
-        Send("{Text}＄")  ; 日本語モード → 全角
-    } else {
-        Send("{Text}$")   ; 英語モード → 半角
-    }
-}
+SendDollar(*)      { Send(IME_Get() ? "{Text}＄" : "{Text}$")}
 SendCaret(*)      => Send("{^}")
-SendBraceL(*) {
-    if IME_Get() {
-        Send("{Text}｛")  ; 日本語モード → 全角
-    } else {
-        Send("{Text}{")   ; 英語モード → 半角
-    }
-}
+SendBraceL(*)      { Send(IME_Get() ? "{Text}｛" : "{Text}{")}
 SendParenL(*)     => Send("{(}")
-SendBracketL(*) {
-    if IME_Get() {
-        Send("{Text}「")  ; 日本語モード → 全角
-    } else {
-        Send("{Text}[")   ; 英語モード → 半角
-    }
-}
+SendBracketL(*)    { Send(IME_Get() ? "{Text}「" : "{Text}[")}
 SendBraceR(*)     => Send("{}}")
 SendParenR(*)     => Send("{)}")
 SendBracketR(*)   => Send("{]}")
@@ -47,16 +23,8 @@ SendAmp(*)        => Send("{&}")
 SendPercent(*)    => Send("{%}")
 SendBackslash(*)  => Send("{\}")
 SendBackQuote(*)  => Send("{``}")
-SendDubleQuote(*) {
-    if IME_Get() {
-        Send("{Text}＂")  ; 日本語モード → 全角
-    } else {
-        Send('{Text}"')   ; 英語モード → 半角
-    }
-}
-SendQuote(*) {
-    SendText(IME_Get() ? "’" : "'")
-}
+SendDubleQuote(*)  { Send(IME_Get() ? "{Text}＂" : '{Text}"')}
+SendQuote(*)       { SendText(IME_Get() ? "’" : "'")}
 SendDai(*)        => Send("{<}")
 SendShou(*)       => Send("{>}")
 SendQuestion(*)   => Send("{?}")
@@ -125,10 +93,10 @@ $Space::
         Sleep(0.1)
     }
 
-    ; スペース離した時点で判定
     if !otherKeyPressed {
         Send(" ")
     }
 
     Layer1_Off()
 }
+

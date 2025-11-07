@@ -1,6 +1,6 @@
-﻿#Include "C:\Users\kyosu\Documents\AutoHotkey\alt.ahk"
-#Include "C:\Users\kyosu\Documents\AutoHotkey\caps-hyper.ahk"
-#Include "C:\Users\kyosu\Documents\AutoHotkey\d-mause.ahk"
-#Include "C:\Users\kyosu\Documents\AutoHotkey\getIme.ahk"
+﻿#Include ".\alt.ahk"
+#Include ".\caps-hyper.ahk"
+#Include ".\d-mause.ahk"
+#Include ".\getIme.ahk"
 
 +Backspace::Send("{Delete}")

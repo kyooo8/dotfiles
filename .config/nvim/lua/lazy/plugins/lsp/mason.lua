@@ -39,19 +39,22 @@ return {
 
 			local function configure_ts(server)
 				vim.lsp.config(server, {
-					root_dir = function(fname)
-						if is_deno_project(fname) then
-							return nil
+					root_dir = function(bufnr, on_dir)
+						local fname = vim.api.nvim_buf_get_name(bufnr)
+						if fname == "" or is_deno_project(fname) then
+							on_dir(nil)
+							return
 						end
 
-						return ts_root(fname)
+						local root = ts_root(fname)
+						on_dir(root)
 					end,
 					workspace_required = true,
+					single_file_support = false,
 				})
 			end
 
 			configure_ts("ts_ls")
-			configure_ts("tsserver")
 
 			vim.lsp.config("tailwindcss", {
 				root_dir = function(bufnr, on_dir)
@@ -76,7 +79,8 @@ return {
 
 					local fname = vim.api.nvim_buf_get_name(bufnr)
 					root_files = util.insert_package_json(root_files, "tailwindcss", fname)
-					root_files = util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
+					root_files =
+						util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
 
 					local found = vim.fs.find(root_files, { path = fname, upward = true })
 					on_dir(found[1] and vim.fs.dirname(found[1]) or nil)
@@ -94,9 +98,13 @@ return {
 				},
 				workspace_required = true,
 			})
+			vim.lsp.enable("tailwindcss")
 
 			vim.lsp.config("denols", {
-				root_dir = deno_root,
+				root_dir = function(bufnr, on_dir)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					on_dir(fname ~= "" and deno_root(fname) or nil)
+				end,
 				workspace_required = true,
 				settings = {
 					deno = {
@@ -113,6 +121,7 @@ return {
 					},
 				},
 			})
+			vim.lsp.enable("denols")
 
 			require("mason-lspconfig").setup(opts)
 		end,

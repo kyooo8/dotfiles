@@ -1,5 +1,5 @@
 ﻿#SingleInstance Force
-#Include ".\AutoHotkey\getIme.ahk"
+#Include ".\getIme.ahk"
 ;--- Alt + Q → アプリを閉じる（macの⌘+Q）---
 !q::WinClose("A")
 ; --- Alt → Ctrlマッピング系（macっぽく操作統一）---

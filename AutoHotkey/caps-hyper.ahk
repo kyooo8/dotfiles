@@ -1,6 +1,6 @@
-﻿
-#SingleInstance Force
-SetCapsLockState("AlwaysOff")
+﻿#SingleInstance
+
+Force SetCapsLockState("AlwaysOff")
 ; 汎用関数: アプリウィンドウをトグル（開く／フォーカス／最小化）
 ToggleApp(appExe, appPath)
 {

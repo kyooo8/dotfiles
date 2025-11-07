@@ -38,9 +38,9 @@ $CapsLock::
     start := A_TickCount
 
     ; キーが離される or 300ms 経過まで待つ
-    KeyWait("LControl", "T0.3")
+    KeyWait("CapsLock", "T0.3")
 
-    if !GetKeyState("LControl", "P") {
+    if !GetKeyState("CapsLock", "P") {
         ; --- 単押し（短押し） → Esc ---
         Send("{Esc}")
         return
@@ -48,7 +48,7 @@ $CapsLock::
 
     ; --- 長押し（Hyperモード） ---
     Send("{Ctrl down}{Alt down}{Shift down}")
-    KeyWait("LControl")
+    KeyWait("CapsLock")
     Send("{Shift up}{Alt up}{Ctrl up}")
 }
 

@@ -1,4 +1,5 @@
-﻿#Include ".\getime.ahk"
+﻿
+#Include ".\getime.ahk"
 ; =====================================================
 ; === Layer1 ===
 ; =====================================================
@@ -8,7 +9,8 @@ SendTilde(*) {
     } else {
         Send("{Text}~")   ; 英語モード → 半角
     }
-}SendAt(*)         => Send("{@}")
+}
+SendAt(*)         => Send("{@}")
 SendExclam(*)     => Send("{!}")
 SendHash(*)       => Send("{#}")
 SendStar(*)       => Send("{*}")
@@ -42,6 +44,7 @@ SendQuote(*) {
 SendDai(*)        => Send("{<}")
 SendShou(*)       => Send("{>}")
 SendQuestion(*)   => Send("{?}")
+Sendcoron(*)      => Send("{:}")
 
 Layer1_Init() {
     global layer1Keys := Map(
@@ -65,14 +68,14 @@ Layer1_Init() {
         "i", SendPipe,
         "k", SendAmp,
         "p", SendPercent,
-        ";", SendBackslash,
-        "'", SendQuote,
+        "l", SendBackslash,
         "r", SendQuote,
         "f", SendDubleQuote,
         "v", SendBackQuote,
         ",", SendDai,
         ".", SendShou,
-        "/", SendQuestion
+        "/", SendQuestion,
+        ";", Sendcoron 
     )
 
     for key, fn in layer1Keys
@@ -114,3 +117,4 @@ $Space::
 
     Layer1_Off()
 }
+

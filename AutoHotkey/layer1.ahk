@@ -1,17 +1,29 @@
 ﻿#Include ".\getime.ahk"
-
+; =====================================================
 ; === Layer1 ===
-SendTilde(*)       { Send(IME_Get() ? "{Text}～" : "{Text}~")}
-}SendAt(*)        => Send("{@}")
+; =====================================================
+SendTilde(*) {
+    if IME_Get() {
+        Send("{Text}～")  ; 日本語モード → 全角
+    } else {
+        Send("{Text}~")   ; 英語モード → 半角
+    }
+}SendAt(*)         => Send("{@}")
 SendExclam(*)     => Send("{!}")
 SendHash(*)       => Send("{#}")
 SendStar(*)       => Send("{*}")
 SendEqual(*)      => Send("{=}")
-SendDollar(*)      { Send(IME_Get() ? "{Text}＄" : "{Text}$")}
+SendDollar(*) {
+    if IME_Get() {
+        Send("{Text}＄")  ; 日本語モード → 全角
+    } else {
+        Send("{Text}$")   ; 英語モード → 半角
+    }
+}
 SendCaret(*)      => Send("{^}")
-SendBraceL(*)      { Send(IME_Get() ? "{Text}｛" : "{Text}{")}
+SendBraceL(*)     => Send("{{}")
 SendParenL(*)     => Send("{(}")
-SendBracketL(*)    { Send(IME_Get() ? "{Text}「" : "{Text}[")}
+SendBracketL(*)   => Send("{[}")
 SendBraceR(*)     => Send("{}}")
 SendParenR(*)     => Send("{)}")
 SendBracketR(*)   => Send("{]}")
@@ -23,14 +35,16 @@ SendAmp(*)        => Send("{&}")
 SendPercent(*)    => Send("{%}")
 SendBackslash(*)  => Send("{\}")
 SendBackQuote(*)  => Send("{``}")
-SendDubleQuote(*)  { Send(IME_Get() ? "{Text}＂" : '{Text}"')}
-SendQuote(*)       { SendText(IME_Get() ? "’" : "'")}
+SendDubleQuote(*) => Send('{"}')
+SendQuote(*) {
+    SendText(IME_Get() ? "’" : "'")
+}
 SendDai(*)        => Send("{<}")
 SendShou(*)       => Send("{>}")
 SendQuestion(*)   => Send("{?}")
-Sendcoron(*)      => Send("{:}")
-Layer1_Init() { 
-global layer1Keys := Map(
+
+Layer1_Init() {
+    global layer1Keys := Map(
         "q", SendTilde,
         "a", SendAt,
         "w", SendExclam,
@@ -51,14 +65,14 @@ global layer1Keys := Map(
         "i", SendPipe,
         "k", SendAmp,
         "p", SendPercent,
-        "l", SendBackslash,
+        ";", SendBackslash,
+        "'", SendQuote,
         "r", SendQuote,
         "f", SendDubleQuote,
         "v", SendBackQuote,
         ",", SendDai,
         ".", SendShou,
-        "/", SendQuestion,
-        ";", Sendcoron 
+        "/", SendQuestion
     )
 
     for key, fn in layer1Keys
@@ -90,13 +104,13 @@ $Space::
                 break
             }
         }
-        Sleep(0.1)
+        Sleep(5)
     }
 
+    ; スペース離した時点で判定
     if !otherKeyPressed {
         Send(" ")
     }
 
     Layer1_Off()
 }
-

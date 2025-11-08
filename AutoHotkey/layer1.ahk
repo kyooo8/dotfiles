@@ -1,5 +1,4 @@
-﻿
-#Include ".\getime.ahk"
+﻿#Include ".\getime.ahk"
 ; =====================================================
 ; === Layer1 ===
 ; =====================================================
@@ -9,8 +8,7 @@ SendTilde(*) {
     } else {
         Send("{Text}~")   ; 英語モード → 半角
     }
-}
-SendAt(*)         => Send("{@}")
+}SendAt(*)         => Send("{@}")
 SendExclam(*)     => Send("{!}")
 SendHash(*)       => Send("{#}")
 SendStar(*)       => Send("{*}")
@@ -23,9 +21,21 @@ SendDollar(*) {
     }
 }
 SendCaret(*)      => Send("{^}")
-SendBraceL(*)     => Send("{{}")
+SendBraceL(*) {
+    if IME_Get() {
+        Send("{Text}｛")  ; 日本語モード → 全角
+    } else {
+        Send("{Text}{")   ; 英語モード → 半角
+    }
+}
 SendParenL(*)     => Send("{(}")
-SendBracketL(*)   => Send("{[}")
+SendBracketL(*)  {
+    if IME_Get() {
+        Send("{Text}「")  ; 日本語モード → 全角
+    } else {
+        Send("{Text}[")   ; 英語モード → 半角
+    }
+}
 SendBraceR(*)     => Send("{}}")
 SendParenR(*)     => Send("{)}")
 SendBracketR(*)   => Send("{]}")
@@ -37,7 +47,13 @@ SendAmp(*)        => Send("{&}")
 SendPercent(*)    => Send("{%}")
 SendBackslash(*)  => Send("{\}")
 SendBackQuote(*)  => Send("{``}")
-SendDubleQuote(*) => Send('{"}')
+SendDubleQuote(*) {
+    if IME_Get() {
+        Send("{Text}＂")  ; 日本語モード → 全角
+    } else {
+        Send('{Text}"')   ; 英語モード → 半角
+    }
+}
 SendQuote(*) {
     SendText(IME_Get() ? "’" : "'")
 }

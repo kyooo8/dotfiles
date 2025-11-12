@@ -41,6 +41,8 @@ return {
 			},
 			on_attach = function(bufnr)
 				local api = require("nvim-tree.api")
+				local core = require("nvim-tree.core")
+				local history = {}
 
 				local function opts(desc)
 					return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
@@ -49,10 +51,57 @@ return {
 				-- デフォルトマッピング
 				api.config.mappings.default_on_attach(bufnr)
 
+				-- カーソル下のディレクトリをルートにして履歴に追加
+				local function open_dir_as_root()
+					local node = api.tree.get_node_under_cursor()
+					if not node or node.type ~= "directory" then
+						print("Select a directory to make it root")
+						return
+					end
+
+					local root = core.get_cwd()
+					if root then
+						table.insert(history, root)
+					end
+
+					api.tree.change_root(node.absolute_path)
+				end
+
+				-- 戻る
+				local function back_dir()
+					local prev = table.remove(history)
+					if prev then
+						api.tree.change_root(prev)
+					else
+						print("No previous directory")
+					end
+				end
+
+				-- 親ディレクトリへ移動
+				local function go_parent_dir()
+					local root = core.get_cwd()
+					if not root then
+						print("No current root directory")
+						return
+					end
+
+					local parent = vim.fn.fnamemodify(root, ":h")
+					if parent == root then
+						print("Already at the top directory")
+						return
+					end
+
+					table.insert(history, root)
+					api.tree.change_root(parent)
+				end
+
 				-- カスタムマッピング
-				vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))
-				vim.keymap.set("n", "s", api.node.open.horizontal, opts("Open: Horizontal Split"))
+				vim.keymap.set("n", "|", api.node.open.vertical, opts("Open: Vertical Split"))
+				vim.keymap.set("n", "-", api.node.open.horizontal, opts("Open: Horizontal Split"))
 				vim.keymap.set("n", "t", api.node.open.tab, opts("Open: New Tab"))
+				vim.keymap.set("n", "p", back_dir, opts("Back: previous directory"))
+				vim.keymap.set("n", "P", go_parent_dir, opts("Up: parent directory"))
+				vim.keymap.set("n", "n", open_dir_as_root, opts("Next: set node as root"))
 			end,
 
 			filters = {

@@ -7,8 +7,7 @@ config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Ci
 config.font_size = 12
 config.use_ime = true
 
-config.window_background_opacity = 0.85
-config.macos_window_background_blur = 20
+config.window_background_opacity = 0.9
 
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true

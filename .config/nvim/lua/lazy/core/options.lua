@@ -24,6 +24,8 @@ opt.signcolumn = "yes"
 opt.wrap = true
 opt.visualbell = true
 opt.showmatch = true
+opt.list = true
+opt.listchars:append({ eol = "↴" })
 
 -- 操作性 / 便利設定
 opt.backspace = "indent,eol,start"

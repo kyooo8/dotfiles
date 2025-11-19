@@ -127,10 +127,9 @@ module.exports = {
     //
     // Cygwin
     // - Example: `C:\\cygwin64\\bin\\bash.exe`
-    shell: "C:\\Windows\\System32\\wsl.exe",
     // for setting shell arguments (i.e. for using interactive shellArgs: `['-i']`)
     // by default `['--login']` will be used
-    shellArgs: ["-u", "kyosu", "--cd", "~"],
+    shellArgs: ["--login"],
     // for environment variables
     env: {},
     // Supported Options:
@@ -171,7 +170,7 @@ module.exports = {
     },
     opacity: {
       focus: 0.9,
-    }
+    },
   },
   // a list of plugins to fetch and install from npm
   // format: [@org/]project[#version]
@@ -185,7 +184,7 @@ module.exports = {
     "hyper-search",
     "@catppuccin/hyper#1.0.8",
     "hyperborder",
-    "hyper-opacity"
+    "hyper-opacity",
   ],
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here

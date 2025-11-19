@@ -100,6 +100,7 @@ return {
 			python = { "isort", "black" },
 			ruby = { "rubocop" },
 			eruby = { "htmlbeautifier" },
+			ejs = { "htmlbeautifier" },
 			go = { "gofmt", "goimports" },
 			terraform = { "terraform_fmt" },
 		}

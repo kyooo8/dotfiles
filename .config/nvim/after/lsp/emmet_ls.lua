@@ -1,9 +1,10 @@
 return {
-	filetypes = {
-		"html",
-		"typescriptreact",
-		"javascriptreact",
-		"css",
+ filetypes = {
+   "html",
+		"ejs",
+   "typescriptreact",
+   "javascriptreact",
+   "css",
 		"sass",
 		"scss",
 		"less",

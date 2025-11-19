@@ -20,11 +20,24 @@ return {
 				"marksman",
 			},
 		},
-		config = function(_, opts)
-			local util = require("lspconfig.util")
+	config = function(_, opts)
+		local util = require("lspconfig.util")
+		local function extend_filetypes(server_name, extras)
+			local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
+			local defaults = ok and server.default_config and server.default_config.filetypes or {}
+			local filetypes = defaults and vim.deepcopy(defaults) or {}
 
-			local deno_root = util.root_pattern(
-				"deno.json",
+			for _, ft in ipairs(extras) do
+				if not vim.tbl_contains(filetypes, ft) then
+					table.insert(filetypes, ft)
+				end
+			end
+
+			return filetypes
+		end
+
+		local deno_root = util.root_pattern(
+			"deno.json",
 				"deno.jsonc",
 				"deno.lock",
 				"import_map.json",
@@ -56,6 +69,8 @@ return {
 
 			configure_ts("ts_ls")
 
+			local tailwind_filetypes = extend_filetypes("tailwindcss", { "ejs" })
+
 			vim.lsp.config("tailwindcss", {
 				root_dir = function(bufnr, on_dir)
 					local root_files = {
@@ -85,8 +100,12 @@ return {
 					local found = vim.fs.find(root_files, { path = fname, upward = true })
 					on_dir(found[1] and vim.fs.dirname(found[1]) or nil)
 				end,
+				filetypes = tailwind_filetypes,
 				settings = {
 					tailwindCSS = {
+						includeLanguages = {
+							ejs = "html",
+						},
 						experimental = {
 							classRegex = {
 								"tw`([^`]*)`",

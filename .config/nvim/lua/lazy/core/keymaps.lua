@@ -25,3 +25,4 @@ keymap.set("n", "<leader>t|", "<cmd>vnew<CR><cmd>terminal<CR>")
 
 keymap.set("v", "<", "<gv")
 keymap.set("v", ">", ">gv")
+keymap.set("x", "p", '"_dP', { desc = "Visual paste without yanking replaced text" })

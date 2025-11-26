@@ -38,17 +38,37 @@ return {
 
 		local deno_root = util.root_pattern(
 			"deno.json",
-				"deno.jsonc",
-				"deno.lock",
-				"import_map.json",
-				"fresh.config.ts",
-				"fresh.gen.ts"
-			)
-			local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
+			"deno.jsonc",
+			"deno.lock",
+			"import_map.json",
+			"fresh.config.ts",
+			"fresh.gen.ts"
+		)
+		local node_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json")
+		local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
 
-			local function is_deno_project(path)
-				return deno_root(path) ~= nil
+		local function get_deno_workspace(path)
+			if path == "" then
+				return nil
 			end
+
+			local root = deno_root(path)
+			if not root then
+				return nil
+			end
+
+			local node = node_root(path)
+			if node and util.path.is_descendant(root, node) then
+				-- Nested Node workspace should use tsserver instead of denols.
+				return nil
+			end
+
+			return root
+		end
+
+		local function is_deno_project(path)
+			return get_deno_workspace(path) ~= nil
+		end
 
 			local function configure_ts(server)
 				vim.lsp.config(server, {
@@ -68,6 +88,18 @@ return {
 			end
 
 			configure_ts("ts_ls")
+
+			local html_filetypes = extend_filetypes("html", { "ejs" })
+			vim.lsp.config("html", {
+				filetypes = html_filetypes,
+			})
+			vim.lsp.enable("html")
+
+			local emmet_filetypes = extend_filetypes("emmet_ls", { "ejs" })
+			vim.lsp.config("emmet_ls", {
+				filetypes = emmet_filetypes,
+			})
+			vim.lsp.enable("emmet_ls")
 
 			local tailwind_filetypes = extend_filetypes("tailwindcss", { "ejs" })
 
@@ -119,11 +151,11 @@ return {
 			})
 			vim.lsp.enable("tailwindcss")
 
-			vim.lsp.config("denols", {
-				root_dir = function(bufnr, on_dir)
-					local fname = vim.api.nvim_buf_get_name(bufnr)
-					on_dir(fname ~= "" and deno_root(fname) or nil)
-				end,
+		vim.lsp.config("denols", {
+			root_dir = function(bufnr, on_dir)
+				local fname = vim.api.nvim_buf_get_name(bufnr)
+				on_dir(get_deno_workspace(fname))
+			end,
 				workspace_required = true,
 				settings = {
 					deno = {

@@ -3,32 +3,21 @@
 // which will not automatically be merged into this file.
 // See https://hyper.is#cfg for all currently supported options.
 const catppuccin = {
-  rosewater: "#f2d5cf",
-  flamingo: "#eebebe",
-  pink: "#f4b8e4",
-  mauve: "#ca9ee6",
-  red: "#e78284",
-  maroon: "#ea999c",
-  peach: "#ef9f76",
-  yellow: "#e5c890",
-  green: "#a6d189",
-  teal: "#81c8be",
-  sky: "#99d1db",
-  sapphire: "#85c1dc",
-  blue: "#8caaee",
-  lavender: "#babbf1",
-  text: "#c6d0f5",
-  subtext1: "#b5bfe2",
-  subtext0: "#a5adce",
-  overlay2: "#a6adc8",
-  overlay1: "#838ba7",
-  overlay0: "#737994",
-  surface2: "#626880",
-  surface1: "#51576d",
-  surface0: "#414559",
-  base: "#303446",
-  mantle: "#292c3c",
-  crust: "#232634",
+  rosewater: "#f5e0dc",
+  flamingo: "#f2cdcd",
+  pink: "#f5c2e7",
+  mauve: "#cba6f7",
+  red: "#f38ba8",
+  maroon: "#eba0ac",
+  peach: "#fab387",
+  yellow: "#f9e2af",
+  green: "#a6e3a1",
+  teal: "#94e2d5",
+  sky: "#89dceb",
+  sapphire: "#74c7ec",
+  blue: "#89b4fa",
+  lavender: "#b4befe",
+  text: "#cdd6f4",
 };
 function pickTwoRandomColors(palette) {
   const values = Object.values(palette);
@@ -164,7 +153,7 @@ module.exports = {
     // set to true to preserve working directory when creating splits or tabs
     preserveCWD: true,
     // for advanced config flags please refer to https://hyper.is/#cfg
-    theme: "catppuccin-frappe", // or "catppuccin-latte", "catppuccin-frappe", "catppuccin-macchiato", "catppuccin-mocha"
+    theme: "catppuccin-mocha", // or "catppuccin-latte", "catppuccin-frappe", "catppuccin-macchiato", "catppuccin-mocha"
     hyperBorder: {
       borderColors: [color1, color2],
     },

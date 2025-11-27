@@ -30,11 +30,6 @@ opt.listchars:append({ eol = "↴" })
 -- 操作性 / 便利設定
 opt.backspace = "indent,eol,start"
 opt.clipboard:append("unnamedplus")
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = true
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 99
 
 -- ウィンドウ分割関連
 opt.splitright = true

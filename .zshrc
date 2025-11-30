@@ -84,3 +84,12 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 
 alias tf='terraform'
+
+## ghq
+function yazi-ghq() {
+  local repo=$(ghq list -p | fzf)
+  [ -n "$repo" ] && yazi "$repo"
+}
+
+zle -N yazi-ghq
+bindkey '^]' yazi-ghq

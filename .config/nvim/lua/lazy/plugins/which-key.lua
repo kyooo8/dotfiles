@@ -7,7 +7,7 @@ return {
 	end,
 	opts = {
 		spec = {
-			{ "<leader>t", group = "tabs,terminal" },
+			{ "<leader>t", group = "tabs" },
 			{ "<leader>e", group = "explorer" },
 			{ "<leader>f", group = "finds" },
 			{ "<leader>s", group = "split window" },

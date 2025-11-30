@@ -21,11 +21,15 @@ opt.smartcase = true
 opt.cursorline = true
 opt.termguicolors = true
 opt.signcolumn = "yes"
-opt.wrap = true
 opt.visualbell = true
 opt.showmatch = true
 opt.list = true
-opt.listchars:append({ eol = "↴" })
+opt.listchars = {
+	space = "·",
+	tab = "┊ ",
+	trail = "·",
+	eol = "↴",
+}
 
 -- 操作性 / 便利設定
 opt.backspace = "indent,eol,start"
@@ -64,79 +68,3 @@ opt.wildmenu = true
 opt.cmdheight = 1
 opt.laststatus = 3
 opt.showcmd = true
-
--- ターミナルモード
-vim.api.nvim_create_autocmd("TermOpen", {
-	pattern = "*",
-	callback = function()
-		vim.cmd("startinsert")
-	end,
-})
-
-vim.api.nvim_create_autocmd("TermOpen", {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.number = false
-		vim.opt_local.relativenumber = false
-	end,
-})
-
-local map = vim.keymap.set
-
-local tmap = function(lhs, rhs)
-	map("t", lhs, rhs, { silent = true })
-end
-
-tmap("<Esc>", [[<C-\><C-n>]])
-
-local cw = {
-	["n"] = "new",
-	["<C-n>"] = "new",
-	["q"] = "quit",
-	["<C-q>"] = "quit",
-	["c"] = "close",
-	["o"] = "only",
-	["<C-o>"] = "only",
-	["<Down>"] = "wincmd j",
-	["<C-j>"] = "wincmd j",
-	["j"] = "wincmd j",
-	["<Up>"] = "wincmd k",
-	["<C-k>"] = "wincmd k",
-	["k"] = "wincmd k",
-	["<Left>"] = "wincmd h",
-	["<C-h>"] = "wincmd h",
-	["<BS>"] = "wincmd h",
-	["h"] = "wincmd h",
-	["<Right>"] = "wincmd l",
-	["<C-l>"] = "wincmd l",
-	["l"] = "wincmd l",
-	["w"] = "wincmd w",
-	["<C-w>"] = "wincmd w",
-	["W"] = "wincmd W",
-	["t"] = "wincmd t",
-	["<C-t>"] = "wincmd t",
-	["b"] = "wincmd b",
-	["<C-b>"] = "wincmd b",
-	["p"] = "wincmd p",
-	["<C-p>"] = "wincmd p",
-	["P"] = "wincmd P",
-	["r"] = "wincmd r",
-	["<C-r>"] = "wincmd r",
-	["R"] = "wincmd R",
-	["x"] = "wincmd x",
-	["<C-x>"] = "wincmd x",
-	["K"] = "wincmd K",
-	["J"] = "wincmd J",
-	["H"] = "wincmd H",
-	["L"] = "wincmd L",
-	["T"] = "wincmd T",
-	["="] = "wincmd =",
-	["-"] = "wincmd -",
-	["+"] = "wincmd +",
-	["z"] = "pclose",
-	["<C-z>"] = "pclose",
-}
-
-for k, v in pairs(cw) do
-	tmap("<C-w>" .. k, "<cmd>" .. v .. "<CR>")
-end

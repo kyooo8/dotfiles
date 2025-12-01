@@ -20,55 +20,56 @@ return {
 				"marksman",
 			},
 		},
-	config = function(_, opts)
-		local util = require("lspconfig.util")
-		local function extend_filetypes(server_name, extras)
-			local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
-			local defaults = ok and server.default_config and server.default_config.filetypes or {}
-			local filetypes = defaults and vim.deepcopy(defaults) or {}
+		config = function(_, opts)
+			local util = require("lspconfig.util")
 
-			for _, ft in ipairs(extras) do
-				if not vim.tbl_contains(filetypes, ft) then
-					table.insert(filetypes, ft)
+			local function extend_filetypes(server_name, extras)
+				local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
+				local defaults = ok and server.default_config and server.default_config.filetypes or {}
+				local filetypes = defaults and vim.deepcopy(defaults) or {}
+
+				for _, ft in ipairs(extras) do
+					if not vim.tbl_contains(filetypes, ft) then
+						table.insert(filetypes, ft)
+					end
 				end
+
+				return filetypes
 			end
 
-			return filetypes
-		end
+			local deno_root = util.root_pattern(
+				"deno.json",
+				"deno.jsonc",
+				"deno.lock",
+				"import_map.json",
+				"fresh.config.ts",
+				"fresh.gen.ts"
+			)
+			local node_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json")
+			local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
 
-		local deno_root = util.root_pattern(
-			"deno.json",
-			"deno.jsonc",
-			"deno.lock",
-			"import_map.json",
-			"fresh.config.ts",
-			"fresh.gen.ts"
-		)
-		local node_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json")
-		local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
+			local function get_deno_workspace(path)
+				if path == "" then
+					return nil
+				end
 
-		local function get_deno_workspace(path)
-			if path == "" then
-				return nil
+				local root = deno_root(path)
+				if not root then
+					return nil
+				end
+
+				local node = node_root(path)
+				if node and util.path.is_descendant(root, node) then
+					-- Nested Node workspace should use tsserver instead of denols.
+					return nil
+				end
+
+				return root
 			end
 
-			local root = deno_root(path)
-			if not root then
-				return nil
+			local function is_deno_project(path)
+				return get_deno_workspace(path) ~= nil
 			end
-
-			local node = node_root(path)
-			if node and util.path.is_descendant(root, node) then
-				-- Nested Node workspace should use tsserver instead of denols.
-				return nil
-			end
-
-			return root
-		end
-
-		local function is_deno_project(path)
-			return get_deno_workspace(path) ~= nil
-		end
 
 			local function configure_ts(server)
 				vim.lsp.config(server, {
@@ -102,7 +103,6 @@ return {
 			vim.lsp.enable("emmet_ls")
 
 			local tailwind_filetypes = extend_filetypes("tailwindcss", { "ejs" })
-
 			vim.lsp.config("tailwindcss", {
 				root_dir = function(bufnr, on_dir)
 					local root_files = {
@@ -126,8 +126,7 @@ return {
 
 					local fname = vim.api.nvim_buf_get_name(bufnr)
 					root_files = util.insert_package_json(root_files, "tailwindcss", fname)
-					root_files =
-						util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
+					root_files = util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
 
 					local found = vim.fs.find(root_files, { path = fname, upward = true })
 					on_dir(found[1] and vim.fs.dirname(found[1]) or nil)
@@ -151,11 +150,11 @@ return {
 			})
 			vim.lsp.enable("tailwindcss")
 
-		vim.lsp.config("denols", {
-			root_dir = function(bufnr, on_dir)
-				local fname = vim.api.nvim_buf_get_name(bufnr)
-				on_dir(get_deno_workspace(fname))
-			end,
+			vim.lsp.config("denols", {
+				root_dir = function(bufnr, on_dir)
+					local fname = vim.api.nvim_buf_get_name(bufnr)
+					on_dir(get_deno_workspace(fname))
+				end,
 				workspace_required = true,
 				settings = {
 					deno = {

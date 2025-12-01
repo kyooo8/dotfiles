@@ -24,7 +24,7 @@ return {
 				["|"] = { "actions.select", opts = { vertical = true } },
 				["-"] = { "actions.select", opts = { horizontal = true } },
 				["t"] = { "actions.select", opts = { tab = true } },
-				["p"] = "actions.preview",
+				["<C-p>"] = "actions.preview",
 				["r"] = "actions.refresh",
 				["?"] = "actions.show_help",
 				["<CR>"] = "actions.select",

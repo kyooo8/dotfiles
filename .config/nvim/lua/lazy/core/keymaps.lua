@@ -15,12 +15,7 @@ keymap.set("n", "-", "<C-x>")
 
 keymap.set("n", "s|", "<cmd>vsplit<CR>")
 keymap.set("n", "s-", "<cmd>split<CR>")
-keymap.set("n", "sh", "<C-w>h")
-keymap.set("n", "sj", "<C-w>j")
-keymap.set("n", "sk", "<C-w>k")
-keymap.set("n", "sl", "<C-w>l")
-keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
+keymap.set("n", "sq", "<cmd>close<CR>")
 
 keymap.set("n", "<tab>", "<cmd>tabn<CR>")
 keymap.set("n", "<s-tab>", "<cmd>tabp<CR>")

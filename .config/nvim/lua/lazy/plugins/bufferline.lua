@@ -3,12 +3,11 @@ return {
 	version = "*",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
-		"catppuccin/nvim", -- インストールと読み込み順の保証用
+		"catppuccin/nvim",
 	},
 
 	config = function()
 		local bufferline = require("bufferline")
-		-- ここは好きな flavour に合わせて "mocha" や "macchiato" にする
 		local palette = require("catppuccin.palettes").get_palette("macchiato")
 
 		bufferline.setup({

@@ -38,7 +38,13 @@ return {
 					-- miscs = {}, -- Uncomment to turn off hard-coded styles
 				},
 				color_overrides = {},
-				custom_highlights = {},
+				custom_highlights = function()
+					return {
+						MatchParen = {
+							style = { "bold" },
+						},
+					}
+				end,
 				default_integrations = true,
 				auto_integrations = false,
 				integrations = {

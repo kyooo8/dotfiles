@@ -15,10 +15,9 @@ local TOGGLE_OPACITY = 0.40
 local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
 
--- ======== 基本設定 ======== --
-config.color_scheme = "Catppuccin Macchiato"
+config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = 12
+config.font_size = 12.5
 config.use_ime = true
 
 config.window_background_opacity = DEFAULT_OPACITY
@@ -67,29 +66,9 @@ end)
 
 local keys = {
 	{ key = "o", mods = "CMD", action = act.EmitEvent("toggle-visual") },
-	{
-		key = "u",
-		mods = "CMD",
-		action = act({ SplitVertical = { domain = { DomainName = "WSL:Ubuntu" }, cwd = "/home/kyosu" } }),
-	},
-	{
-		key = "i",
-		mods = "CMD",
-		action = act.SplitHorizontal({ domain = { DomainName = "WSL:Ubuntu" }, cwd = "/home/kyosu" }),
-	},
-	{
-		key = "t",
-		mods = "CMD",
-		action = act.SpawnCommandInNewTab({
-			domain = { DomainName = "WSL:Ubuntu" },
-			cwd = "/home/kyosu",
-		}),
-	},
-	{
-		key = "T",
-		mods = "CMD|SHIFT",
-		action = act.SpawnCommandInNewTab({ domain = "DefaultDomain", args = { "powershell.exe", "-NoLogo" } }),
-	},
+	{ key = "u", mods = "CMD", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
+	{ key = "i", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "t", mods = "CMD", action = act.SpawnTab("CurrentPaneDomain") },
 	{ key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = true }) },
 	{ key = "W", mods = "CMD|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
 	{ key = "z", mods = "CMD", action = act.TogglePaneZoomState },

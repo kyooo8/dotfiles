@@ -24,7 +24,7 @@ return {
 					if not emmet then
 						return nil
 					end
-					return require("plugin.mini_surround.emmet").totag(emmet)
+					return require("plugin.mini-surround-emmet").totag(emmet)
 				end,
 			},
 		},

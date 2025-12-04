@@ -1,8 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local mux = wezterm.mux
+local act = wezterm.action
 
--- ======== 設定値 ======== --
 local DEFAULT_OPACITY = 0.70
 local BLUR_ON = 60
 local BLUR_OFF = 0
@@ -35,7 +35,6 @@ config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
 config.tab_bar_at_bottom = false
 
--- ======== 透過トグル ======== --
 wezterm.on("toggle-visual", function(window, _)
 	local overrides = window:get_config_overrides() or {}
 	local toggled = overrides.window_background_opacity ~= nil
@@ -61,14 +60,56 @@ wezterm.on("toggle-visual", function(window, _)
 	window:set_config_overrides(overrides)
 end)
 
--- 起動時最大化
 wezterm.on("gui-startup", function(cmd)
 	local _, _, window = mux.spawn_window(cmd or {})
 	window:gui_window():maximize()
 end)
 
-config.keys = {
-	{ key = "o", mods = "CTRL", action = wezterm.action.EmitEvent("toggle-visual") },
+local keys = {
+	{ key = "o", mods = "CMD", action = act.EmitEvent("toggle-visual") },
+	{
+		key = "u",
+		mods = "CMD",
+		action = act({ SplitVertical = { domain = { DomainName = "WSL:Ubuntu" }, cwd = "/home/kyosu" } }),
+	},
+	{
+		key = "i",
+		mods = "CMD",
+		action = act.SplitHorizontal({ domain = { DomainName = "WSL:Ubuntu" }, cwd = "/home/kyosu" }),
+	},
+	{
+		key = "t",
+		mods = "CMD",
+		action = act.SpawnCommandInNewTab({
+			domain = { DomainName = "WSL:Ubuntu" },
+			cwd = "/home/kyosu",
+		}),
+	},
+	{
+		key = "T",
+		mods = "CMD|SHIFT",
+		action = act.SpawnCommandInNewTab({ domain = "DefaultDomain", args = { "powershell.exe", "-NoLogo" } }),
+	},
+	{ key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = true }) },
+	{ key = "W", mods = "CMD|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
+	{ key = "z", mods = "CMD", action = act.TogglePaneZoomState },
+	{ key = "s", mods = "CMD", action = act.PaneSelect },
+	{ key = "S", mods = "CMD|SHIFT", action = act.PaneSelect({ mode = "SwapWithActiveKeepFocus" }) },
+	{ key = "h", mods = "CMD", action = act.ActivatePaneDirection("Left") },
+	{ key = "j", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+	{ key = "k", mods = "CMD", action = act.ActivatePaneDirection("Up") },
+	{ key = "l", mods = "CMD", action = act.ActivatePaneDirection("Right") },
+	{ key = "H", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Left", 5 }) },
+	{ key = "J", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Down", 5 }) },
+	{ key = "K", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
+	{ key = "L", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Right", 5 }) },
+	{ key = "(", mods = "CMD|SHIFT", action = act.MoveTabRelative(-1) },
+	{ key = ")", mods = "CMD|SHIFT", action = act.MoveTabRelative(1) },
+	{ key = "n", mods = "CMD", action = act.ActivateTabRelative(1) },
+	{ key = "p", mods = "CMD", action = act.ActivateTabRelative(-1) },
+	{ key = ";", mods = "CMD", action = act.QuickSelect },
 }
+
+config.keys = keys
 
 return config

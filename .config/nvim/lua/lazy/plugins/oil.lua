@@ -38,7 +38,7 @@ return {
 
 		config = function(_, opts)
 			require("oil").setup(opts)
-			vim.keymap.set("n", "<leader>e", function()
+			vim.keymap.set("n", "<leader>o", function()
 				require("oil").open()
 			end, { desc = "open oil" })
 		end,

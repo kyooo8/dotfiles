@@ -6,15 +6,17 @@ keymap.set("i", "jk", "<Esc>", { noremap = true })
 keymap.set("n", ";", ":")
 keymap.set("n", ":", ";")
 
-keymap.set({ "n", "v" }, "s", "<Nop>")
-
 keymap.set("n", "nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "-", "<C-x>")
+keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment" })
+keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement" })
 
-keymap.set("n", "s|", "<cmd>vsplit<CR>")
-keymap.set("n", "s-", "<cmd>split<CR>")
+keymap.set("n", "si", "<cmd>vsplit<CR>")
+keymap.set("n", "su", "<cmd>split<CR>")
+keymap.set("n", "sh", "<C-w>h")
+keymap.set("n", "sj", "<C-w>j")
+keymap.set("n", "sk", "<C-w>k")
+keymap.set("n", "sl", "<C-w>l")
 keymap.set("n", "sq", "<cmd>close<CR>")
 
 keymap.set("n", "<tab>", "<cmd>tabn<CR>")
@@ -25,8 +27,6 @@ keymap.set("n", "tk", "<cmd>tabp<CR>")
 keymap.set("n", "tl", "<cmd>tablast<CR>")
 keymap.set("n", "tt", "<cmd>tabe .<CR>")
 keymap.set("n", "tq", "<cmd>tabclose<CR>")
-
-keymap.set("n", "s", "<Nop>")
 
 vim.keymap.set("n", "i", function()
 	return vim.fn.len(vim.fn.getline(".")) ~= 0 and "i" or '"_cc'

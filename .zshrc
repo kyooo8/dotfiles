@@ -1,3 +1,7 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 case "$(uname -s)" in
   Darwin*)
     # macOS用Homebrew
@@ -16,10 +20,12 @@ esac
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 
-export TMPDIR="$HOME/tmp"
-export TMP="$TMPDIR"
-export TEMP="$TMPDIR"
-export COMPOSER_TMP_DIR="$TMPDIR"
+if [[ "$(uname -r)" == *microsoft* ]]; then
+  export TMPDIR="$HOME/tmp"
+  export TMP="$TMPDIR"
+  export TEMP="$TMPDIR"
+  export COMPOSER_TMP_DIR="$TMPDIR"
+fi
 
 export EDITOR=nvim
 
@@ -93,3 +99,7 @@ function yazi-ghq() {
 
 zle -N yazi-ghq
 bindkey '^]' yazi-ghq
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

@@ -3,7 +3,7 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 local act = wezterm.action
 
-local DEFAULT_OPACITY = 0.70
+local DEFAULT_OPACITY = 0.85
 local BLUR_ON = 60
 local BLUR_OFF = 0
 
@@ -15,7 +15,7 @@ local TOGGLE_OPACITY = 0.40
 local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
 
-config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "Catppuccin Macchiato"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
 config.font_size = 12.5
 config.use_ime = true
@@ -28,6 +28,10 @@ if is_win then
 	config.win32_system_backdrop = WIN_BLUR_ON
 end
 
+config.inactive_pane_hsb = {
+	saturation = 0.9,
+	brightness = 0.3,
+}
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
@@ -57,11 +61,6 @@ wezterm.on("toggle-visual", function(window, _)
 	end
 
 	window:set_config_overrides(overrides)
-end)
-
-wezterm.on("gui-startup", function(cmd)
-	local _, _, window = mux.spawn_window(cmd or {})
-	window:gui_window():maximize()
 end)
 
 local keys = {

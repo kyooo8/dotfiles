@@ -1,5 +1,9 @@
 
 # Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.pre.zsh"
+
+
+# Kiro CLI pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 
 case "$(uname -s)" in
@@ -29,6 +33,7 @@ fi
 
 export EDITOR=nvim
 
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
 
@@ -103,3 +108,7 @@ bindkey '^]' yazi-ghq
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh"

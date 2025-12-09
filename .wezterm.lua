@@ -86,6 +86,8 @@ local keys = {
 	{ key = "n", mods = "CMD", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "CMD", action = act.ActivateTabRelative(-1) },
 	{ key = ";", mods = "CMD", action = act.QuickSelect },
+	{ key = "e", mods = "CMD", action = act.ActivateCopyMode },
+	{ key = "/", mods = "CMD", action = act.Search({ CaseSensitiveString = "" }) },
 }
 
 config.keys = keys

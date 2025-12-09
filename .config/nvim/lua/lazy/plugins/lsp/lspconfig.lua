@@ -25,7 +25,7 @@ return {
 				end
 
 				map("n", "K", vim.lsp.buf.hover, "LSP Hover")
-				map({ "n", "i" }, "gh", vim.lsp.buf.signature_help, "Signature Help")
+				map({ "n" }, "gh", vim.lsp.buf.signature_help, "Signature Help")
 
 				map("n", "gd", "<CMD>Glance definitions<CR>", "Go Definition")
 				map("n", "gr", "<CMD>Glance references<CR>", "Go References")

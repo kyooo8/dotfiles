@@ -1,14 +1,13 @@
 return {
 	{
 		"stevearc/oil.nvim",
-		lazy = false,
 		dependencies = {
 			{ "nvim-mini/mini.icons" },
 			{ "refractalize/oil-git-status.nvim" },
 		},
 
 		opts = {
-			default_file_explorer = true,
+			default_file_explorer = false,
 			columns = { "icon", "size", "mtime" },
 
 			view_options = {

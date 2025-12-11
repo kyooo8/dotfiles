@@ -111,38 +111,3 @@ bindkey '^]' yazi-ghq
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh"
-
-# vi モード有効化
-bindkey -v
-
-copy_to_clipboard() {
-  local input="$1"
-
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo -n "$input" | pbcopy
-
-  elif grep -qi microsoft /proc/version 2>/dev/null; then
-    echo -n "$input" | /mnt/c/Windows/System32/clip.exe
-
-  else
-    echo "clipboard not supported" >&2
-    return 1
-  fi
-}
-
-# yank → クリップボード連動
-vi-yank() {
-  zle .vi-yank
-
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    print -rn -- "$CUTBUFFER" | pbcopy
-
-  elif grep -qi microsoft /proc/version 2>/dev/null; then
-    # WSL
-    print -rn -- "$CUTBUFFER" | /mnt/c/Windows/System32/clip.exe
-  fi
-}
-zle -N vi-yank
-
-bindkey -M vicmd 'y' vi-yank

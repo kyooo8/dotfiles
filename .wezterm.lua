@@ -10,7 +10,7 @@ local BLUR_OFF = 0
 local WIN_BLUR_ON = "Acrylic"
 local WIN_BLUR_OFF = "Disable"
 
-local TOGGLE_OPACITY = 0.40
+local TOGGLE_OPACITY = 0.60
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil

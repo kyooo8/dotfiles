@@ -102,8 +102,17 @@ return {
 			})
 			vim.lsp.enable("emmet_ls")
 
-			local tailwind_filetypes = extend_filetypes("tailwindcss", { "ejs" })
 			vim.lsp.config("tailwindcss", {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"ejs",
+				},
 				root_dir = function(bufnr, on_dir)
 					local root_files = {
 						"tailwind.config.js",
@@ -126,12 +135,12 @@ return {
 
 					local fname = vim.api.nvim_buf_get_name(bufnr)
 					root_files = util.insert_package_json(root_files, "tailwindcss", fname)
-					root_files = util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
+					root_files =
+						util.root_markers_with_field(root_files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
 
 					local found = vim.fs.find(root_files, { path = fname, upward = true })
 					on_dir(found[1] and vim.fs.dirname(found[1]) or nil)
 				end,
-				filetypes = tailwind_filetypes,
 				settings = {
 					tailwindCSS = {
 						includeLanguages = {

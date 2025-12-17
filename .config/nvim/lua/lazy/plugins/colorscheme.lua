@@ -39,9 +39,18 @@ return {
 				},
 				color_overrides = {},
 				custom_highlights = function()
+					local palette = require("catppuccin.palettes").get_palette("macchiato")
 					return {
 						MatchParen = {
 							style = { "bold" },
+						},
+						Visual = {
+							bg = palette.pink,
+							fg = palette.base,
+						},
+						VisualNOS = {
+							bg = palette.pink,
+							fg = palette.base,
 						},
 					}
 				end,

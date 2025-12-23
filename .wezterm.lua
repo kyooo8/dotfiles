@@ -38,12 +38,12 @@ config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
 config.tab_bar_at_bottom = false
 config.colors = {
-	selection_fg = "#1e1e2e",
-	selection_bg = "#f5e0dc",
+	selection_fg = "#1a1d2d",
+	selection_bg = "#a5c8ff",
 	copy_mode_active_highlight_fg = { Color = "#11111b" },
-	copy_mode_active_highlight_bg = { Color = "#f38ba8" },
-	copy_mode_inactive_highlight_fg = { Color = "#b4befe" },
-	copy_mode_inactive_highlight_bg = { Color = "#45475a" },
+	copy_mode_active_highlight_bg = { Color = "#a5c8ff" },
+	copy_mode_inactive_highlight_fg = { Color = "#cdd6f4" },
+	copy_mode_inactive_highlight_bg = { Color = "#313754" },
 }
 
 wezterm.on("toggle-visual", function(window, _)

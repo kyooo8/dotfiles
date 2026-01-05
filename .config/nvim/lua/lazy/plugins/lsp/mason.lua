@@ -23,10 +23,34 @@ return {
 		config = function(_, opts)
 			local util = require("lspconfig.util")
 
+			local function get_default_filetypes(server_name)
+				local filetypes = {}
+
+				local paths = vim.api.nvim_get_runtime_file("lsp/" .. server_name .. ".lua", false)
+				local config_path = paths[1]
+				if config_path then
+					local ok, config = pcall(dofile, config_path)
+					if ok and type(config) == "table" then
+						filetypes = config.filetypes or {}
+					end
+				end
+
+				if vim.tbl_isempty(filetypes) then
+					local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
+					if not ok then
+						ok, server = pcall(require, "lspconfig.configs." .. server_name)
+					end
+					if ok and type(server) == "table" then
+						local defaults = server.default_config and server.default_config.filetypes
+						filetypes = defaults or {}
+					end
+				end
+
+				return vim.deepcopy(filetypes or {})
+			end
+
 			local function extend_filetypes(server_name, extras)
-				local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
-				local defaults = ok and server.default_config and server.default_config.filetypes or {}
-				local filetypes = defaults and vim.deepcopy(defaults) or {}
+				local filetypes = get_default_filetypes(server_name)
 
 				for _, ft in ipairs(extras) do
 					if not vim.tbl_contains(filetypes, ft) then

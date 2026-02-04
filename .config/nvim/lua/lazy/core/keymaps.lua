@@ -42,6 +42,8 @@ keymap.set("n", "M", "%")
 keymap.set("x", "p", "P")
 keymap.set("x", "y", "mzy`z")
 
--- TODO :%sが簡単にできる設定入れたい
 keymap.set("v", "<", "<gv")
 keymap.set("v", ">", ">gv")
+
+keymap.set("n", "j", "<Plug>(accelerated_jk_gj)")
+keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")

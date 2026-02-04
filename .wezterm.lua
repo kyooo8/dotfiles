@@ -17,7 +17,7 @@ local is_win = wezterm.target_triple:find("windows") ~= nil
 
 config.color_scheme = "Catppuccin Macchiato"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = 12.5
+config.font_size = 12
 config.use_ime = true
 
 config.window_background_opacity = DEFAULT_OPACITY
@@ -79,8 +79,8 @@ local keys = {
 	{ key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = true }) },
 	{ key = "W", mods = "CMD|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
 	{ key = "z", mods = "CMD", action = act.TogglePaneZoomState },
-	{ key = "s", mods = "CMD", action = act.PaneSelect },
-	{ key = "S", mods = "CMD|SHIFT", action = act.PaneSelect({ mode = "SwapWithActiveKeepFocus" }) },
+	{ key = "s", mods = "CMD", action = act.PaneSelect({ mode = "SwapWithActiveKeepFocus" }) },
+	{ key = "S", mods = "CMD|SHIFT", action = act.PaneSelect },
 	{ key = "h", mods = "CMD", action = act.ActivatePaneDirection("Left") },
 	{ key = "j", mods = "CMD", action = act.ActivatePaneDirection("Down") },
 	{ key = "k", mods = "CMD", action = act.ActivatePaneDirection("Up") },

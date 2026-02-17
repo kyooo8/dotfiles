@@ -24,7 +24,4 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           nvim -E -s <<'EOF'
           :source $HOME/.config/nvim/init.lua
-          :Lazy install
-          :Lazy health
-          :qa
-          EOF
+          nvim --headless "+Lazy! sync" "+Lazy! health" +qa

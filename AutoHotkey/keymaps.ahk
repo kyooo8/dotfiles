@@ -1,15 +1,4 @@
-[:: {
-    Send "{Backspace}"
-}
-
-+[:: {
-    Send "{Delete}"
-}
-
-':: {
-    Send "{Blind}{Enter}"
-}
-+':: {
-    Send "{Blind}{Enter}"
-}
-
+#HotIf !SymbolLayerActive()
+*[::Send "{Blind}{Backspace}"
+#HotIf
+*'::Send "{Blind}{Enter}"

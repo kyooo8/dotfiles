@@ -1,39 +1,58 @@
-
 #!/bin/sh
-system_type=$(uname -s)
+set -euo pipefail
 
+# Detect platform once so we can branch cleanly later.
+system_type=$(uname -s)
+profile_file="$HOME/.zprofile"
+
+# Install essential packages when running on Ubuntu/Debian.
 if [ "$system_type" = "Linux" ]; then
-  echo "[Step] Updating base packages for Linux"
-  sudo apt update && \
-  sudo apt install -y zsh git curl wget ca-certificates gnupg build-essential locales unzip tar gzip && \
-  sudo locale-gen ja_JP.UTF-8 && \
-  chsh -s $(which zsh)
+  echo "[Step] Updating base packages on Linux"
+  sudo apt update
+  sudo apt install -y zsh git curl wget ca-certificates gnupg build-essential locales unzip tar gzip
+  sudo locale-gen ja_JP.UTF-8
 fi
 
-# Homebrew installation
+# Install Homebrew/Linuxbrew if it is missing.
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Installing Homebrew"
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Add brew to PATH
+# Determine brew installation prefix.
 if [ "$system_type" = "Darwin" ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+  brew_prefix="/opt/homebrew"
 else
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
+  brew_prefix="/home/linuxbrew/.linuxbrew"
 fi
 
-# Bundle Brewfile
-REPO=$(yadm rev-parse --show-toplevel)
-cd "$REPO" || exit 1
+# Load brew environment for the current shell.
+eval "$(${brew_prefix}/bin/brew shellenv)"
 
-if [ -f "$REPO/Brewfile" ]; then
+# Persist PATH configuration so login shells load it automatically.
+touch "$profile_file"
+if ! grep -qxF "eval \"\$(${brew_prefix}/bin/brew shellenv)\"" "$profile_file"; then
+  echo "eval \"\$(${brew_prefix}/bin/brew shellenv)\"" >> "$profile_file"
+fi
+
+# Switch default shell to zsh if necessary (may prompt for password).
+if command -v zsh >/dev/null 2>&1; then
+  if [ "$(basename "${SHELL:-}")" != "zsh" ]; then
+    if ! chsh -s "$(command -v zsh)"; then
+      echo "[Warn] chsh failed (password input may be required)"
+    fi
+  fi
+else
+  echo "[Warn] zsh command not found; skipping chsh"
+fi
+
+# Install packages listed in Brewfile.
+repo=$(yadm rev-parse --show-toplevel)
+cd "$repo"
+
+if [ -f "$repo/Brewfile" ]; then
   echo "[Step] Running brew bundle"
-  brew bundle --file "$REPO/Brewfile"
+  brew bundle --file "$repo/Brewfile"
 else
-  echo "[Info] No Brewfile found at $REPO"
+  echo "[Info] Brewfile not found at $repo"
 fi
-

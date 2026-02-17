@@ -20,9 +20,10 @@ macOSとUbuntu用の個人的な開発環境設定ファイル集です。
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yadm-dev/yadm/master/yadm)" && \
-yadm clone https://github.com/kyooo8/dotfiles.git
-
+yadm clone https://github.com/kyooo8/dotfiles.git --bootstrap
 ```
+
+macOS / Ubuntu の両方で zsh へのシェル切り替えまで自動化されます。`chsh` がパスワード入力を求めることがあるため、完了後はログアウト／ログイン（またはターミナルを再起動）して新しい zsh が有効になっているか確認してください。
 
 ## 設定ファイル
 

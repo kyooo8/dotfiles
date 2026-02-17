@@ -16,8 +16,7 @@ jobs:
           curl -fsSL https://github.com/yadm-dev/yadm/raw/master/yadm -o "$HOME/bin/yadm"
           chmod +x "$HOME/bin/yadm"
           export PATH="$HOME/bin:$PATH"
-          yadm clone https://github.com/kyooo8/dotfiles.git
-          yadm bootstrap
+          yadm clone https://github.com/kyooo8/dotfiles.git --bootstrap
 
       - name: Check Neovim setup
         run: |

@@ -47,12 +47,17 @@ else
 fi
 
 # Install packages listed in Brewfile (works even if yadm is not yet installed).
+repo=""
 if command -v yadm >/dev/null 2>&1; then
-  repo=$(yadm rev-parse --show-toplevel)
-else
+  if ! repo=$(yadm rev-parse --show-toplevel 2>/dev/null); then
+    repo=""
+  fi
+fi
+
+if [ -z "$repo" ]; then
   script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
   repo=$(cd "${script_dir}/../.." && pwd)
-  echo "[Warn] yadm command not found; using repo at ${repo}"
+  echo "[Warn] Unable to resolve repo via yadm; using ${repo}"
 fi
 cd "$repo"
 

@@ -22,6 +22,4 @@ jobs:
       - name: Check Neovim setup
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          nvim -E -s <<'EOF'
-          :source $HOME/.config/nvim/init.lua
           nvim --headless "+Lazy! sync" "+Lazy! health" +qa

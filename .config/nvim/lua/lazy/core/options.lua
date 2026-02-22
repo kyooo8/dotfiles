@@ -18,6 +18,7 @@ opt.ignorecase = true
 opt.smartcase = true
 
 -- UI / 表示
+opt.title = true
 opt.cursorline = true
 opt.termguicolors = true
 opt.signcolumn = "yes"

@@ -37,14 +37,6 @@ config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
 config.tab_bar_at_bottom = false
-config.colors = {
-	selection_fg = "#1a1d2d",
-	selection_bg = "#a5c8ff",
-	copy_mode_active_highlight_fg = { Color = "#11111b" },
-	copy_mode_active_highlight_bg = { Color = "#a5c8ff" },
-	copy_mode_inactive_highlight_fg = { Color = "#cdd6f4" },
-	copy_mode_inactive_highlight_bg = { Color = "#313754" },
-}
 
 wezterm.on("toggle-visual", function(window, _)
 	local overrides = window:get_config_overrides() or {}
@@ -71,6 +63,14 @@ wezterm.on("toggle-visual", function(window, _)
 	window:set_config_overrides(overrides)
 end)
 
+local function is_nvim(pane)
+	-- プロセス名、またはウィンドウのタイトルに "nvim" か "vim" が含まれているかチェック
+	local process_name = pane:get_foreground_process_name() or ""
+	local title = pane:get_title() or ""
+
+	return process_name:find("n?vim") ~= nil or title:find("n?vim") ~= nil
+end
+
 local keys = {
 	{ key = "o", mods = "CMD", action = act.EmitEvent("toggle-visual") },
 	{ key = "u", mods = "CMD", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
@@ -96,6 +96,35 @@ local keys = {
 	{ key = ";", mods = "CMD", action = act.QuickSelect },
 	{ key = "e", mods = "CMD", action = act.ActivateCopyMode },
 	{ key = "/", mods = "CMD", action = act.Search({ CaseSensitiveString = "" }) },
+	{ key = "r", mods = "CMD", action = act.Multiple({ act.ResetFontSize }) },
+	{
+		key = "c",
+		mods = "CMD",
+		action = wezterm.action_callback(function(window, pane)
+			if is_nvim(pane) then
+				-- nvim中なら、ビジュアルモードで選択中のものを "y" する信号を送る
+				window:perform_action(act.SendKey({ key = "y" }), pane)
+			else
+				-- それ以外なら通常のコピー
+				window:perform_action(act.CopyTo("Clipboard"), pane)
+			end
+		end),
+	},
+
+	-- Cmd + v の挙動を分岐
+	{
+		key = "v",
+		mods = "CMD",
+		action = wezterm.action_callback(function(window, pane)
+			if is_nvim(pane) then
+				-- nvim中なら "p" を入力する信号を送る
+				window:perform_action(act.SendKey({ key = "p" }), pane)
+			else
+				-- それ以外なら通常のペースト
+				window:perform_action(act.PasteFrom("Clipboard"), pane)
+			end
+		end),
+	},
 }
 
 config.keys = keys

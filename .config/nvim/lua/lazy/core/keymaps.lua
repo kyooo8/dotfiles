@@ -47,3 +47,17 @@ keymap.set("v", ">", ">gv")
 
 keymap.set("n", "j", "<Plug>(accelerated_jk_gj)")
 keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
+
+vim.api.nvim_create_user_command("W", function()
+	local buf = vim.api.nvim_get_current_buf()
+	local last = vim.api.nvim_buf_line_count(buf)
+	while last > 1 do
+		local line = vim.api.nvim_buf_get_lines(buf, last - 1, last, false)[1]
+		if line ~= "" then
+			break
+		end
+		last = last - 1
+	end
+	vim.api.nvim_buf_set_lines(buf, last, -1, false, {})
+	vim.cmd("noautocmd w")
+end, {})

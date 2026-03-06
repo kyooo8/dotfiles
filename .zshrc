@@ -113,3 +113,5 @@ bindkey '^]' yazi-ghq
 [[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh"
 
 alias ca='cursor-agent'
+alias env='envchain'
+alias n='nvim'

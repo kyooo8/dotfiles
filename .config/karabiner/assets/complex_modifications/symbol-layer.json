@@ -1,0 +1,254 @@
+{
+  "rules": [
+    {
+      "description": "Symbol Layer",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "spacebar" },
+          "to": [{ "set_variable": { "name": "symbol_layer", "value": 1 } }],
+          "to_after_key_up": [
+            { "set_variable": { "name": "symbol_layer", "value": 0 } }
+          ],
+          "to_if_alone": [{ "key_code": "spacebar" }],
+          "conditions": [
+            {
+              "identifiers": [{ "product_id": 12292, "vendor_id": 14000 }],
+              "type": "device_unless"
+            },
+            {
+              "identifiers": [{ "product_id": 12484, "vendor_id": 14000 }],
+              "type": "device_unless"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "q" },
+          "to": [
+            { "key_code": "grave_accent_and_tilde", "modifiers": ["shift"] }
+          ]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "a" },
+          "to": [{ "key_code": "2", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "w" },
+          "to": [{ "key_code": "1", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "s" },
+          "to": [{ "key_code": "3", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "x" },
+          "to": [{ "key_code": "8", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "e" },
+          "to": [{ "key_code": "equal_sign" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "d" },
+          "to": [{ "key_code": "4", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "c" },
+          "to": [{ "key_code": "6", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "r" },
+          "to": [{ "key_code": "grave_accent_and_tilde" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "f" },
+          "to": [{ "key_code": "quote", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "v" },
+          "to": [{ "key_code": "quote" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "t" },
+          "to": [{ "key_code": "open_bracket", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "g" },
+          "to": [{ "key_code": "9", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "b" },
+          "to": [{ "key_code": "open_bracket" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "y" },
+          "to": [{ "key_code": "close_bracket", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "h" },
+          "to": [{ "key_code": "0", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "n" },
+          "to": [{ "key_code": "close_bracket" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "u" },
+          "to": [{ "key_code": "hyphen", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "j" },
+          "to": [{ "key_code": "equal_sign", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "m" },
+          "to": [{ "key_code": "hyphen" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "i" },
+          "to": [{ "key_code": "backslash", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "k" },
+          "to": [{ "key_code": "7", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "comma" },
+          "to": [{ "key_code": "comma", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "l" },
+          "to": [{ "key_code": "backslash" }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "period" },
+          "to": [{ "key_code": "period", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "p" },
+          "to": [{ "key_code": "5", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "semicolon" },
+          "to": [{ "key_code": "semicolon", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "slash" },
+          "to": [{ "key_code": "slash", "modifiers": ["shift"] }]
+        }
+      ]
+    }
+  ]
+}

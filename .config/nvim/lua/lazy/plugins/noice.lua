@@ -9,8 +9,15 @@ return {
 		require("notify").setup({
 			background_colour = "#000000",
 			top_down = false,
+			position = "bottom_right",
 		})
 		require("noice").setup({
+			-- 通知をすべて右下に統一（snacks ではなく nvim-notify のみ使用）
+			views = {
+				notify = {
+					backend = "notify",
+				},
+			},
 
 			comdline = {
 				opts = {

@@ -1,7 +1,6 @@
 # Kiro CLI pre block. Keep at the top of this file.
 [[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.pre.zsh"
 
-
 # Kiro CLI pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 
@@ -35,7 +34,6 @@ export EDITOR=nvim
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
-
 
 # Volta
 export VOLTA_HOME="$HOME/.volta"
@@ -93,8 +91,6 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 eval "$(zoxide init zsh)"
 alias cd="z"
 
-alias tf='terraform'
-
 ## ghq
 function yazi-ghq() {
   local repo=$(ghq list -p | fzf)
@@ -104,6 +100,10 @@ function yazi-ghq() {
 zle -N yazi-ghq
 bindkey '^]' yazi-ghq
 
+alias ca='cursor-agent'
+alias env='envchain'
+alias n='nvim'
+alias tf='terraform'
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
@@ -111,7 +111,3 @@ bindkey '^]' yazi-ghq
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/.local/share/kiro-cli/shell/zshrc.post.zsh"
-
-alias ca='cursor-agent'
-alias env='envchain'
-alias n='nvim'

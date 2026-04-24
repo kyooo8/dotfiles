@@ -83,6 +83,12 @@ return {
 			})
 		end
 
+		local prettier = require("conform.formatters.prettier")
+
+		formatters.prettier_markdown = vim.tbl_extend("force", prettier, {
+			args = util.extend_args(prettier.args, { "--tab-width", "4" }, { append = true }),
+		})
+
 		local formatters_by_ft = {
 			javascript = { "prettier" },
 			typescript = { "prettier" },
@@ -93,7 +99,7 @@ return {
 			html = { "prettier" },
 			json = { "prettier" },
 			yaml = { "prettier" },
-			markdown = { "prettier" },
+			markdown = { "prettier_markdown" },
 			graphql = { "prettier" },
 			liquid = { "prettier" },
 			lua = { "stylua" },

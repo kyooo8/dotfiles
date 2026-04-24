@@ -247,6 +247,14 @@
           ],
           "from": { "key_code": "slash" },
           "to": [{ "key_code": "slash", "modifiers": ["shift"] }]
+        },
+        {
+          "type": "basic",
+          "conditions": [
+            { "name": "symbol_layer", "type": "variable_if", "value": 1 }
+          ],
+          "from": { "key_code": "delete_or_backspace" },
+          "to": [{ "key_code": "delete_forward" }]
         }
       ]
     }

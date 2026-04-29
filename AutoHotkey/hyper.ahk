@@ -90,25 +90,5 @@ SendHyperArrow(direction)
 
 }
 
-
-*d::
-
-{
-
-    SendHyperArrow("{End}")
-
-}
-
-
-
-*c::
-
-{
-
-    SendHyperArrow("{Home}")
-
-}
-
-
 #HotIf
 

@@ -72,7 +72,7 @@ local keys = {
 	{ key = "W", mods = "CMD|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
 	{ key = "z", mods = "CMD", action = act.TogglePaneZoomState },
 	{ key = "s", mods = "CMD", action = act.PaneSelect({ mode = "SwapWithActiveKeepFocus" }) },
-	{ key = "S", mods = "CMD|SHIFT", action = act.PaneSelect },
+	{ key = "S", mods = "CMD|SHIFT", action = act.PaneSelect({ mode = "MoveToNewTab" }) },
 	{ key = "h", mods = "CMD", action = act.ActivatePaneDirection("Left") },
 	{ key = "j", mods = "CMD", action = act.ActivatePaneDirection("Down") },
 	{ key = "k", mods = "CMD", action = act.ActivatePaneDirection("Up") },

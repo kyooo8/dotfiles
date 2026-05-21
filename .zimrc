@@ -18,3 +18,4 @@ zmodule zsh-users/zsh-syntax-highlighting
 # exa config
 zmodule exa
 zmodule fzf
+zmodule zsh-users/zsh-autosuggestions

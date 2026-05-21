@@ -5,3 +5,4 @@
 (setq display-line-numbers-type `t)
 
 (setq-default tab-width 2)
+(global-hl-line-mode t)

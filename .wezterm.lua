@@ -68,6 +68,18 @@ local keys = {
 	{ key = "u", mods = "CMD", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
 	{ key = "i", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "t", mods = "CMD", action = act.SpawnTab("CurrentPaneDomain") },
+	{
+		key = "e",
+		mods = "CMD",
+		action = wezterm.action.PromptInputLine({
+			description = "Enter new tab title:",
+			action = wezterm.action_callback(function(window, pane, line)
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
 	{ key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = true }) },
 	{ key = "W", mods = "CMD|SHIFT", action = act.CloseCurrentTab({ confirm = true }) },
 	{ key = "z", mods = "CMD", action = act.TogglePaneZoomState },
@@ -85,8 +97,8 @@ local keys = {
 	{ key = ")", mods = "CMD|SHIFT", action = act.MoveTabRelative(1) },
 	{ key = "n", mods = "CMD", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "CMD", action = act.ActivateTabRelative(-1) },
-	{ key = ";", mods = "CMD", action = act.QuickSelect },
-	{ key = "e", mods = "CMD", action = act.ActivateCopyMode },
+	{ key = "u", mods = "CMD", action = act.QuickSelect },
+	{ key = ";", mods = "CMD", action = act.ActivateCopyMode },
 	{ key = "/", mods = "CMD", action = act.Search({ CaseSensitiveString = "" }) },
 	{ key = "r", mods = "CMD", action = act.Multiple({ act.ResetFontSize }) },
 }

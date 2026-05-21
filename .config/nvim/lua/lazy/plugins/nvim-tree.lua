@@ -20,8 +20,7 @@ return {
 				indent_markers = {
 					enable = true,
 				},
-				icons = {
-					glyphs = {
+				icons = { glyphs = {
 						folder = {
 							arrow_closed = "", -- arrow when folder is closed
 							arrow_open = "", -- arrow when folder is open
@@ -103,6 +102,8 @@ return {
 				vim.keymap.set("n", "b", back_dir, opts("Back: previous directory"))
 				vim.keymap.set("n", "B", go_parent_dir, opts("Up: parent directory"))
 				vim.keymap.set("n", "n", open_dir_as_root, opts("Next: set node as root"))
+				vim.keymap.set("n", "o", api.node.run.system, opts("Run System"))
+				vim.keymap.del("n", "s", { buffer = bufnr })
 			end,
 
 			filters = {

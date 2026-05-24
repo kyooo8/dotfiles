@@ -97,7 +97,7 @@ local keys = {
 	{ key = ")", mods = "CMD|SHIFT", action = act.MoveTabRelative(1) },
 	{ key = "n", mods = "CMD", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "CMD", action = act.ActivateTabRelative(-1) },
-	{ key = "u", mods = "CMD", action = act.QuickSelect },
+	{ key = ".", mods = "CMD", action = act.QuickSelect },
 	{ key = ";", mods = "CMD", action = act.ActivateCopyMode },
 	{ key = "/", mods = "CMD", action = act.Search({ CaseSensitiveString = "" }) },
 	{ key = "r", mods = "CMD", action = act.Multiple({ act.ResetFontSize }) },

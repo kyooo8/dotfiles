@@ -46,7 +46,5 @@
 
 
 (use-package catppuccin-theme
-:ensure t
-:config
-(setq catppuccin-flavor 'macchiato)
+	:ensure t :config	(setq catppuccin-flavor 'macchiato)
 (load-theme 'catppuccin :no-confirm))

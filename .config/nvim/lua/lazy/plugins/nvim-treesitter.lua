@@ -11,6 +11,10 @@ return {
 
 		-- configure treesitter
 		treesitter.setup({ -- enable syntax highlighting
+			modules = {},
+			sync_install = false,
+			ignore_install = {},
+			auto_install = true,
 			highlight = {
 				enable = true,
 			},
@@ -43,6 +47,7 @@ return {
 				"query",
 				"vimdoc",
 				"c",
+				"norg",
 			},
 			incremental_selection = {
 				enable = true,

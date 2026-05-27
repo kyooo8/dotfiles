@@ -4,7 +4,6 @@ return {
 		opts = {
 			ensure_installed = {
 				"denols",
-				"ts_ls",
 				"html",
 				"cssls",
 				"tailwindcss",
@@ -70,7 +69,6 @@ return {
 				"fresh.gen.ts"
 			)
 			local node_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json")
-			local ts_root = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")
 
 			local function get_deno_workspace(path)
 				if path == "" then
@@ -90,29 +88,6 @@ return {
 
 				return root
 			end
-
-			local function is_deno_project(path)
-				return get_deno_workspace(path) ~= nil
-			end
-
-			local function configure_ts(server)
-				vim.lsp.config(server, {
-					root_dir = function(bufnr, on_dir)
-						local fname = vim.api.nvim_buf_get_name(bufnr)
-						if fname == "" or is_deno_project(fname) then
-							on_dir(nil)
-							return
-						end
-
-						local root = ts_root(fname)
-						on_dir(root)
-					end,
-					workspace_required = true,
-					single_file_support = false,
-				})
-			end
-
-			configure_ts("ts_ls")
 
 			local html_filetypes = extend_filetypes("html", { "ejs" })
 			vim.lsp.config("html", {

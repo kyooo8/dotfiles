@@ -2,7 +2,7 @@
   "title": "Hyper Simple Vim Layer",
   "rules": [
     {
-      "description": "Hyper + hjkl = arrows",
+      "description": "Hyper + hjkl = arrows, a = ctrl+a, e = ctrl+e",
       "manipulators": [
         {
           "type": "basic",
@@ -35,6 +35,22 @@
             "modifiers": { "mandatory": ["command", "control", "option"] }
           },
           "to": [{ "key_code": "right_arrow" }]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "a",
+            "modifiers": { "mandatory": ["command", "control", "option"] }
+          },
+          "to": [{ "key_code": "a", "modifiers": ["control"] }]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "e",
+            "modifiers": { "mandatory": ["command", "control", "option"] }
+          },
+          "to": [{ "key_code": "e", "modifiers": ["control"] }]
         }
       ]
     }

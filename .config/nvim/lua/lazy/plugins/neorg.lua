@@ -14,7 +14,6 @@ return {
 						engine = "nvim-cmp",
 					},
 				},
-				["core.integrations.nvim-cmp"] = {},
 				["core.dirman"] = {
 					config = {
 						workspaces = {
@@ -32,7 +31,12 @@ return {
 				["core.export"] = {},
 				["core.export.markdown"] = {},
 				["core.export.html"] = {},
-				["core.text-objects"] = {},
+				["core.ui.calendar"] = {},
+				["core.esupports.metagen"] = {
+					config = {
+						author = "kyosuke",
+					},
+				},
 			},
 		})
 
@@ -69,15 +73,23 @@ return {
 
 		-- 日付挿入（カレンダーUI付き）
 		vim.keymap.set("n", "<leader>nd", "<Plug>(neorg.tempus.insert-date)", { desc = "Neorg insert date" })
-		vim.keymap.set("i", "<C-d>", "<Plug>(neorg.tempus.insert-date.insert-mode)", { desc = "Neorg insert date (insert mode)" })
+		vim.keymap.set(
+			"i",
+			"<C-d>",
+			"<Plug>(neorg.tempus.insert-date.insert-mode)",
+			{ desc = "Neorg insert date (insert mode)" }
+		)
 
 		-- ドキュメント操作
 		vim.keymap.set("n", "<leader>nc", function()
 			vim.cmd("Neorg toc")
 		end, { desc = "Neorg table of contents" })
 		vim.keymap.set("n", "<leader>nm", function()
-			vim.cmd("Neorg generate-metadata")
-		end, { desc = "Neorg generate metadata" })
+			vim.cmd("Neorg inject-metadata")
+		end, { desc = "Neorg inject metadata" })
+		vim.keymap.set("n", "<leader>ns", function()
+			vim.cmd("Neorg generate-workspace-summary")
+		end, { desc = "Neorg generate workspace summary" })
 		vim.keymap.set("n", "<leader>nT", function()
 			vim.cmd("Neorg tangle current-file")
 		end, { desc = "Neorg tangle current file" })
@@ -96,10 +108,30 @@ return {
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "norg",
 			callback = function(ev)
-				vim.keymap.set("n", "<leader>np", "<cmd>Neorg presenter start<CR>", { buffer = ev.buf, desc = "Neorg presenter start" })
-				vim.keymap.set("n", "<leader>nq", "<cmd>Neorg presenter close<CR>", { buffer = ev.buf, desc = "Neorg presenter close" })
-				vim.keymap.set("n", "<Right>", "<Plug>(neorg.presenter.next-page)", { buffer = ev.buf, desc = "Neorg presenter next" })
-				vim.keymap.set("n", "<Left>", "<Plug>(neorg.presenter.previous-page)", { buffer = ev.buf, desc = "Neorg presenter prev" })
+				vim.keymap.set(
+					"n",
+					"<leader>np",
+					"<cmd>Neorg presenter start<CR>",
+					{ buffer = ev.buf, desc = "Neorg presenter start" }
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>nq",
+					"<cmd>Neorg presenter close<CR>",
+					{ buffer = ev.buf, desc = "Neorg presenter close" }
+				)
+				vim.keymap.set(
+					"n",
+					"<Right>",
+					"<Plug>(neorg.presenter.next-page)",
+					{ buffer = ev.buf, desc = "Neorg presenter next" }
+				)
+				vim.keymap.set(
+					"n",
+					"<Left>",
+					"<Plug>(neorg.presenter.previous-page)",
+					{ buffer = ev.buf, desc = "Neorg presenter prev" }
+				)
 			end,
 		})
 	end,

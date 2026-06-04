@@ -6,6 +6,15 @@ return {
 		"windwp/nvim-ts-autotag",
 	},
 	config = function()
+		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+		parser_config.norg_meta = {
+			install_info = {
+				url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
+				files = { "src/parser.c" },
+				branch = "main",
+			},
+		}
+
 		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
 

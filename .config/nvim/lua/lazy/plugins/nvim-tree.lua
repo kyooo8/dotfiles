@@ -43,7 +43,14 @@ return {
 				local api = require("nvim-tree.api")
 				local core = require("nvim-tree.core")
 				local history = {}
-
+				local image_extensions = {
+					avif = true,
+					gif = true,
+					jpeg = true,
+					jpg = true,
+					png = true,
+					webp = true,
+				}
 				local function opts(desc)
 					return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 				end
@@ -95,7 +102,20 @@ return {
 					api.tree.change_root(parent)
 				end
 
+				local function open_with_image_preview()
+					local node = api.tree.get_node_under_cursor()
+					local extension = node and node.extension and node.extension:lower()
+
+					if not node or node.type ~= "file" or not image_extensions[extension] then
+						api.node.open.edit()
+						return
+					end
+
+					require("lazy.core.wezterm_image").preview(node.absolute_path)
+				end
+
 				-- カスタムマッピング
+				vim.keymap.set("n", "<CR>", open_with_image_preview, opts("Open / Preview Image"))
 				vim.keymap.set("n", "i", api.node.open.vertical, opts("Open: Vertical Split"))
 				vim.keymap.set("n", "u", api.node.open.horizontal, opts("Open: Horizontal Split"))
 				vim.keymap.set("n", "t", api.node.open.tab, opts("Open: New Tab"))

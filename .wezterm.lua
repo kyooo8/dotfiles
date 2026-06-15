@@ -11,6 +11,7 @@ local WIN_BLUR_ON = "Acrylic"
 local WIN_BLUR_OFF = "Disable"
 
 local TOGGLE_OPACITY = 0.60
+local GREP_MATCH_COLOR = "1;35"
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
@@ -19,6 +20,10 @@ config.color_scheme = "Catppuccin Macchiato"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
 config.font_size = 12.5
 config.use_ime = true
+config.set_environment_variables = {
+	GREP_COLOR = GREP_MATCH_COLOR,
+	GREP_OPTIONS = "--color=auto",
+}
 
 config.window_background_opacity = DEFAULT_OPACITY
 if is_mac then

@@ -31,6 +31,7 @@ opt.listchars = {
 	trail = "·",
 	eol = "↴",
 }
+opt.scrolloff = 8
 
 -- 操作性 / 便利設定
 opt.backspace = "indent,eol,start"

@@ -39,6 +39,7 @@
   "mini.surround": { "branch": "main", "commit": "88c52297ed3e69ecf9f8652837888ecc727a28ee" },
   "mkdir.nvim": { "branch": "main", "commit": "c55d1dee4f099528a1853b28bb28caa802eba217" },
   "neorg": { "branch": "main", "commit": "a09e0bb9b32e2d0406d4503ae8c1a7ad2ca83eae" },
+  "neorg-interim-ls": { "branch": "main", "commit": "898898f48fe7a2364d99d32f0dfd95dab5f8591f" },
   "neoscroll.nvim": { "branch": "master", "commit": "c8d29979cb0cb3a2437a8e0ae683fd82f340d3b8" },
   "noice.nvim": { "branch": "main", "commit": "7bfd942445fb63089b59f97ca487d605e715f155" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },

@@ -1,5 +1,8 @@
 return {
 	"nvim-neorg/neorg",
+	dependencies = {
+		"benlubas/neorg-interim-ls",
+	},
 	build = ":Neorg sync-parsers",
 	lazy = false,
 	version = "*",
@@ -35,6 +38,15 @@ return {
 				["core.esupports.metagen"] = {
 					config = {
 						author = "kyosuke",
+					},
+				},
+				["external.interim-ls"] = {
+					config = {
+						completion_provider = {
+							enable = true,
+							documentation = true,
+							categories = true,
+						},
 					},
 				},
 			},
@@ -103,6 +115,13 @@ return {
 			local out = vim.fn.expand("%:r") .. ".html"
 			vim.cmd("Neorg export to-file " .. out)
 		end, { desc = "Neorg export to html" })
+
+		vim.keymap.set("n", "<leader>nfs", function()
+			require("telescope.builtin").live_grep({ cwd = vim.fn.expand("~/neorg") })
+		end, { desc = "Neorg search" })
+		vim.keymap.set("n", "<leader>nff", function()
+			require("telescope.builtin").find_files({ cwd = vim.fn.expand("~/neorg") })
+		end, { desc = "Neorg find files" })
 
 		-- プレゼンター（.norg ファイル内でのみ有効）
 		vim.api.nvim_create_autocmd("FileType", {

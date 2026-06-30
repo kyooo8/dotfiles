@@ -24,13 +24,26 @@ return {
       return false
     end
 
-    local is_deno = detect_deno_project()
+    local function detect_biome_project()
+      local cwd = vim.fn.getcwd()
+      return vim.fn.filereadable(cwd .. "/biome.json") == 1
+        or vim.fn.filereadable(cwd .. "/biome.jsonc") == 1
+    end
+
+    local is_biome = detect_biome_project()
+    local is_deno = not is_biome and detect_deno_project()
+
+    local function js_linter()
+      if is_biome then return {} end -- biome LSP handles diagnostics
+      if is_deno then return { "deno" } end
+      return { "eslint_d" }
+    end
 
     lint.linters_by_ft = {
-      javascript = is_deno and { "deno" } or { "eslint_d" },
-      typescript = is_deno and { "deno" } or { "eslint_d" },
-      javascriptreact = is_deno and { "deno" } or { "eslint_d" },
-      typescriptreact = is_deno and { "deno" } or { "eslint_d" },
+      javascript = js_linter(),
+      typescript = js_linter(),
+      javascriptreact = js_linter(),
+      typescriptreact = js_linter(),
       svelte = { "eslint_d" },
       python = { "pylint" },
     }

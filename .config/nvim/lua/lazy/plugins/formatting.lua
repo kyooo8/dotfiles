@@ -57,7 +57,14 @@ return {
 			return false
 		end
 
-		local is_deno = detect_deno_project()
+		local function detect_biome_project()
+			local cwd = vim.fn.getcwd()
+			return vim.fn.filereadable(cwd .. "/biome.json") == 1
+				or vim.fn.filereadable(cwd .. "/biome.jsonc") == 1
+		end
+
+		local is_biome = detect_biome_project()
+		local is_deno = not is_biome and detect_deno_project()
 		local is_wp = detect_wp_project()
 
 		local php_cs_fixer = require("conform.formatters.php_cs_fixer")
@@ -113,7 +120,20 @@ return {
 
 		formatters_by_ft.php = is_wp and { "phpcbf_wordpress", "phpcsfixer" } or { "phpcsfixer" }
 
-		if is_deno then
+		if is_biome then
+			local biome_targets = {
+				"javascript",
+				"typescript",
+				"javascriptreact",
+				"typescriptreact",
+				"json",
+				"jsonc",
+			}
+
+			for _, ft in ipairs(biome_targets) do
+				formatters_by_ft[ft] = { "biome" }
+			end
+		elseif is_deno then
 			local deno_targets = {
 				"javascript",
 				"typescript",

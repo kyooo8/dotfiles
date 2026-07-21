@@ -33,8 +33,6 @@ fi
 export EDITOR=nvim
 
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
 
 # Volta
 export VOLTA_HOME="$HOME/.volta"
@@ -115,3 +113,5 @@ if [ -f '${HOME}/google-cloud-sdk/path.zsh.inc' ]; then . '${HOME}/google-cloud-
 if [ -f '${HOME}/google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+eval "$(mise activate zsh)"

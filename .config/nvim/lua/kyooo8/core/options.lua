@@ -49,17 +49,7 @@ opt.fixendofline = true
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function()
-		local buf = vim.api.nvim_get_current_buf()
-		local last = vim.api.nvim_buf_line_count(buf)
-
-		while last > 1 do
-			local line = vim.api.nvim_buf_get_lines(buf, last - 1, last, false)[1]
-			if line ~= "" then
-				break
-			end
-			last = last - 1
-		end
-		vim.api.nvim_buf_set_lines(buf, last, -1, false, {})
+		require("kyooo8.util.buffer").trim_trailing_blank_lines(vim.api.nvim_get_current_buf())
 	end,
 })
 opt.exrc = true

@@ -2,6 +2,6 @@ if vim.g.vscode then
 	vim.g.mapleader = " "
 	vim.opt.clipboard = "unnamedplus"
 else
-	require("lazy.core")
-	require("lazy.lazy")
+	require("kyooo8.core")
+	require("kyooo8.lazy")
 end

@@ -1,4 +1,4 @@
-local is_wp = require("lazy.util.project").is_wordpress()
+local is_wp = require("kyooo8.util.project").is_wordpress()
 
 return {
 	on_attach = function(client, bufnr)

@@ -6,7 +6,7 @@ return {
 		local conform = require("conform")
 		local util = require("conform.util")
 
-		local project = require("lazy.util.project")
+		local project = require("kyooo8.util.project")
 
 		local is_biome = project.is_biome()
 		local is_deno = not is_biome and project.is_deno()

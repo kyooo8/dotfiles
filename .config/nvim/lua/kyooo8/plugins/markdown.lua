@@ -46,7 +46,7 @@ return {
 			end
 
 			local document_path = vim.api.nvim_buf_get_name(0)
-			require("lazy.core.wezterm_image").preview(resolve_image_path(document_path, image_path))
+			require("kyooo8.core.wezterm_image").preview(resolve_image_path(document_path, image_path))
 		end
 
 		local function attach(buf)

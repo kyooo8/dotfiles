@@ -13,8 +13,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	spec = {
-		{ import = "lazy.plugins" },
-		{ import = "lazy.plugins.lsp" },
+		{ import = "kyooo8.plugins" },
+		{ import = "kyooo8.plugins.lsp" },
 	},
 	checker = {
 		enabled = true,

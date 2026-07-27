@@ -23,7 +23,6 @@ opt.termguicolors = true
 opt.signcolumn = "yes"
 opt.visualbell = true
 opt.showmatch = true
-opt.list = true
 opt.scrolloff = 8
 
 -- 操作性 / 便利設定

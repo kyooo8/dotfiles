@@ -24,7 +24,7 @@ return {
 					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 				end
 
-				map("n", "K", vim.lsp.buf.hover, "LSP Hover")
+				map("n", "gk", vim.lsp.buf.hover, "LSP Hover")
 				map({ "n" }, "gh", vim.lsp.buf.signature_help, "Signature Help")
 
 				map("n", "gd", "<CMD>Glance definitions<CR>", "Go Definition")

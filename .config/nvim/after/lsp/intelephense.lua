@@ -1,35 +1,4 @@
-local function detect_wp_project()
-	if vim.g.wp_project ~= nil then
-		return vim.g.wp_project == true
-	end
-	local cwd = vim.fn.getcwd()
-	local composer_path = cwd .. "/composer.json"
-	if vim.fn.filereadable(composer_path) == 1 then
-		local ok, lines = pcall(vim.fn.readfile, composer_path)
-		if ok then
-			local contents = table.concat(lines, "\n")
-			if contents:find("wp%-coding%-standards/wpcs") then
-				return true
-			end
-		end
-	end
-	local phpcs_files = { "/phpcs.xml", "/phpcs.xml.dist" }
-	for _, suffix in ipairs(phpcs_files) do
-		local path = cwd .. suffix
-		if vim.fn.filereadable(path) == 1 then
-			local ok, lines = pcall(vim.fn.readfile, path)
-			if ok then
-				local contents = table.concat(lines, "\n")
-				if contents:find("WordPress") then
-					return true
-				end
-			end
-		end
-	end
-	return false
-end
-
-local is_wp = detect_wp_project()
+local is_wp = require("lazy.util.project").is_wordpress()
 
 return {
 	on_attach = function(client, bufnr)

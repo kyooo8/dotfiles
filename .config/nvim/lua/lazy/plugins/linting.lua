@@ -4,34 +4,10 @@ return {
   config = function()
     local lint = require("lint")
 
-    local function detect_deno_project()
-      local cwd = vim.fn.getcwd()
-      local markers = {
-        "/deno.json",
-        "/deno.jsonc",
-        "/deno.lock",
-        "/import_map.json",
-        "/fresh.config.ts",
-        "/fresh.gen.ts",
-      }
+    local project = require("lazy.util.project")
 
-      for _, marker in ipairs(markers) do
-        if vim.fn.filereadable(cwd .. marker) == 1 then
-          return true
-        end
-      end
-
-      return false
-    end
-
-    local function detect_biome_project()
-      local cwd = vim.fn.getcwd()
-      return vim.fn.filereadable(cwd .. "/biome.json") == 1
-        or vim.fn.filereadable(cwd .. "/biome.jsonc") == 1
-    end
-
-    local is_biome = detect_biome_project()
-    local is_deno = not is_biome and detect_deno_project()
+    local is_biome = project.is_biome()
+    local is_deno = not is_biome and project.is_deno()
 
     local function js_linter()
       if is_biome then return {} end -- biome LSP handles diagnostics

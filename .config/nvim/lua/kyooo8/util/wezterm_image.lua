@@ -114,21 +114,23 @@ function M.preview(path)
 		return
 	end
 
-	local result = vim.system({
-		wezterm,
-		"cli",
-		"split-pane",
-		"--pane-id",
-		pane_id,
-		"--right",
-		"--percent",
-		"40",
-		"--",
-		wezterm,
-		"imgcat",
-		"--hold",
-		image_path,
-	}, { text = true }):wait()
+	local result = vim
+		.system({
+			wezterm,
+			"cli",
+			"split-pane",
+			"--pane-id",
+			pane_id,
+			"--right",
+			"--percent",
+			"40",
+			"--",
+			wezterm,
+			"imgcat",
+			"--hold",
+			image_path,
+		}, { text = true })
+		:wait()
 
 	if result.code ~= 0 then
 		vim.notify("WezTerm image preview failed: " .. result.stderr, vim.log.levels.ERROR)

@@ -3,7 +3,7 @@ return {
 		"petertriho/nvim-scrollbar",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
-			local C = require("catppuccin.palettes").get_palette("mocha")
+			local C = require("catppuccin.palettes").get_palette("macchiato")
 
 			require("scrollbar").setup({
 				handle = {

@@ -1,5 +1,4 @@
 -- 基本設定
-vim.cmd("let g:netrw_liststyle = 3")
 vim.cmd("language ja_JP.UTF-8")
 
 local opt = vim.opt
@@ -25,12 +24,6 @@ opt.signcolumn = "yes"
 opt.visualbell = true
 opt.showmatch = true
 opt.list = true
-opt.listchars = {
-	space = "·",
-	tab = "┊ ",
-	trail = "·",
-	eol = "↴",
-}
 opt.scrolloff = 8
 
 -- 操作性 / 便利設定
@@ -45,18 +38,16 @@ opt.splitbelow = true
 opt.swapfile = false
 opt.fileencoding = "utf-8"
 opt.fixendofline = true
--- 最後の改行が一行になるように変更
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function()
 		require("kyooo8.util.buffer").trim_trailing_blank_lines(vim.api.nvim_get_current_buf())
 	end,
 })
+
+-- TODO: これ使ってるか調べる
 opt.exrc = true
 opt.secure = true
 
 -- メニューとコマンド
-opt.wildmenu = true
-opt.cmdheight = 1
 opt.laststatus = 3
-opt.showcmd = true

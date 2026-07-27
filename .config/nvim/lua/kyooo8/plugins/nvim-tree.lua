@@ -111,7 +111,7 @@ return {
 						return
 					end
 
-					require("kyooo8.core.wezterm_image").preview(node.absolute_path)
+					require("kyooo8.util.wezterm_image").preview(node.absolute_path)
 				end
 
 				-- カスタムマッピング

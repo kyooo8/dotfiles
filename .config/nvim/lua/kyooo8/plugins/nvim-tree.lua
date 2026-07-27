@@ -37,6 +37,7 @@ return {
 					window_picker = {
 						enable = true,
 					},
+					quit_on_open = true,
 				},
 			},
 			on_attach = function(bufnr)
@@ -131,6 +132,9 @@ return {
 			},
 			git = {
 				ignore = false,
+			},
+			diagnostics = {
+				enable = true,
 			},
 		})
 		-- set keymaps

@@ -9,7 +9,6 @@ return {
 		"javascriptreact",
 		"typescript",
 		"typescriptreact",
-		"ejs",
 	},
 	root_dir = function(bufnr, on_dir)
 		local root_files = {
@@ -40,9 +39,6 @@ return {
 	end,
 	settings = {
 		tailwindCSS = {
-			includeLanguages = {
-				ejs = "html",
-			},
 			experimental = {
 				classRegex = {
 					"tw`([^`]*)`",

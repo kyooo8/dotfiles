@@ -14,7 +14,6 @@ return {
 				},
 				ignore_focus = {},
 				always_divide_middle = true,
-				always_show_tabline = true,
 				globalstatus = false,
 				refresh = {
 					statusline = 1000,
@@ -51,7 +50,6 @@ return {
 				lualine_y = {},
 				lualine_z = {},
 			},
-			tabline = {},
 			winbar = {},
 			inactive_winbar = {},
 			extensions = {},

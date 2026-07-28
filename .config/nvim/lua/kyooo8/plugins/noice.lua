@@ -19,7 +19,7 @@ return {
 				},
 			},
 
-			comdline = {
+			cmdline = {
 				opts = {
 					position = {
 						row = "50%",

@@ -4,6 +4,6 @@ return {
 		hlgroup = "HighlightUndo",
 		duration = 300,
 		pattern = { "*" },
-		igd_filetypes = { "neo-tree", "fugitive", "TelescopePrompt", "mason", "lazy" },
+		ignored_filetypes = { "neo-tree", "fugitive", "TelescopePrompt", "mason", "lazy" },
 	},
 }

@@ -2,6 +2,10 @@ return {
 	"preservim/vim-markdown",
 	ft = "markdown",
 	dependencies = { "godlygeek/tabular" },
+	init = function()
+		vim.g.vim_markdown_auto_insert_bullets = 0
+		vim.g.vim_markdown_new_list_item_indent = 0
+	end,
 	config = function()
 		local function resolve_image_path(document_path, image_path)
 			if vim.startswith(image_path, "/") then

@@ -11,7 +11,7 @@ return {
 		wk.add({
 			{ "<leader>f", group = "Find" },
 			{ "<leader>e", group = "Explorer" },
-			{ "<leader>h", group = "Git Hunks" },
+			{ "<leader>g", group = "Git" },
 			{ "<leader>w", group = "Workspace" },
 			{ "<leader>l", group = "Lazy" },
 			{ "<leader>z", group = "Zen Mode" },

@@ -2,8 +2,36 @@
   "title": "Hyper Simple Vim Layer",
   "rules": [
     {
-      "description": "Hyper + hjkl = arrows, a = ctrl+a, e = ctrl+e",
+      "description": "Hyper + hjkl = arrows, a = ctrl+a, e = ctrl+e, space = toggle Japanese/English",
       "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": { "mandatory": ["command", "control", "option"] }
+          },
+          "to": [{ "key_code": "japanese_eisuu" }],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [{ "language": "^ja$" }]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": { "mandatory": ["command", "control", "option"] }
+          },
+          "to": [{ "key_code": "japanese_kana" }],
+          "conditions": [
+            {
+              "type": "input_source_unless",
+              "input_sources": [{ "language": "^ja$" }]
+            }
+          ]
+        },
         {
           "type": "basic",
           "from": {

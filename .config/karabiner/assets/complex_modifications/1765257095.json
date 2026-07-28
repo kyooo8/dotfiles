@@ -1,13 +1,13 @@
 {
-  "title": "Caps Lock → Hyper Key (⌃⌥⌘) (Escape if alone)",
+  "title": "Right Shift → Hyper Key (⌃⌥⌘) (Escape if alone)",
   "rules": [
     {
-      "description": "Caps Lock → Hyper Key (⌃⌥⌘) | Escape if alone | Use fn + caps lock to enable caps lock",
+      "description": "Right Shift → Hyper Key (⌃⌥⌘) | Escape if alone",
       "manipulators": [
         {
           "type": "basic",
           "from": {
-            "key_code": "caps_lock"
+            "key_code": "right_shift"
           },
           "to": [
             {

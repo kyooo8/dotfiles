@@ -1,4 +1,4 @@
 return {
 	"aznhe21/actions-preview.nvim",
-	lazy = false,
+	event = { "BufReadPre", "BufNewFile" },
 }

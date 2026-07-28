@@ -12,7 +12,7 @@ return {
 			find_left = "sF", -- Find surrounding (to the left)
 			highlight = "", -- Highlight surrounding
 			replace = "sr", -- Replace surrounding
-			update_n_lines = "sn", -- Update `n_lines`
+			update_n_lines = "sv", -- Update `n_lines`
 			suffix_last = "l", -- Suffix to search with "prev" method
 			suffix_next = "n", -- Suffix to search with "next" method
 		},
@@ -115,7 +115,6 @@ return {
 		},
 	},
 	config = function(_, opts)
-		-- use gz mappings instead of s to prevent conflict with leap
 		require("mini.surround").setup(opts)
 	end,
 }

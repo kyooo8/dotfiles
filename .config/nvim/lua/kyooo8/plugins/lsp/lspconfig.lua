@@ -32,7 +32,7 @@ return {
 				map("n", "gR", "<CMD>LspRestart<CR>", "Restart LSP")
 				map("n", "gt", "<CMD>Glance type_definitions<CR>", "Go Type Definition")
 				map("n", "gi", "<CMD>Glance implementations<CR>", "Go Implementation")
-				map("n", "gD", vim.lsp.buf.declaration, "Go Declaration")
+				map("n", "gs", vim.lsp.buf.declaration, "Go Declaration")
 				map("n", "ga", function()
 					require("actions-preview").code_actions()
 				end, "Code Action Preview")

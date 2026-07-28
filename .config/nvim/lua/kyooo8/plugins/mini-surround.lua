@@ -10,7 +10,7 @@ return {
 			delete = "sd", -- Delete surrounding
 			find = "sf", -- Find surrounding (to the right)
 			find_left = "sb", -- Find surrounding (to the left)
-			highlight = "", -- Highlight surrounding
+			highlight = "sc", -- Highlight surrounding
 			replace = "sr", -- Replace surrounding
 			update_n_lines = "sv", -- Update `n_lines`
 			suffix_last = "l", -- Suffix to search with "prev" method

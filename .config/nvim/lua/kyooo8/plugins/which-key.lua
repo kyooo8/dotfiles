@@ -12,6 +12,7 @@ return {
 			{ "<leader>f", group = "Find" },
 			{ "<leader>e", group = "Explorer" },
 			{ "<leader>g", group = "Git" },
+			{ "<leader>h", group = "Harpoon" },
 			{ "<leader>w", group = "Workspace" },
 			{ "<leader>l", group = "Lazy" },
 			{ "<leader>z", group = "Zen Mode" },

@@ -52,7 +52,6 @@ return {
 					mason = true,
 					which_key = true,
 					lualine = true,
-					bufferline = true,
 				},
 			})
 

@@ -36,10 +36,20 @@ return {
 					types = {},
 					operators = {},
 					-- miscs = {}, -- Uncomment to turn off hard-coded styles
-				},
-				color_overrides = {},
-				auto_integrations = false,
-				integrations = {
+					},
+					color_overrides = {},
+					custom_highlights = function(cp)
+						return {
+							RainbowDelimiterYellow = { fg = cp.yellow },
+							RainbowDelimiterBlue = { fg = cp.blue },
+							RainbowDelimiterOrange = { fg = cp.peach },
+							RainbowDelimiterGreen = { fg = cp.green },
+							RainbowDelimiterViolet = { fg = cp.mauve },
+							RainbowDelimiterCyan = { fg = cp.sky },
+						}
+					end,
+					auto_integrations = false,
+					integrations = {
 					cmp = true,
 					gitsigns = true,
 					nvimtree = true,

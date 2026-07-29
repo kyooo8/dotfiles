@@ -78,7 +78,7 @@ _fzf_comprun() {
   esac
 }
 
-source ~/fzf-git.sh/fzf-git.sh
+source ~/.config/vendor/fzf-git.sh/fzf-git.sh
 
 # eza
 alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"

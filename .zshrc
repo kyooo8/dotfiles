@@ -86,6 +86,7 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 # zoxide
 eval "$(zoxide init zsh)"
 alias cd="z"
+alias cdi="zi"
 
 ## ghq
 function yazi-ghq() {

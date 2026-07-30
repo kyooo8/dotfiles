@@ -1,7 +1,13 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
-	opts = {},
+	opts = {
+		buffers = {
+			formatter = "path.filename_first",
+			path_shorten = 3,
+			winopts = { height = 0.95, width = 0.95 },
+		},
+	},
 	keys = {
 		{ "<leader>ff", function() require("fzf-lua").files() end, desc = "Fuzzy find files in cwd" },
 		{ "<leader>fb", function() require("fzf-lua").buffers() end, desc = "Fuzzy find open buffers" },

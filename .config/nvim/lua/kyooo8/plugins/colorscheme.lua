@@ -61,6 +61,7 @@ return {
 					mason = true,
 					which_key = true,
 					lualine = true,
+					render_markdown = true,
 				},
 			})
 

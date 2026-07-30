@@ -20,10 +20,15 @@ return {
 			},
 
 			cmdline = {
-				opts = {
-					position = {
-						row = "50%",
-						col = "50%",
+				-- `:` コマンドラインのみ中央に表示する（`/` `?` 検索は bottom_search プリセットで下部表示のまま）
+				format = {
+					cmdline = {
+						opts = {
+							position = {
+								row = "50%",
+								col = "50%",
+							},
+						},
 					},
 				},
 			},

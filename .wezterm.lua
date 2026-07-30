@@ -3,14 +3,14 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 local act = wezterm.action
 
-local DEFAULT_OPACITY = 0.85
+local DEFAULT_OPACITY = 0.8
 local BLUR_ON = 60
 local BLUR_OFF = 0
 
 local WIN_BLUR_ON = "Acrylic"
 local WIN_BLUR_OFF = "Disable"
 
-local TOGGLE_OPACITY = 0.60
+local TOGGLE_OPACITY = 0.2
 local GREP_MATCH_COLOR = "1;35"
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil
@@ -34,8 +34,8 @@ if is_win then
 end
 
 config.inactive_pane_hsb = {
-	saturation = 0.9,
-	brightness = 0.6,
+	saturation = 0.8,
+	brightness = 0.4,
 }
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
@@ -103,7 +103,7 @@ local keys = {
 	{ key = "n", mods = "CMD", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "CMD", action = act.ActivateTabRelative(-1) },
 	{ key = ".", mods = "CMD", action = act.QuickSelect },
-	{ key = ";", mods = "CMD", action = act.ActivateCopyMode },
+	{ key = "b", mods = "CMD", action = act.ActivateCopyMode },
 	{ key = "/", mods = "CMD", action = act.Search({ CaseSensitiveString = "" }) },
 	{ key = "r", mods = "CMD", action = act.Multiple({ act.ResetFontSize }) },
 }

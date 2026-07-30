@@ -35,6 +35,7 @@ opt.splitbelow = true
 
 -- ファイル
 opt.swapfile = false
+opt.autoread = true
 opt.fileencoding = "utf-8"
 opt.fixendofline = true
 vim.api.nvim_create_autocmd("BufWritePre", {

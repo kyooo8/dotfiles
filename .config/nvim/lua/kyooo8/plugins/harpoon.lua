@@ -11,7 +11,25 @@ return {
 		end, { desc = "Harpoon: toggle quick menu" })
 
 		vim.keymap.set("n", "<leader>hp", function()
-			harpoon:list():add()
+			local list = harpoon:list()
+			local before = list:length()
+			list:add()
+			local after = list:length()
+			local name = vim.fn.expand("%:t")
+
+			if after > before then
+				vim.notify(
+					string.format("Harpoon: pinned \"%s\" (%d/%d)", name, after, after),
+					vim.log.levels.INFO,
+					{ title = "Harpoon" }
+				)
+			else
+				vim.notify(
+					string.format("Harpoon: \"%s\" is already pinned", name),
+					vim.log.levels.WARN,
+					{ title = "Harpoon" }
+				)
+			end
 		end, { desc = "Harpoon: pin file" })
 	end,
 }

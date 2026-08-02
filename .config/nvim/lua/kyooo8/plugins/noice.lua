@@ -49,5 +49,20 @@ return {
 				lsp_doc_border = false, -- add a border to hover docs and signature help
 			},
 		})
+
+		-- `:Noice last` と同じ仕組み(noice.message.manager)で直近のメッセージを取得する。
+		-- vim.notify由来の通知だけでなく、Ctrl-gのようなecho系メッセージも対象になる。
+		vim.keymap.set("n", "<leader>ny", function()
+			local manager = require("noice.message.manager")
+			local messages = manager.get(nil, { history = true, sort = true })
+			local last = messages[#messages]
+			if not last then
+				vim.notify("No notifications yet", vim.log.levels.WARN)
+				return
+			end
+
+			vim.fn.setreg("+", last:content())
+			vim.notify("Copied last message to clipboard", vim.log.levels.INFO)
+		end, { desc = "Copy last notification/message text" })
 	end,
 }

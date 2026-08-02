@@ -13,7 +13,6 @@ return {
 				"prismals",
 				"gopls",
 				"intelephense",
-				"ruby_lsp",
 				"terraformls",
 				"marksman",
 			},
@@ -21,6 +20,8 @@ return {
 		config = function(_, opts)
 			require("mason-lspconfig").setup(opts)
 			vim.lsp.enable("biome")
+			vim.lsp.enable("ruby_lsp")
+			vim.lsp.enable("rubocop")
 		end,
 		dependencies = {
 			{
@@ -48,7 +49,6 @@ return {
 				"black",
 				"pylint",
 				"eslint_d",
-				"rubocop",
 				"goimports",
 				"gofumpt",
 				"markdownlint",

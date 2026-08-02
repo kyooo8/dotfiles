@@ -115,4 +115,5 @@ if [ -f '${HOME}/google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 eval "$(mise activate zsh)"

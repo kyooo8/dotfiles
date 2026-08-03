@@ -15,5 +15,6 @@ return {
 		{ "<leader>fs", function() require("fzf-lua").live_grep() end, desc = "Find string in cwd" },
 		{ "<leader>fc", function() require("fzf-lua").grep_cword() end, desc = "Find string under cursor in cwd" },
 		{ "<leader>ft", "<cmd>TodoFzfLua<cr>", desc = "Find todos" },
+		{ "<leader>fd", function() require("fzf-lua").lsp_document_symbols() end, desc = "Fuzzy find symbols in current file" },
 	},
 }

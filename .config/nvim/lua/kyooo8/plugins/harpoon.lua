@@ -10,6 +10,19 @@ return {
 			harpoon.ui:toggle_quick_menu(harpoon:list())
 		end, { desc = "Harpoon: toggle quick menu" })
 
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "harpoon",
+			callback = function(args)
+				vim.keymap.set("n", "|", function()
+					harpoon.ui:select_menu_item({ vsplit = true })
+				end, { buffer = args.buf, silent = true, desc = "Harpoon: open in vertical split" })
+
+				vim.keymap.set("n", "_", function()
+					harpoon.ui:select_menu_item({ split = true })
+				end, { buffer = args.buf, silent = true, desc = "Harpoon: open in horizontal split" })
+			end,
+		})
+
 		vim.keymap.set("n", "<leader>hp", function()
 			local list = harpoon:list()
 			local before = list:length()

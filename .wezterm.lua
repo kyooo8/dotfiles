@@ -70,8 +70,8 @@ end)
 
 local keys = {
 	{ key = "o", mods = "CMD", action = act.EmitEvent("toggle-visual") },
-	{ key = "u", mods = "CMD", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
-	{ key = "i", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "_", mods = "CMD", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
+	{ key = "|", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "t", mods = "CMD", action = act.SpawnTab("CurrentPaneDomain") },
 	{
 		key = "e",

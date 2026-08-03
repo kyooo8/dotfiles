@@ -11,6 +11,7 @@ local WIN_BLUR_ON = "Acrylic"
 local WIN_BLUR_OFF = "Disable"
 
 local TOGGLE_OPACITY = 0.2
+local TOGGLE_TEXT_BRIGHTNESS = 0.35
 local GREP_MATCH_COLOR = "1;35"
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil
@@ -49,6 +50,7 @@ wezterm.on("toggle-visual", function(window, _)
 
 	if toggled then
 		overrides.window_background_opacity = nil
+		overrides.foreground_text_hsb = nil
 		if is_mac then
 			overrides.macos_window_background_blur = nil
 		end
@@ -57,6 +59,7 @@ wezterm.on("toggle-visual", function(window, _)
 		end
 	else
 		overrides.window_background_opacity = TOGGLE_OPACITY
+		overrides.foreground_text_hsb = { hue = 1.0, saturation = 1.0, brightness = TOGGLE_TEXT_BRIGHTNESS }
 		if is_mac then
 			overrides.macos_window_background_blur = BLUR_OFF
 		end

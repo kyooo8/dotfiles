@@ -1,9 +1,13 @@
 return {
 	"folke/trouble.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-	opts = {
-		focus = true,
-	},
+		opts = {
+			focus = true,
+			keys = {
+				["|"] = "jump_vsplit",
+				["_"] = "jump_split",
+			},
+		},
 	cmd = "Trouble",
 	keys = {
 		{

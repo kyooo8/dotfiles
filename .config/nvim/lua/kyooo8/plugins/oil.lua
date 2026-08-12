@@ -21,7 +21,7 @@ return {
 				["q"] = "actions.close",
 				["<backspace>"] = "actions.parent",
 				["|"] = { "actions.select", opts = { vertical = true } },
-				["-"] = { "actions.select", opts = { horizontal = true } },
+				["_"] = { "actions.select", opts = { horizontal = true } },
 				["t"] = { "actions.select", opts = { tab = true } },
 				["<C-p>"] = "actions.preview",
 				["r"] = "actions.refresh",

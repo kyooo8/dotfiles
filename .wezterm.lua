@@ -34,10 +34,6 @@ if is_win then
 	config.win32_system_backdrop = WIN_BLUR_ON
 end
 
-config.inactive_pane_hsb = {
-	saturation = 0.8,
-	brightness = 0.4,
-}
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false

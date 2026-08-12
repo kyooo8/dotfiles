@@ -3,8 +3,8 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 local act = wezterm.action
 
-local DEFAULT_OPACITY = 0.8
-local BLUR_ON = 60
+local DEFAULT_OPACITY = 0.9
+local BLUR_ON = 40
 local BLUR_OFF = 0
 
 local WIN_BLUR_ON = "Acrylic"

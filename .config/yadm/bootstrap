@@ -1,52 +1,62 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Detect platform once so we can branch cleanly later.
+# 分岐で使うプラットフォームを最初に判定する。
 system_type=$(uname -s)
 profile_file="$HOME/.zprofile"
 
-# Install essential packages when running on Ubuntu/Debian.
+# Ubuntu/Debian では必須パッケージをインストールする。
 if [ "$system_type" = "Linux" ]; then
-  echo "[Step] Updating base packages on Linux"
+  echo "[Step] Linux の基本パッケージを更新しています"
   sudo apt update
   sudo apt install -y zsh git curl wget ca-certificates gnupg build-essential locales unzip tar gzip
   sudo locale-gen ja_JP.UTF-8
 fi
 
-# Install Homebrew/Linuxbrew if it is missing.
+# Homebrew/Linuxbrew がなければインストールする。
 if ! command -v brew >/dev/null 2>&1; then
-  echo "[Step] Installing Homebrew"
+  echo "[Step] Homebrew をインストールしています"
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Determine brew installation prefix.
-if [ "$system_type" = "Darwin" ]; then
-  brew_prefix="/opt/homebrew"
+# brew のインストール先 prefix を判定する。
+if command -v brew >/dev/null 2>&1; then
+  brew_bin=$(command -v brew)
+elif [ -x /opt/homebrew/bin/brew ]; then
+  brew_bin="/opt/homebrew/bin/brew"
+elif [ -x /usr/local/bin/brew ]; then
+  brew_bin="/usr/local/bin/brew"
+elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  brew_bin="/home/linuxbrew/.linuxbrew/bin/brew"
+elif [ -x "$HOME/.linuxbrew/bin/brew" ]; then
+  brew_bin="$HOME/.linuxbrew/bin/brew"
 else
-  brew_prefix="/home/linuxbrew/.linuxbrew"
+  echo "[Error] インストール後に brew コマンドが見つかりません"
+  exit 1
 fi
+brew_prefix=$("$brew_bin" --prefix)
 
-# Load brew environment for the current shell.
+# 現在のシェルに brew の環境変数を読み込む。
 eval "$(${brew_prefix}/bin/brew shellenv)"
 
-# Persist PATH configuration so login shells load it automatically.
+# ログインシェルでも自動で読み込まれるように PATH 設定を保存する。
 touch "$profile_file"
 if ! grep -qxF "eval \"\$(${brew_prefix}/bin/brew shellenv)\"" "$profile_file"; then
   echo "eval \"\$(${brew_prefix}/bin/brew shellenv)\"" >> "$profile_file"
 fi
 
-# Switch default shell to zsh if necessary (may prompt for password).
+# 必要に応じてデフォルトシェルを zsh に切り替える。
 if command -v zsh >/dev/null 2>&1; then
   if [ "$(basename "${SHELL:-}")" != "zsh" ]; then
     if ! chsh -s "$(command -v zsh)"; then
-      echo "[Warn] chsh failed (password input may be required)"
+      echo "[Warn] chsh に失敗しました（パスワード入力が必要な場合があります）"
     fi
   fi
 else
-  echo "[Warn] zsh command not found; skipping chsh"
+  echo "[Warn] zsh コマンドが見つからないため chsh をスキップします"
 fi
 
-# Install packages listed in Brewfile (works even if yadm is not yet installed).
+# Brewfile に定義されたパッケージをインストールする。
 repo=""
 if command -v yadm >/dev/null 2>&1; then
   if ! repo=$(yadm rev-parse --show-toplevel 2>/dev/null); then
@@ -57,13 +67,13 @@ fi
 if [ -z "$repo" ]; then
   script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
   repo=$(cd "${script_dir}/../.." && pwd)
-  echo "[Warn] Unable to resolve repo via yadm; using ${repo}"
+  echo "[Warn] yadm でリポジトリを特定できないため ${repo} を使用します"
 fi
 cd "$repo"
 
 if [ -f "$repo/Brewfile" ]; then
-  echo "[Step] Running brew bundle"
+  echo "[Step] brew bundle を実行しています"
   brew bundle --file "$repo/Brewfile"
 else
-  echo "[Info] Brewfile not found at $repo"
+  echo "[Info] $repo に Brewfile が見つかりません"
 fi

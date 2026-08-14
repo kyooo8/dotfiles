@@ -48,6 +48,28 @@ fix_homebrew_remote() {
   done
 }
 
+gitconfig_backup=""
+restore_gitconfig() {
+  if [ -n "$gitconfig_backup" ] && [ -f "$gitconfig_backup" ]; then
+    cp "$gitconfig_backup" "$HOME/.gitconfig"
+    rm -f "$gitconfig_backup"
+  fi
+}
+
+disable_github_ssh_rewrite_on_linux() {
+  if [ "$system_type" != "Linux" ] || ! command -v git >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if git config --global --get-regexp '^url\.(git@github\.com:|ssh://git@github\.com/)\.insteadOf$' >/dev/null 2>&1; then
+    gitconfig_backup=$(mktemp)
+    cp "$HOME/.gitconfig" "$gitconfig_backup"
+    trap restore_gitconfig EXIT
+    git config --global --unset-all 'url.git@github.com:.insteadOf' || true
+    git config --global --unset-all 'url.ssh://git@github.com/.insteadOf' || true
+  fi
+}
+
 # Ubuntu/Debian では必須パッケージをインストールする。
 if [ "$system_type" = "Linux" ]; then
   echo "[Step] Linux の基本パッケージを更新しています"
@@ -59,6 +81,7 @@ fi
 # Homebrew/Linuxbrew がなければインストールする。
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Homebrew をインストールしています"
+  disable_github_ssh_rewrite_on_linux
   fix_homebrew_remote
   NONINTERACTIVE=1 \
     HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote" \

@@ -6,15 +6,29 @@ system_type=$(uname -s)
 profile_file="$HOME/.zprofile"
 homebrew_brew_remote="${HOMEBREW_BREW_GIT_REMOTE:-https://github.com/Homebrew/brew}"
 homebrew_core_remote="${HOMEBREW_CORE_GIT_REMOTE:-https://github.com/Homebrew/homebrew-core}"
+if [ "$system_type" = "Linux" ]; then
+  case "$homebrew_brew_remote" in
+    git@github.com:Homebrew/brew|ssh://git@github.com/Homebrew/brew)
+      homebrew_brew_remote="https://github.com/Homebrew/brew"
+      ;;
+  esac
+  case "$homebrew_core_remote" in
+    git@github.com:Homebrew/homebrew-core|ssh://git@github.com/Homebrew/homebrew-core)
+      homebrew_core_remote="https://github.com/Homebrew/homebrew-core"
+      ;;
+  esac
+fi
 export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
 export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
 
 run_with_homebrew_git_config() {
   GIT_CONFIG_NOSYSTEM=1 \
     GIT_CONFIG_GLOBAL=/dev/null \
-    GIT_CONFIG_COUNT=1 \
+    GIT_CONFIG_COUNT=2 \
     GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf \
     GIT_CONFIG_VALUE_0=git@github.com: \
+    GIT_CONFIG_KEY_1=url.https://github.com/.insteadOf \
+    GIT_CONFIG_VALUE_1=ssh://git@github.com/ \
     "$@"
 }
 
@@ -46,7 +60,11 @@ fi
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Homebrew をインストールしています"
   fix_homebrew_remote
-  NONINTERACTIVE=1 run_with_homebrew_git_config /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 \
+    HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote" \
+    HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote" \
+    run_with_homebrew_git_config /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fix_homebrew_remote
 fi
 
 # brew のインストール先 prefix を判定する。

@@ -4,6 +4,22 @@ set -euo pipefail
 # 分岐で使うプラットフォームを最初に判定する。
 system_type=$(uname -s)
 profile_file="$HOME/.zprofile"
+homebrew_brew_remote="${HOMEBREW_BREW_GIT_REMOTE:-https://github.com/Homebrew/brew}"
+homebrew_core_remote="${HOMEBREW_CORE_GIT_REMOTE:-https://github.com/Homebrew/homebrew-core}"
+export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
+export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
+
+fix_homebrew_remote() {
+  for homebrew_repo in \
+    /opt/homebrew/Homebrew \
+    /usr/local/Homebrew \
+    /home/linuxbrew/.linuxbrew/Homebrew \
+    "$HOME/.linuxbrew/Homebrew"; do
+    if [ -d "$homebrew_repo/.git" ]; then
+      GIT_CONFIG_GLOBAL=/dev/null git -C "$homebrew_repo" remote set-url origin "$homebrew_brew_remote" 2>/dev/null || true
+    fi
+  done
+}
 
 # Ubuntu/Debian では必須パッケージをインストールする。
 if [ "$system_type" = "Linux" ]; then
@@ -16,7 +32,8 @@ fi
 # Homebrew/Linuxbrew がなければインストールする。
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Homebrew をインストールしています"
-  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fix_homebrew_remote
+  NONINTERACTIVE=1 GIT_CONFIG_GLOBAL=/dev/null /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # brew のインストール先 prefix を判定する。
@@ -73,7 +90,7 @@ cd "$repo"
 
 if [ -f "$repo/Brewfile" ]; then
   echo "[Step] brew bundle を実行しています"
-  brew bundle --file "$repo/Brewfile"
+  GIT_CONFIG_GLOBAL=/dev/null brew bundle --file "$repo/Brewfile"
 else
   echo "[Info] $repo に Brewfile が見つかりません"
 fi

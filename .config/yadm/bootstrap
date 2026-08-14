@@ -101,9 +101,10 @@ if [ -z "$repo" ]; then
 fi
 cd "$repo"
 
-if [ -f "$repo/Brewfile" ]; then
+brewfile="$repo/.homebrew/Brewfile"
+if [ -f "$brewfile" ]; then
   echo "[Step] brew bundle を実行しています"
-  run_with_homebrew_git_config brew bundle --file "$repo/Brewfile"
+  run_with_homebrew_git_config brew bundle --file "$brewfile"
 else
-  echo "[Info] $repo に Brewfile が見つかりません"
+  echo "[Info] $brewfile が見つかりません"
 fi

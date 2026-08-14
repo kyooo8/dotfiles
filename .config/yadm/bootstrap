@@ -61,7 +61,8 @@ disable_github_ssh_rewrite_on_linux() {
     return 0
   fi
 
-  if git config --global --get-regexp '^url\.(git@github\.com:|ssh://git@github\.com/)\.insteadOf$' >/dev/null 2>&1; then
+  if git config --global --get-all 'url.git@github.com:.insteadOf' >/dev/null 2>&1 || \
+    git config --global --get-all 'url.ssh://git@github.com/.insteadOf' >/dev/null 2>&1; then
     gitconfig_backup=$(mktemp)
     cp "$HOME/.gitconfig" "$gitconfig_backup"
     trap restore_gitconfig EXIT

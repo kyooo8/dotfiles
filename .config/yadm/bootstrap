@@ -9,14 +9,27 @@ homebrew_core_remote="${HOMEBREW_CORE_GIT_REMOTE:-https://github.com/Homebrew/ho
 export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
 export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
 
+run_with_homebrew_git_config() {
+  GIT_CONFIG_NOSYSTEM=1 \
+    GIT_CONFIG_GLOBAL=/dev/null \
+    GIT_CONFIG_COUNT=1 \
+    GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf \
+    GIT_CONFIG_VALUE_0=git@github.com: \
+    "$@"
+}
+
 fix_homebrew_remote() {
   for homebrew_repo in \
     /opt/homebrew/Homebrew \
     /usr/local/Homebrew \
     /home/linuxbrew/.linuxbrew/Homebrew \
     "$HOME/.linuxbrew/Homebrew"; do
-    if [ -d "$homebrew_repo/.git" ]; then
-      GIT_CONFIG_GLOBAL=/dev/null git -C "$homebrew_repo" remote set-url origin "$homebrew_brew_remote" 2>/dev/null || true
+    if [ -e "$homebrew_repo/.git" ]; then
+      if ! run_with_homebrew_git_config git -C "$homebrew_repo" remote set-url origin "$homebrew_brew_remote" 2>/dev/null; then
+        if command -v sudo >/dev/null 2>&1; then
+          sudo git -C "$homebrew_repo" remote set-url origin "$homebrew_brew_remote" 2>/dev/null || true
+        fi
+      fi
     fi
   done
 }
@@ -33,7 +46,7 @@ fi
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Homebrew をインストールしています"
   fix_homebrew_remote
-  NONINTERACTIVE=1 GIT_CONFIG_GLOBAL=/dev/null /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  NONINTERACTIVE=1 run_with_homebrew_git_config /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # brew のインストール先 prefix を判定する。
@@ -90,7 +103,7 @@ cd "$repo"
 
 if [ -f "$repo/Brewfile" ]; then
   echo "[Step] brew bundle を実行しています"
-  GIT_CONFIG_GLOBAL=/dev/null brew bundle --file "$repo/Brewfile"
+  run_with_homebrew_git_config brew bundle --file "$repo/Brewfile"
 else
   echo "[Info] $repo に Brewfile が見つかりません"
 fi

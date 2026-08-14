@@ -12,6 +12,9 @@ jobs:
 
       - name: Install yadm and clone dotfiles
         run: |
+          git config --global --unset-all url.git@github.com:.insteadOf || true
+          export HOMEBREW_BREW_GIT_REMOTE="https://github.com/Homebrew/brew"
+          export HOMEBREW_CORE_GIT_REMOTE="https://github.com/Homebrew/homebrew-core"
           mkdir -p "$HOME/bin"
           curl -fsSL https://github.com/yadm-dev/yadm/raw/master/yadm -o "$HOME/bin/yadm"
           chmod +x "$HOME/bin/yadm"

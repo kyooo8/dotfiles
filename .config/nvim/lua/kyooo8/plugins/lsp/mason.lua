@@ -55,6 +55,7 @@ return {
 				"php-cs-fixer",
 				"htmlbeautifier",
 				"biome",
+				"typescript-language-server",
 			},
 		},
 		dependencies = {

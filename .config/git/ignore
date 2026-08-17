@@ -1,4 +1,4 @@
 .DS_Store
 mise.toml
-.tmp-local/
+._/
 **/.claude/settings.local.json

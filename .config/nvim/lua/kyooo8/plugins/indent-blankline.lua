@@ -4,5 +4,10 @@ return {
 	main = "ibl",
 	opts = {
 		indent = { char = "┊" },
+		scope = {
+			highlight = "IblScope",
+			show_start = false,
+			show_end = false,
+		},
 	},
 }

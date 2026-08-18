@@ -46,6 +46,7 @@ return {
 							RainbowDelimiterGreen = { fg = cp.green },
 							RainbowDelimiterViolet = { fg = cp.mauve },
 							RainbowDelimiterCyan = { fg = cp.sky },
+							IblScope = { fg = cp.mauve },
 						}
 					end,
 					auto_integrations = false,

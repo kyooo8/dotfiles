@@ -19,7 +19,7 @@ local is_win = wezterm.target_triple:find("windows") ~= nil
 
 config.color_scheme = "Catppuccin Macchiato"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = 12.5
+config.font_size = 12
 config.use_ime = true
 config.set_environment_variables = {
 	GREP_COLOR = GREP_MATCH_COLOR,

@@ -41,8 +41,43 @@ return {
 	lazy = false,
 	keys = {
 		{ "<leader>d", function() Snacks.dashboard() end, desc = "Open dashboard" },
+		{ "<leader>lg", function() Snacks.lazygit() end, desc = "Open lazy git" },
+		{ "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "LazyGit: current file history" },
+		{ "<leader>zz", function() Snacks.zen() end, desc = "Zen Mode" },
+		{ "<leader>zc", function() Snacks.zen.zoom() end, desc = "Zoom Window" },
 	},
 	opts = {
+		input = {
+			enabled = true,
+		},
+		scroll = {
+			enabled = true,
+		},
+		zen = {},
+		lazygit = {
+			config = {
+				os = { editPreset = "nvim-remote" },
+			},
+		},
+		styles = {
+			input = {
+				border = "rounded",
+				relative = "cursor",
+				wo = {
+					colorcolumn = "",
+					conceallevel = 0,
+					cursorline = true,
+					foldenable = false,
+					list = true,
+					listchars = "precedes:…,extends:…",
+					number = true,
+					relativenumber = true,
+					signcolumn = "yes",
+					spell = false,
+					wrap = false,
+				},
+			},
+		},
 		dashboard = {
 			preset = {
 				header = "⚡ kyooo8.nvim",

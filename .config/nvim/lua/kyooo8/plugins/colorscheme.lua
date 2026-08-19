@@ -22,10 +22,10 @@ return {
 				no_italic = false, -- Force no italic
 				no_bold = false, -- Force no bold
 				no_underline = false, -- Force no underline
-				styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-					comments = { "italic" }, -- Change the style of comments
-					conditionals = { "italic" },
-					loops = {},
+					styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+						comments = { "italic" }, -- Change the style of comments
+						conditionals = { "italic" },
+						loops = {},
 					functions = {},
 					keywords = {},
 					strings = {},
@@ -33,9 +33,9 @@ return {
 					numbers = {},
 					booleans = {},
 					properties = {},
-					types = {},
-					operators = {},
-					-- miscs = {}, -- Uncomment to turn off hard-coded styles
+						types = {},
+						operators = {},
+						-- miscs = {}, -- Uncomment to turn off hard-coded styles
 					},
 					color_overrides = {},
 					custom_highlights = function(cp)
@@ -51,13 +51,16 @@ return {
 					end,
 					auto_integrations = false,
 					integrations = {
-					cmp = true,
-					gitsigns = true,
-					nvimtree = true,
-					notify = false,
-					mini = {
-						enabled = true,
-						indentscope_color = "",
+						cmp = true,
+						gitsigns = true,
+						snacks = {
+							enabled = true,
+							indent_scope_color = "",
+						},
+						notify = false,
+						mini = {
+							enabled = true,
+							indentscope_color = "",
 					},
 					mason = true,
 					which_key = true,

@@ -1,7 +1,7 @@
 -- 基本設定
 vim.cmd("language ja_JP.UTF-8")
 
--- treesitterの非同期パースが原因のクラッシュ回避 (fzf-luaプレビュー等で
+-- treesitterの非同期パースが原因のクラッシュ回避 (pickerプレビュー等で
 -- 'attempt to call method range (a nil value)' が起きる問題への対策)
 vim.g._ts_force_sync_parsing = true
 

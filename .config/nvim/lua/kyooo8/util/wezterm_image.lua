@@ -81,12 +81,6 @@ local function get_pane_id()
 		end
 	end
 
-	for _, pane in ipairs(panes) do
-		if pane.title and pane.title:match("NvimTree") then
-			return tostring(pane.pane_id)
-		end
-	end
-
 	return nil, "Could not find the current WezTerm pane"
 end
 

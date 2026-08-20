@@ -17,6 +17,7 @@ return {
 			"html",
 			"php",
 			"css",
+			"scss",
 			"prisma",
 			"markdown",
 			"markdown_inline",

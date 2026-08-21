@@ -6,6 +6,7 @@ return {
 	config = function()
 		local treesitter = require("nvim-treesitter")
 		treesitter.setup()
+		vim.treesitter.language.register("yaml", "eruby.yaml")
 
 		-- ensure these language parsers are installed
 		local ensure_installed = {

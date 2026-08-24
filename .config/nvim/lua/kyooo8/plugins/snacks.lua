@@ -39,17 +39,20 @@ local function dirs()
 	local items = { "." }
 
 	if vim.fn.executable("fd") == 1 then
-		vim.list_extend(items, vim.fn.systemlist({
-			"fd",
-			"--color=never",
-			"--type",
-			"d",
-			"--hidden",
-			"--exclude",
-			".git",
-			"--exclude",
-			".jj",
-		}))
+		vim.list_extend(
+			items,
+			vim.fn.systemlist({
+				"fd",
+				"--color=never",
+				"--type",
+				"d",
+				"--hidden",
+				"--exclude",
+				".git",
+				"--exclude",
+				".jj",
+			})
+		)
 		return items
 	end
 
@@ -130,27 +133,120 @@ end
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
-	lazy = false,
 	keys = {
-		{ "<leader>d", function() Snacks.dashboard() end, desc = "Open dashboard" },
+		{
+			"<leader>d",
+			function()
+				Snacks.dashboard()
+			end,
+			desc = "Open dashboard",
+		},
 		{ "<leader>ee", explorer, desc = "Toggle file explorer" },
 		{ "<leader>ef", reveal_in_explorer, desc = "Reveal current file in explorer" },
 		{ "<leader>ec", close_explorer, desc = "Close file explorer" },
 		{ "<leader>er", refresh_explorer, desc = "Refresh file explorer" },
-		{ "<leader>ff", function() Snacks.picker.files() end, desc = "Find files in cwd" },
+		{
+			"<leader>ff",
+			function()
+				Snacks.picker.files()
+			end,
+			desc = "Find files in cwd",
+		},
 		{ "<leader>fF", files_in_selected_dir, desc = "Find files in selected dir" },
-		{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find open buffers" },
-		{ "<leader>fr", function() Snacks.picker.recent() end, desc = "Find recent files" },
-		{ "<leader>fs", function() Snacks.picker.grep() end, desc = "Find string in cwd" },
+		{
+			"<leader>fb",
+			function()
+				Snacks.picker.buffers()
+			end,
+			desc = "Find open buffers",
+		},
+		{
+			"<leader>fr",
+			function()
+				Snacks.picker.recent()
+			end,
+			desc = "Find recent files",
+		},
+		{
+			"<leader>fs",
+			function()
+				Snacks.picker.grep()
+			end,
+			desc = "Find string in cwd",
+		},
 		{ "<leader>fS", grep_in_selected_dir, desc = "Find string in selected dir" },
-		{ "<leader>fc", function() Snacks.picker.grep_word() end, desc = "Find word under cursor in cwd", mode = { "n", "x" } },
-		{ "<leader>ft", function() todo_comments() end, desc = "Find todos" },
+		{
+			"<leader>fc",
+			function()
+				Snacks.picker.grep_word()
+			end,
+			desc = "Find word under cursor in cwd",
+			mode = { "n", "x" },
+		},
+		{
+			"<leader>ft",
+			function()
+				todo_comments()
+			end,
+			desc = "Find todos",
+		},
 		{ "<leader>fT", todos_in_selected_dir, desc = "Find todos in selected dir" },
-		{ "<leader>fd", function() Snacks.picker.lsp_symbols() end, desc = "Find symbols in current file" },
-		{ "<leader>lg", function() Snacks.lazygit() end, desc = "Open lazy git" },
-		{ "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "LazyGit: current file history" },
-		{ "<leader>zz", function() Snacks.zen() end, desc = "Zen Mode" },
-		{ "<leader>zc", function() Snacks.zen.zoom() end, desc = "Zoom Window" },
+		{
+			"<leader>fd",
+			function()
+				Snacks.picker.lsp_symbols()
+			end,
+			desc = "Find symbols in current file",
+		},
+		{
+			"<leader>lg",
+			function()
+				Snacks.lazygit()
+			end,
+			desc = "Open lazy git",
+		},
+		{
+			"<leader>lf",
+			function()
+				Snacks.lazygit.log_file()
+			end,
+			desc = "LazyGit: current file history",
+		},
+		{
+			"<leader>zz",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Zen Mode",
+		},
+		{
+			"<leader>zc",
+			function()
+				Snacks.zen.zoom()
+			end,
+			desc = "Zoom Window",
+		},
+		{
+			"<leader>tt",
+			function()
+				Snacks.terminal()
+			end,
+			desc = "Toggle terminal (float)",
+		},
+		{
+			"<leader>ti",
+			function()
+				Snacks.terminal(nil, { win = { position = "right" } })
+			end,
+			desc = "Toggle terminal (vsplit)",
+		},
+		{
+			"<leader>tu",
+			function()
+				Snacks.terminal(nil, { win = { position = "bottom" } })
+			end,
+			desc = "Toggle terminal (split)",
+		},
 	},
 	opts = {
 		explorer = {

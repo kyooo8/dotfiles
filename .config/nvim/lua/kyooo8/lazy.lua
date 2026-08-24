@@ -17,7 +17,7 @@ require("lazy").setup({
 		{ import = "kyooo8.plugins.lsp" },
 	},
 	checker = {
-		enabled = true,
+		enabled = false,
 		notify = false,
 	},
 	change_detection = {

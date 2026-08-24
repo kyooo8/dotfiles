@@ -1,12 +1,13 @@
 return {
 	"nvim-lualine/lualine.nvim",
+	event = "VeryLazy",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		local harpoon_pin_icon = "\u{f08d}" -- nf-fa-thumb_tack
 
 		local function harpoon_status()
-			local ok, harpoon = pcall(require, "harpoon")
-			if not ok then
+			local harpoon = package.loaded.harpoon
+			if not harpoon then
 				return ""
 			end
 

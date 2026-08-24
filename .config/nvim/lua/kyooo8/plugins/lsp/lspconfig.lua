@@ -11,6 +11,23 @@ return {
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		vim.lsp.config("*", { capabilities = capabilities })
+		vim.lsp.enable({
+			"denols",
+			"html",
+			"cssls",
+			"tailwindcss",
+			"svelte",
+			"lua_ls",
+			"emmet_ls",
+			"prismals",
+			"gopls",
+			"intelephense",
+			"terraformls",
+			"marksman",
+			"biome",
+			"ruby_lsp",
+			"rubocop",
+		})
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(ev)

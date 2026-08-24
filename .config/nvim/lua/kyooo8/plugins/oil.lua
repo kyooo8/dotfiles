@@ -1,6 +1,16 @@
 return {
 	{
 		"stevearc/oil.nvim",
+		cmd = "Oil",
+		keys = {
+			{
+				"<leader>oo",
+				function()
+					require("oil").open()
+				end,
+				desc = "open oil",
+			},
+		},
 		dependencies = {
 			{ "nvim-mini/mini.icons" },
 			{ "refractalize/oil-git-status.nvim" },
@@ -37,9 +47,6 @@ return {
 
 		config = function(_, opts)
 			require("oil").setup(opts)
-			vim.keymap.set("n", "<leader>oo", function()
-				require("oil").open()
-			end, { desc = "open oil" })
 		end,
 	},
 }

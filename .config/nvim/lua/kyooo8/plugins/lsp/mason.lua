@@ -1,6 +1,10 @@
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
+		cmd = {
+			"LspInstall",
+			"LspUninstall",
+		},
 		opts = {
 			ensure_installed = {
 				"denols",
@@ -19,13 +23,17 @@ return {
 		},
 		config = function(_, opts)
 			require("mason-lspconfig").setup(opts)
-			vim.lsp.enable("biome")
-			vim.lsp.enable("ruby_lsp")
-			vim.lsp.enable("rubocop")
 		end,
 		dependencies = {
 			{
 				"williamboman/mason.nvim",
+				cmd = {
+					"Mason",
+					"MasonInstall",
+					"MasonUninstall",
+					"MasonUpdate",
+					"MasonLog",
+				},
 				opts = {
 					ui = {
 						icons = {
@@ -41,6 +49,11 @@ return {
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		cmd = {
+			"MasonToolsInstall",
+			"MasonToolsUpdate",
+			"MasonToolsClean",
+		},
 		opts = {
 			ensure_installed = {
 				"prettier",

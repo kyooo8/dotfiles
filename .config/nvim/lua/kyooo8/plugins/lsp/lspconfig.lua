@@ -9,8 +9,17 @@ return {
 	config = function()
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 
 		vim.lsp.config("*", { capabilities = capabilities })
+
+		local tailwindcss_language_server = mason_bin .. "/tailwindcss-language-server"
+		if vim.fn.executable(tailwindcss_language_server) == 1 then
+			vim.lsp.config("tailwindcss", {
+				cmd = { tailwindcss_language_server, "--stdio" },
+			})
+		end
+
 		vim.lsp.enable({
 			"denols",
 			"html",

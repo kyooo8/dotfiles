@@ -71,6 +71,7 @@ return {
 				"biome",
 				"typescript-language-server",
 				"vue-language-server",
+				"tailwindcss-language-server",
 			},
 		},
 		dependencies = {

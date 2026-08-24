@@ -9,14 +9,38 @@ return {
 		local is_biome = project.is_biome()
 		local is_deno = not is_biome and project.is_deno()
 
+		local function executable_path(name)
+			local path = vim.fn.exepath(name)
+			if path ~= "" then
+				return path
+			end
+
+			local mason_path = vim.fn.stdpath("data") .. "/mason/bin/" .. name
+			if vim.fn.executable(mason_path) == 1 then
+				return mason_path
+			end
+
+			return nil
+		end
+
+		local function executable_linter(name)
+			local path = executable_path(name)
+			if path == nil then
+				return {}
+			end
+
+			lint.linters[name].cmd = path
+			return { name }
+		end
+
 		local function js_linter()
 			if is_biome then
 				return {}
 			end -- biome LSP handles diagnostics
 			if is_deno then
-				return { "deno" }
+				return executable_linter("deno")
 			end
-			return { "eslint_d" }
+			return executable_linter("eslint_d")
 		end
 
 		lint.linters_by_ft = {
@@ -25,8 +49,8 @@ return {
 			javascriptreact = js_linter(),
 			typescriptreact = js_linter(),
 			vue = js_linter(),
-			svelte = { "eslint_d" },
-			python = { "pylint" },
+			svelte = executable_linter("eslint_d"),
+			python = executable_linter("pylint"),
 		}
 
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

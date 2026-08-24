@@ -16,6 +16,7 @@ return {
 			"tsx",
 			"yaml",
 			"html",
+			"pug",
 			"php",
 			"css",
 			"scss",

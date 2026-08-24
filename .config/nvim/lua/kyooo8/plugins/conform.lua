@@ -46,6 +46,7 @@ return {
 			typescript = { "prettier" },
 			javascriptreact = { "prettier" },
 			typescriptreact = { "prettier" },
+			vue = { "prettier" },
 			svelte = { "prettier" },
 			css = { "prettier" },
 			html = { "prettier" },
@@ -70,6 +71,7 @@ return {
 				"typescript",
 				"javascriptreact",
 				"typescriptreact",
+				"vue",
 				"json",
 				"jsonc",
 			}
@@ -83,6 +85,7 @@ return {
 				"typescript",
 				"javascriptreact",
 				"typescriptreact",
+				"vue",
 				"json",
 				"jsonc",
 			}

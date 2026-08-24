@@ -19,6 +19,7 @@ return {
 			"php",
 			"css",
 			"scss",
+			"vue",
 			"prisma",
 			"markdown",
 			"markdown_inline",

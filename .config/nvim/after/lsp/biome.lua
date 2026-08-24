@@ -5,6 +5,7 @@ return {
 		"typescript",
 		"javascriptreact",
 		"typescriptreact",
+		"vue",
 		"json",
 		"jsonc",
 	},

@@ -12,6 +12,7 @@ return {
 				"cssls",
 				"tailwindcss",
 				"svelte",
+				"vue_ls",
 				"lua_ls",
 				"emmet_ls",
 				"prismals",
@@ -69,6 +70,7 @@ return {
 				"htmlbeautifier",
 				"biome",
 				"typescript-language-server",
+				"vue-language-server",
 			},
 		},
 		dependencies = {

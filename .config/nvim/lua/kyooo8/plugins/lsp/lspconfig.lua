@@ -17,6 +17,7 @@ return {
 			"cssls",
 			"tailwindcss",
 			"svelte",
+			"vue_ls",
 			"lua_ls",
 			"emmet_ls",
 			"prismals",

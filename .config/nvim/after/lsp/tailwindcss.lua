@@ -9,6 +9,7 @@ return {
 		"javascriptreact",
 		"typescript",
 		"typescriptreact",
+		"vue",
 	},
 	root_dir = function(bufnr, on_dir)
 		local root_files = {

@@ -24,6 +24,7 @@ return {
 			typescript = js_linter(),
 			javascriptreact = js_linter(),
 			typescriptreact = js_linter(),
+			vue = js_linter(),
 			svelte = { "eslint_d" },
 			python = { "pylint" },
 		}

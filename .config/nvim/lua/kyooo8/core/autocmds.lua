@@ -1,3 +1,9 @@
+vim.filetype.add({
+	extension = {
+		slim = "slim",
+	},
+})
+
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "CursorHold", "CursorHoldI", "WinEnter" }, {
 	pattern = "*",
 	callback = function()

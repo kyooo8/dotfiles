@@ -17,6 +17,7 @@ return {
 			"yaml",
 			"html",
 			"pug",
+			"slim",
 			"php",
 			"css",
 			"scss",

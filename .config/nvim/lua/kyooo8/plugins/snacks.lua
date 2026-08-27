@@ -249,15 +249,29 @@ return {
 			desc = "Toggle terminal (split)",
 		},
 	},
-	opts = {
-		explorer = {
-			replace_netrw = true,
-		},
-		picker = {
-			sources = {
-				explorer = {
-					hidden = true,
-					ignored = true,
+		opts = {
+			explorer = {
+				replace_netrw = true,
+			},
+			picker = {
+				win = {
+					input = {
+						keys = {
+							["H"] = { "toggle_hidden", mode = "n" },
+							["I"] = { "toggle_ignored", mode = "n" },
+						},
+					},
+					list = {
+						keys = {
+							["H"] = "toggle_hidden",
+							["I"] = "toggle_ignored",
+						},
+					},
+				},
+				sources = {
+					explorer = {
+						hidden = true,
+						ignored = true,
 					exclude = { ".DS_Store" },
 					jump = { close = true },
 					layout = {

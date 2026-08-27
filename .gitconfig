@@ -1,5 +1,5 @@
 [include]
-  path = ~/.config/vendor/catppuccin-delta/catppuccin.gitconfig
+  path = ~/dev/vendor/catppuccin-delta/catppuccin.gitconfig
   path = ~/.gitconfig.local
 
 [core]

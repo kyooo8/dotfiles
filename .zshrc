@@ -98,6 +98,13 @@ alias env='envchain'
 alias n='nvim'
 alias tf='terraform'
 
+precmd() {
+  print -Pn "\e]0;%1~\a"
+}
+preexec() {
+  print -n "\e]0;${1%% *} | ${PWD:t}\a"
+}
+
 # Google Clould SDK
 if [ -f '${HOME}/google-cloud-sdk/path.zsh.inc' ]; then . '${HOME}/google-cloud-sdk/path.zsh.inc'; fi
 if [ -f '${HOME}/google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-cloud-sdk/completion.zsh.inc'; fi

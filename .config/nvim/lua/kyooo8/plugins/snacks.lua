@@ -200,20 +200,6 @@ return {
 			desc = "Find symbols in current file",
 		},
 		{
-			"<leader>lg",
-			function()
-				Snacks.lazygit()
-			end,
-			desc = "Open lazy git",
-		},
-		{
-			"<leader>lf",
-			function()
-				Snacks.lazygit.log_file()
-			end,
-			desc = "LazyGit: current file history",
-		},
-		{
 			"<leader>zz",
 			function()
 				Snacks.zen()
@@ -302,11 +288,6 @@ return {
 			enabled = true,
 		},
 		zen = {},
-		lazygit = {
-			config = {
-				os = { editPreset = "nvim-remote" },
-			},
-		},
 		styles = {
 			input = {
 				border = "rounded",

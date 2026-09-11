@@ -142,6 +142,13 @@ return {
 			end,
 			desc = "Open dashboard",
 		},
+		{
+			"<leader>lg",
+			function()
+				Snacks.lazygit()
+			end,
+			desc = "Open Lazygit",
+		},
 		{ "<leader>ee", explorer, desc = "Toggle file explorer" },
 		{ "<leader>ef", reveal_in_explorer, desc = "Reveal current file in explorer" },
 		{ "<leader>ec", close_explorer, desc = "Close file explorer" },

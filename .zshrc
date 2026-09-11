@@ -97,6 +97,7 @@ alias ca='cursor-agent'
 alias env='envchain'
 alias n='nvim'
 alias tf='terraform'
+export XDG_CONFIG_HOME="$HOME/.config"
 
 precmd() {
   print -Pn "\e]0;%1~\a"

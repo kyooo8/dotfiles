@@ -22,6 +22,9 @@ module.exports = {
     hyperBorder: {
       borderColors: ["#ed8796", "#eed49f"],
     },
+    opacity: {
+      focus: 0.95,
+    }
   },
   plugins: [
     "@catppuccin/hyper#1.0.8",
@@ -31,6 +34,7 @@ module.exports = {
     "hyper-active-tab",
     "hyperborder",
     "hyper-pane",
+    "hyper-opacity"
   ],
   keymaps: {},
 };

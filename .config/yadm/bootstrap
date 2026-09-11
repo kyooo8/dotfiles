@@ -1,38 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 分岐で使うプラットフォームを最初に判定する。
 system_type=$(uname -s)
 profile_file="$HOME/.zprofile"
 homebrew_brew_remote="${HOMEBREW_BREW_GIT_REMOTE:-https://github.com/Homebrew/brew}"
 homebrew_core_remote="${HOMEBREW_CORE_GIT_REMOTE:-https://github.com/Homebrew/homebrew-core}"
+
 if [ "$system_type" = "Linux" ]; then
-  case "$homebrew_brew_remote" in
-    git@github.com:Homebrew/brew|ssh://git@github.com/Homebrew/brew)
-      homebrew_brew_remote="https://github.com/Homebrew/brew"
-      ;;
-  esac
-  case "$homebrew_core_remote" in
-    git@github.com:Homebrew/homebrew-core|ssh://git@github.com/Homebrew/homebrew-core)
-      homebrew_core_remote="https://github.com/Homebrew/homebrew-core"
-      ;;
-  esac
+  homebrew_brew_remote="https://github.com/Homebrew/brew"
+  homebrew_core_remote="https://github.com/Homebrew/homebrew-core"
 fi
-export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
-export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
 
 run_with_homebrew_git_config() {
-  GIT_CONFIG_NOSYSTEM=1 \
-    GIT_CONFIG_GLOBAL=/dev/null \
-    GIT_CONFIG_COUNT=2 \
-    GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf \
-    GIT_CONFIG_VALUE_0=git@github.com: \
-    GIT_CONFIG_KEY_1=url.https://github.com/.insteadOf \
-    GIT_CONFIG_VALUE_1=ssh://git@github.com/ \
+  (
+    export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
+    export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
+    export GIT_CONFIG_NOSYSTEM=1
+    export GIT_CONFIG_GLOBAL=/dev/null
+    export GIT_CONFIG_COUNT=2
+    export GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf
+    export GIT_CONFIG_VALUE_0=git@github.com:
+    export GIT_CONFIG_KEY_1=url.https://github.com/.insteadOf
+    export GIT_CONFIG_VALUE_1=ssh://git@github.com/
     "$@"
+  )
 }
 
 fix_homebrew_remote() {
+  local homebrew_repo
   for homebrew_repo in \
     /opt/homebrew/Homebrew \
     /usr/local/Homebrew \
@@ -48,29 +43,6 @@ fix_homebrew_remote() {
   done
 }
 
-gitconfig_backup=""
-restore_gitconfig() {
-  if [ -n "$gitconfig_backup" ] && [ -f "$gitconfig_backup" ]; then
-    cp "$gitconfig_backup" "$HOME/.gitconfig"
-    rm -f "$gitconfig_backup"
-  fi
-}
-
-disable_github_ssh_rewrite_on_linux() {
-  if [ "$system_type" != "Linux" ] || ! command -v git >/dev/null 2>&1; then
-    return 0
-  fi
-
-  if git config --global --get-all 'url.git@github.com:.insteadOf' >/dev/null 2>&1 || \
-    git config --global --get-all 'url.ssh://git@github.com/.insteadOf' >/dev/null 2>&1; then
-    gitconfig_backup=$(mktemp)
-    cp "$HOME/.gitconfig" "$gitconfig_backup"
-    trap restore_gitconfig EXIT
-    git config --global --unset-all 'url.git@github.com:.insteadOf' || true
-    git config --global --unset-all 'url.ssh://git@github.com/.insteadOf' || true
-  fi
-}
-
 # Ubuntu/Debian では必須パッケージをインストールする。
 if [ "$system_type" = "Linux" ]; then
   echo "[Step] Linux の基本パッケージを更新しています"
@@ -82,27 +54,26 @@ fi
 # Homebrew/Linuxbrew がなければインストールする。
 if ! command -v brew >/dev/null 2>&1; then
   echo "[Step] Homebrew をインストールしています"
-  disable_github_ssh_rewrite_on_linux
   fix_homebrew_remote
-  NONINTERACTIVE=1 \
-    HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote" \
-    HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote" \
-    run_with_homebrew_git_config /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  run_with_homebrew_git_config env NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fix_homebrew_remote
 fi
 
-# brew のインストール先 prefix を判定する。
-if command -v brew >/dev/null 2>&1; then
-  brew_bin=$(command -v brew)
-elif [ -x /opt/homebrew/bin/brew ]; then
-  brew_bin="/opt/homebrew/bin/brew"
-elif [ -x /usr/local/bin/brew ]; then
-  brew_bin="/usr/local/bin/brew"
-elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
-  brew_bin="/home/linuxbrew/.linuxbrew/bin/brew"
-elif [ -x "$HOME/.linuxbrew/bin/brew" ]; then
-  brew_bin="$HOME/.linuxbrew/bin/brew"
-else
+brew_bin=$(command -v brew || true)
+if [ -z "$brew_bin" ]; then
+  for candidate in \
+    /opt/homebrew/bin/brew \
+    /usr/local/bin/brew \
+    /home/linuxbrew/.linuxbrew/bin/brew \
+    "$HOME/.linuxbrew/bin/brew"; do
+    if [ -x "$candidate" ]; then
+      brew_bin="$candidate"
+      break
+    fi
+  done
+fi
+
+if [ -z "$brew_bin" ]; then
   echo "[Error] インストール後に brew コマンドが見つかりません"
   exit 1
 fi

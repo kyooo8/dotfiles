@@ -97,6 +97,8 @@ return {
 					vim.keymap.set("n", "<S-Tab>", function()
 						return is_bullet() and "<Plug>(bullets-promote)" or "<S-Tab>"
 					end, { expr = true, buffer = true })
+
+					vim.keymap.set("n", "<CR>", "<Plug>(bullets-toggle-checkbox)", { buffer = true })
 				end,
 			})
 		end,

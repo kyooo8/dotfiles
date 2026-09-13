@@ -1,0 +1,25 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[ui]
+status_indicators = "dots"
+
+[ui.toast]
+delivery = "herdr"
+
+[worktrees]
+directory = "~/dev/.worktrees"
+
+[keys]
+prefix = "ctrl+a"
+split_horizontal = "prefix+u"
+split_vertical = "prefix+i"
+focus_pane_left = "ctrl+h"
+focus_pane_down = "ctrl+j"
+focus_pane_up = "ctrl+k"
+focus_pane_right = "ctrl+l"
+previous_agent = "ctrl+p"
+next_agent = "ctrl+n"

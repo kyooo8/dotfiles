@@ -10,14 +10,6 @@ return {
 			vim.g.bullets_checkbox_markers = " .oOX"
 
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "markdown", "text" },
-				callback = function()
-					vim.opt_local.breakindent = true
-					vim.opt_local.breakindentopt = "shift:2"
-				end,
-			})
-
-			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "markdown",
 				callback = function()
 					local function is_bullet()

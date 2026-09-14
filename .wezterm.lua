@@ -3,8 +3,8 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 local act = wezterm.action
 
-local DEFAULT_OPACITY = 0.9
-local BLUR_ON = 40
+local DEFAULT_OPACITY = 0.6
+local BLUR_ON = 20
 local BLUR_OFF = 0
 
 local WIN_BLUR_ON = "Acrylic"
@@ -128,68 +128,5 @@ local keys = {
 }
 
 config.keys = keys
-
-local function hex_to_rgb(hex)
-	hex = hex:gsub("#", "")
-	return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
-end
-
-local function lerp(a, b, t)
-	return a + (b - a) * t
-end
-
-local function lerp_color(hex1, hex2, t)
-	local r1, g1, b1 = hex_to_rgb(hex1)
-	local r2, g2, b2 = hex_to_rgb(hex2)
-	local r = math.floor(lerp(r1, r2, t) + 0.5)
-	local g = math.floor(lerp(g1, g2, t) + 0.5)
-	local b = math.floor(lerp(b1, b2, t) + 0.5)
-	return string.format("#%02x%02x%02x", r, g, b)
-end
-
-wezterm.GLOBAL.progress = wezterm.GLOBAL.progress or 0
-
-local function animate_border(window)
-	if not window then
-		wezterm.log_error("animate_border: window is nil")
-		return
-	end
-
-	wezterm.GLOBAL.progress = (wezterm.GLOBAL.progress + BORDER_SPEED) % #catppuccin_accents
-
-	local index1 = math.floor(wezterm.GLOBAL.progress) + 1
-	local index2 = (index1 % #catppuccin_accents) + 1
-	local t = wezterm.GLOBAL.progress - math.floor(wezterm.GLOBAL.progress)
-
-	local c = lerp_color(catppuccin_accents[index1], catppuccin_accents[index2], t)
-
-	local ok, err = pcall(function()
-		local overrides = window:get_config_overrides() or {}
-		overrides.window_frame = {
-			border_left_width = BORDER_WIDTH,
-			border_right_width = BORDER_WIDTH,
-			border_top_height = BORDER_WIDTH,
-			border_bottom_height = BORDER_WIDTH,
-			border_left_color = c,
-			border_top_color = c,
-			border_right_color = c,
-			border_bottom_color = c,
-		}
-		window:set_config_overrides(overrides)
-	end)
-
-	if not ok then
-		wezterm.log_error("set_config_overrides failed: " .. tostring(err))
-	end
-
-	wezterm.time.call_after(0.033, function()
-		animate_border(window)
-	end)
-end
-
-wezterm.on("gui-startup", function()
-	local tab, pane, window = wezterm.mux.spawn_window({})
-	animate_border(window:gui_window())
-end)
 
 return config

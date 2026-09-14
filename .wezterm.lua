@@ -3,15 +3,15 @@ local config = wezterm.config_builder()
 local mux = wezterm.mux
 local act = wezterm.action
 
-local DEFAULT_OPACITY = 0.6
-local BLUR_ON = 20
+local DEFAULT_OPACITY = 0.8
+local BLUR_ON = 10
 local BLUR_OFF = 0
 
 local WIN_BLUR_ON = "Acrylic"
 local WIN_BLUR_OFF = "Disable"
 
-local TOGGLE_OPACITY = 0.2
-local TOGGLE_TEXT_BRIGHTNESS = 0.35
+local TOGGLE_OPACITY = 0
+local TOGGLE_TEXT_BRIGHTNESS = 0.1
 local GREP_MATCH_COLOR = "1;35"
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil

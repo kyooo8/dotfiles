@@ -2,7 +2,6 @@
 HyperDownTimes := Map()
 HyperHeld := Map()
 HyperUsed := Map()
-HyperTimers := Map()
 TapThreshold := 300
 
 IsHyperHeld()
@@ -13,39 +12,24 @@ IsHyperHeld()
 
 HyperDown(keyName)
 {
-    global HyperDownTimes, HyperHeld, HyperUsed, HyperTimers, TapThreshold
+    global HyperDownTimes, HyperHeld, HyperUsed
     if HyperDownTimes.Has(keyName)
         return
 
     HyperDownTimes[keyName] := A_TickCount
     HyperUsed[keyName] := false
-    HyperHeld[keyName] := false
-    HyperTimers[keyName] := ActivateHyper.Bind(keyName)
-    SetTimer(HyperTimers[keyName], -TapThreshold)
-}
-
-ActivateHyper(keyName)
-{
-    global HyperDownTimes, HyperHeld
-    if !HyperDownTimes.Has(keyName)
-        return
-
     HyperHeld[keyName] := true
     Send "{Ctrl Down}{Alt Down}{Shift Down}"
 }
 
 HyperUp(keyName)
 {
-    global HyperDownTimes, HyperHeld, HyperUsed, HyperTimers, TapThreshold
+    global HyperDownTimes, HyperHeld, HyperUsed, TapThreshold
     downTime := HyperDownTimes.Has(keyName) ? HyperDownTimes[keyName] : A_TickCount
     wasHeld := HyperHeld.Has(keyName) ? HyperHeld[keyName] : false
     wasUsed := HyperUsed.Has(keyName) ? HyperUsed[keyName] : true
     if (!wasUsed && A_PriorKey != keyName && !IsInjectedHyperModifier(A_PriorKey))
         wasUsed := true
-    if HyperTimers.Has(keyName) {
-        SetTimer(HyperTimers[keyName], 0)
-        HyperTimers.Delete(keyName)
-    }
     HyperHeld[keyName] := false
     if HyperDownTimes.Has(keyName)
         HyperDownTimes.Delete(keyName)
@@ -55,7 +39,7 @@ HyperUp(keyName)
     if wasHeld && !IsHyperHeld()
         Send "{Ctrl Up}{Alt Up}{Shift Up}"
 
-    if (!wasHeld && !IsHyperHeld() && !wasUsed && A_TickCount - downTime < TapThreshold)
+    if (wasHeld && !IsHyperHeld() && !wasUsed && A_TickCount - downTime < TapThreshold)
         Send "{Tab}"
 }
 
@@ -86,11 +70,18 @@ SendHyperArrow(direction)
         Send "{Ctrl Down}{Alt Down}{Shift Down}"
 }
 
+SendHyperSpace()
+{
+    MarkHyperUsed()
+    Send "{Ctrl Down}{Alt Down}{Shift Down}{Space}"
+}
+
 $*Tab::HyperDown("Tab")
 
 $*Tab Up::HyperUp("Tab")
 
 #HotIf IsHyperHeld()
+*Space::SendHyperSpace()
 *h::SendHyperArrow("{Left}")
 *j::SendHyperArrow("{Down}")
 *k::SendHyperArrow("{Up}")

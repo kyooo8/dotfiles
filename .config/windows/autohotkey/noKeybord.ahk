@@ -10,7 +10,19 @@ global OverlapThreshold := 80
 #Include ".\symbol-layer.ahk"
 #Include ".\number-layer.ahk"
 
-#HotIf !(GetKeyState("Ctrl", "P") && !GetKeyState("Alt", "P") && !GetKeyState("Shift", "P")) && (!GetKeyState("LAlt") || (GetKeyState("Ctrl") && GetKeyState("Alt") && GetKeyState("Shift")))
+IsHyperChordActive() {
+    return GetKeyState("Ctrl") && GetKeyState("Alt") && GetKeyState("Shift")
+}
+
+ShouldUseSpaceLayer() {
+    if GetKeyState("Ctrl", "P") && !GetKeyState("Alt", "P") && !GetKeyState("Shift", "P")
+        return false
+    if IsHyperChordActive()
+        return false
+    return !GetKeyState("LAlt")
+}
+
+#HotIf ShouldUseSpaceLayer()
 *$Space::
 {
     global symbolLayerHeld, SpacePressTime, OverlapThreshold, layer1Keys

@@ -12,7 +12,7 @@ sidebar_min_width = 25
 delivery = "herdr"
 
 [worktrees]
-directory = "~/dev/.herdr"
+directory = "~/dev/.worktrees"
 
 [keys]
 prefix = "ctrl+a"

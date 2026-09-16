@@ -5,6 +5,7 @@ local act = wezterm.action
 
 local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
+local win_wsl_home = "/home/kyosu"
 
 local DEFAULT_OPACITY = 0.8
 local BLUR_ON = 10

@@ -17,12 +17,9 @@ local TOGGLE_OPACITY = 0
 local TOGGLE_TEXT_BRIGHTNESS = 0.1
 local GREP_MATCH_COLOR = "1;35"
 
-local BORDER_WIDTH = "8px"
-local BORDER_SPEED = 0.04
-
 config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = is_win and 10 or 12
+config.font_size = is_win and 9.5 or 12
 config.use_ime = true
 config.set_environment_variables = {
 	GREP_COLOR = GREP_MATCH_COLOR,
@@ -35,6 +32,7 @@ if is_mac then
 end
 if is_win then
 	config.win32_system_backdrop = WIN_BLUR_ON
+	config.default_domain = "WSL:Ubuntu"
 end
 
 config.window_decorations = "RESIZE"

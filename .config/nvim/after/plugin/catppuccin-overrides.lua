@@ -1,4 +1,4 @@
-local cp = require("catppuccin.palettes").get_palette("macchiato")
+local cp = require("catppuccin.palettes").get_palette("mocha")
 
 vim.api.nvim_set_hl(0, "GlancePreviewNormal", { bg = cp.crust })
 vim.api.nvim_set_hl(0, "GlancePreviewBorder", { bg = cp.crust, fg = cp.overlay1 })

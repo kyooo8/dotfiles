@@ -37,7 +37,7 @@ local catppuccin_accents = {
 local BORDER_WIDTH = "8px"
 local BORDER_SPEED = 0.04
 
-config.color_scheme = "Catppuccin Macchiato"
+config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
 config.font_size = 12
 config.use_ime = true

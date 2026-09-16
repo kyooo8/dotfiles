@@ -28,8 +28,6 @@ HyperUp(keyName)
     downTime := HyperDownTimes.Has(keyName) ? HyperDownTimes[keyName] : A_TickCount
     wasHeld := HyperHeld.Has(keyName) ? HyperHeld[keyName] : false
     wasUsed := HyperUsed.Has(keyName) ? HyperUsed[keyName] : true
-    if (!wasUsed && A_PriorKey != keyName && !IsInjectedHyperModifier(A_PriorKey))
-        wasUsed := true
     HyperHeld[keyName] := false
     if HyperDownTimes.Has(keyName)
         HyperDownTimes.Delete(keyName)
@@ -41,15 +39,6 @@ HyperUp(keyName)
 
     if (wasHeld && !IsHyperHeld() && !wasUsed && A_TickCount - downTime < TapThreshold)
         Send "{Tab}"
-}
-
-IsInjectedHyperModifier(keyName)
-{
-    return (keyName == "Ctrl" || keyName == "Control"
-        || keyName == "LCtrl" || keyName == "RCtrl"
-        || keyName == "LControl" || keyName == "RControl"
-        || keyName == "Alt" || keyName == "LAlt" || keyName == "RAlt"
-        || keyName == "Shift" || keyName == "LShift" || keyName == "RShift")
 }
 
 MarkHyperUsed()

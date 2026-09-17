@@ -105,31 +105,6 @@ local function todos_in_selected_dir()
 	end)
 end
 
-local function explorer()
-	Snacks.explorer()
-end
-
-local function reveal_in_explorer()
-	Snacks.explorer.reveal()
-end
-
-local function close_explorer()
-	local picker = Snacks.picker.get({ source = "explorer" })[1]
-	if picker then
-		picker:close()
-	end
-end
-
-local function refresh_explorer()
-	local picker = Snacks.picker.get({ source = "explorer" })[1]
-	if picker then
-		picker:find()
-		return
-	end
-
-	Snacks.explorer()
-end
-
 return {
 	"folke/snacks.nvim",
 	priority = 1000,
@@ -149,10 +124,6 @@ return {
 			end,
 			desc = "Open Lazygit",
 		},
-		{ "<leader>ee", explorer, desc = "Toggle file explorer" },
-		{ "<leader>ef", reveal_in_explorer, desc = "Reveal current file in explorer" },
-		{ "<leader>ec", close_explorer, desc = "Close file explorer" },
-		{ "<leader>er", refresh_explorer, desc = "Refresh file explorer" },
 		{
 			"<leader>ff",
 			function()
@@ -243,9 +214,6 @@ return {
 		},
 	},
 	opts = {
-		explorer = {
-			replace_netrw = true,
-		},
 		picker = {
 			win = {
 				input = {
@@ -258,32 +226,6 @@ return {
 					keys = {
 						["H"] = "toggle_hidden",
 						["I"] = "toggle_ignored",
-					},
-				},
-			},
-			sources = {
-				explorer = {
-					hidden = true,
-					ignored = true,
-					exclude = { ".DS_Store" },
-					jump = { close = true },
-					layout = {
-						preset = "sidebar",
-						preview = false,
-						layout = {
-							position = "right",
-							width = 60,
-						},
-					},
-					win = {
-						list = {
-							keys = {
-								["|"] = "edit_vsplit",
-								["_"] = "edit_split",
-								["t"] = "tab",
-								["q"] = "close",
-							},
-						},
 					},
 				},
 			},

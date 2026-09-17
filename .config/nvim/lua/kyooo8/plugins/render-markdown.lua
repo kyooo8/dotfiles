@@ -11,7 +11,7 @@ return {
 			enabled = false,
 		},
 		pipe_table = {
-			cell = "raw",
+			cell = "padded",
 		},
 	},
 }

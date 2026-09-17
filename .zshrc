@@ -28,6 +28,8 @@ if [[ "$(uname -r)" == *microsoft* ]]; then
 fi
 
 export EDITOR=nvim
+# nvimのTUI起動時に端末機能検出結果を書き出すログ(~/.local/state/nvim/nvim.log)を捨てる
+export NVIM_LOG_FILE=/dev/null
 
 export PATH="$HOME/.local/bin:$PATH"
 

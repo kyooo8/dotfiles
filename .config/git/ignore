@@ -3,3 +3,5 @@ mise.toml
 ._/
 .nvim.lua
 **/.claude/settings.local.json
+.claude/
+.codex/

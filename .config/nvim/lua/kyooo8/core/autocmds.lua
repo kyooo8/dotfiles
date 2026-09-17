@@ -21,15 +21,3 @@ vim.api.nvim_create_autocmd("Filetype", {
 	end,
 	desc = "Disable comment continuation",
 })
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "text", "gitcommit" },
-	callback = function()
-		vim.opt_local.wrap = true
-		vim.opt_local.linebreak = false
-		vim.opt_local.breakindent = true
-		vim.opt_local.breakindentopt = "list:-1,min:40"
-		vim.opt_local.showbreak = ""
-	end,
-	desc = "Wrap prose at word boundaries",
-})

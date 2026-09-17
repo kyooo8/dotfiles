@@ -6,7 +6,6 @@ auto_switch = false
 
 [ui]
 status_indicators = "dots"
-sidebar_min_width = 25
 
 [ui.toast]
 delivery = "herdr"

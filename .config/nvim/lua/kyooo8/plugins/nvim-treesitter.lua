@@ -28,7 +28,8 @@ local ensure_installed = {
 
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
+	-- The frozen master branch only supports Neovim 0.10/0.11.
+	branch = "main",
 	build = function()
 		local treesitter = require("nvim-treesitter")
 		treesitter.install(ensure_installed):wait(300000)

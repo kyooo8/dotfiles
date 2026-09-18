@@ -7,8 +7,8 @@ local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
 local win_wsl_home = "/home/kyosu"
 
-local DEFAULT_OPACITY = 0.8
-local BLUR_ON = 10
+local DEFAULT_OPACITY = 0.9
+local BLUR_ON = 30
 local BLUR_OFF = 0
 
 local WIN_BLUR_ON = "Acrylic"
@@ -20,7 +20,7 @@ local GREP_MATCH_COLOR = "1;35"
 
 config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = is_win and 9.5 or 12
+config.font_size = is_win and 9.5 or 11
 config.use_ime = true
 config.set_environment_variables = {
 	GREP_COLOR = GREP_MATCH_COLOR,

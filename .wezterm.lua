@@ -20,7 +20,7 @@ local GREP_MATCH_COLOR = "1;35"
 
 config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({ "JetBrainsMonoNL Nerd Font Mono", "Cica" })
-config.font_size = is_win and 9.5 or 11
+config.font_size = is_win and 9 or 11
 config.use_ime = true
 config.set_environment_variables = {
 	GREP_COLOR = GREP_MATCH_COLOR,

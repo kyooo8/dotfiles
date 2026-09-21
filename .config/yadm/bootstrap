@@ -45,12 +45,18 @@ fix_homebrew_remote() {
   done
 }
 
+disable_github_https_to_ssh_rewrite() {
+  git config --global --unset-all url.git@github.com:.insteadOf "https://github.com/" 2>/dev/null || true
+  git config --global --unset-all url.ssh://git@github.com/.insteadOf "https://github.com/" 2>/dev/null || true
+}
+
 # Ubuntu/Debian では必須パッケージをインストールする。
 if [ "$system_type" = "Linux" ]; then
   echo "[Step] Linux の基本パッケージを更新しています"
   sudo apt update
   sudo apt install -y zsh git curl wget ca-certificates gnupg build-essential locales unzip tar gzip
   sudo locale-gen ja_JP.UTF-8
+  disable_github_https_to_ssh_rewrite
 fi
 
 # Homebrew/Linuxbrew がなければインストールする。

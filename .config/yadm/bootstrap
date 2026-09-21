@@ -15,7 +15,9 @@ run_with_homebrew_git_config() {
   (
     export HOMEBREW_BREW_GIT_REMOTE="$homebrew_brew_remote"
     export HOMEBREW_CORE_GIT_REMOTE="$homebrew_core_remote"
+    export HOMEBREW_NO_ENV_FILTERING=1
     export GIT_CONFIG_NOSYSTEM=1
+    export GIT_CONFIG_SYSTEM=/dev/null
     export GIT_CONFIG_GLOBAL=/dev/null
     export GIT_CONFIG_COUNT=2
     export GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf

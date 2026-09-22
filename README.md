@@ -49,15 +49,11 @@ macOS / Ubuntu の両方で zsh へのシェル切り替えまで自動化され
         ```bash
         cp ~/.config/windows/autohotkey/* /mnt/c/Users/[username]/Documents/AutoHotKey
         ```
-    - ```
-
-      ```
 - Weztermのインストール
     - https://wezterm.org/index.html
     - 設定の反映
         ```bash
         cp ~/.wezterm.lua /mnt/c/Users/[username]/
-
         ```
 - win32yankインストール（クリップボード共有）
     - インストール

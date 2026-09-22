@@ -1,6 +1,7 @@
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
+		lazy = false,
 		cmd = {
 			"LspInstall",
 			"LspUninstall",
@@ -51,6 +52,7 @@ return {
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		lazy = false,
 		cmd = {
 			"MasonToolsInstall",
 			"MasonToolsUpdate",

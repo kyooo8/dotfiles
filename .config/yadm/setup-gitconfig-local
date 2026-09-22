@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+local_config="$HOME/.gitconfig.local"
+
+current_name=$(git config --file "$local_config" user.name 2>/dev/null || true)
+current_email=$(git config --file "$local_config" user.email 2>/dev/null || true)
+
+if [ -n "$current_name" ] && [ -n "$current_email" ]; then
+  echo "[Info] ${local_config} に user.name / user.email が既に設定されています（name=${current_name}, email=${current_email}）"
+  exit 0
+fi
+
+read -rp "Git user.name: " git_name
+read -rp "Git user.email: " git_email
+
+git config --file "$local_config" user.name "$git_name"
+git config --file "$local_config" user.email "$git_email"
+
+echo "[Info] ${local_config} に user.name / user.email を設定しました"

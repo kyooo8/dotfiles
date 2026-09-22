@@ -17,11 +17,16 @@ macOS / Ubuntu の両方で zsh へのシェル切り替えまで自動化され
 
 ## スクリプトが終了したら以下を実行
 
-- Gitのユーザー情報を設定（`.gitconfig.local`はyadm管理外なので個別に作成する）
+- `.gitconfig`を復元（bootstrap実行中に`insteadOf`設定が一時的に解除されるため）
 
     ```bash
-    git config --file ~/.gitconfig.local user.name "[your name]"
-    git config --file ~/.gitconfig.local user.email "[your@email.com]"
+    yadm restore ~/.gitconfig
+    ```
+
+- Gitのユーザー情報を設定
+
+    ```bash
+    ~/.config/yadm/setup-gitconfig-local
     ```
 
 - vendorリポジトリを`~/dev/vendor/`にclone（`.gitconfig`と`.zshrc`が参照している）

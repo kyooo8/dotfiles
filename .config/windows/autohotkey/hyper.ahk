@@ -79,13 +79,4 @@ $*Tab Up::HyperUp("Tab")
 *n::SendHyperArrow("{Down}")
 *a::SendHyperArrow("{Home}")
 *e::SendHyperArrow("{End}")
-*c::{
-    MarkHyperUsed()
-    if WinActive("ahk_exe claude.exe")
-        WinMinimize "ahk_exe claude.exe"
-    else if WinExist("ahk_exe claude.exe")
-        WinActivate "ahk_exe claude.exe"
-    else
-        Run EnvGet("LOCALAPPDATA") "\AnthropicClaude\claude.exe"
-}
 #HotIf

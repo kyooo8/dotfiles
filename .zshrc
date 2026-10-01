@@ -119,14 +119,3 @@ eval "$(mise activate zsh)"
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-
-# Overwatch agent team
-ow() {
-  if [[ -z "${HERDR_ENV+x}" ]]; then
-    print -u2 'ow は Herdr 内で動作します。Herdr を起動するので、表示されたペインでもう一度 ow を実行してください。'
-    command herdr
-    return
-  fi
-
-  claude --agent ウィンストン "$@"
-}

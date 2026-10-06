@@ -6,6 +6,7 @@ auto_switch = false
 
 [ui]
 status_indicators = "dots"
+host_cursor = "native"
 
 [ui.toast]
 delivery = "herdr"

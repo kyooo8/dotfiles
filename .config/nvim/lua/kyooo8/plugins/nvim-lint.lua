@@ -6,9 +6,6 @@ return {
 
 		local project = require("kyooo8.util.project")
 
-		local is_biome = project.is_biome()
-		local is_deno = not is_biome and project.is_deno()
-
 		local function executable_path(name)
 			local path = vim.fn.exepath(name)
 			if path ~= "" then
@@ -33,37 +30,58 @@ return {
 			return { name }
 		end
 
-		local function js_linter()
-			if is_biome then
-				return {}
-			end -- biome LSP handles diagnostics
-			if is_deno then
-				return executable_linter("deno")
-			end
-			return executable_linter("eslint_d")
-		end
-
 		lint.linters_by_ft = {
-			javascript = js_linter(),
-			typescript = js_linter(),
-			javascriptreact = js_linter(),
-			typescriptreact = js_linter(),
-			vue = js_linter(),
+			javascript = {},
+			typescript = {},
+			javascriptreact = {},
+			typescriptreact = {},
+			vue = {},
 			svelte = executable_linter("eslint_d"),
 			python = executable_linter("pylint"),
 		}
+
+		local js_filetypes = {
+			javascript = true,
+			typescript = true,
+			javascriptreact = true,
+			typescriptreact = true,
+			vue = true,
+		}
+
+		local function try_lint()
+			if not js_filetypes[vim.bo.filetype] then
+				lint.try_lint()
+				return
+			end
+
+			local filename = vim.api.nvim_buf_get_name(0)
+			if filename == "" then
+				return
+			end
+			local deno_root = project.deno_root(filename)
+			local biome_root = vim.fs.root(filename, { "biome.json", "biome.jsonc" })
+			if biome_root and (not deno_root or #biome_root >= #deno_root) then
+				return -- biome LSP handles diagnostics
+			end
+
+			if deno_root then
+				return -- denols handles lint diagnostics, including unsaved changes
+			end
+
+			lint.try_lint(executable_linter("eslint_d"))
+		end
 
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 			group = lint_augroup,
 			callback = function()
-				lint.try_lint()
+				try_lint()
 			end,
 		})
 
 		vim.keymap.set("n", "<leader>ll", function()
-			lint.try_lint()
+			try_lint()
 		end, { desc = "Trigger linting for current file" })
 	end,
 }

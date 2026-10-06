@@ -3,11 +3,13 @@ return {
 	ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
 	dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 	opts = {
-		on_attach = function(client)
-			local root = client.root_dir or vim.fn.getcwd()
-			if vim.fn.filereadable(root .. "/deno.json") == 1 or vim.fn.filereadable(root .. "/deno.jsonc") == 1 then
-				client.stop()
+		root_dir = function(bufnr, on_dir)
+			local filename = vim.api.nvim_buf_get_name(bufnr)
+			if require("kyooo8.util.project").deno_root(filename) then
+				return
 			end
+
+			on_dir(require("typescript-tools.utils").get_root_dir(bufnr))
 		end,
 	},
 }

@@ -1,5 +1,26 @@
 local M = {}
 
+local deno_markers = { "deno.json", "deno.jsonc", "deno.lock", "import_map.json", "fresh.config.ts", "fresh.gen.ts" }
+local node_markers = { "package.json", "tsconfig.json", "jsconfig.json" }
+
+function M.deno_root(path)
+	if path == "" then
+		return nil
+	end
+
+	local root = vim.fs.root(path, deno_markers)
+	if not root then
+		return nil
+	end
+
+	local node = vim.fs.root(path, node_markers)
+	if node and node:sub(1, #root + 1) == root .. "/" then
+		return nil
+	end
+
+	return root
+end
+
 local function file_exists(path)
 	return vim.fn.filereadable(path) == 1
 end

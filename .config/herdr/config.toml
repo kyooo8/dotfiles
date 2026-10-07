@@ -15,7 +15,6 @@ delivery = "herdr"
 directory = "~/dev/.worktrees"
 
 [keys]
-prefix = "ctrl+a"
 split_horizontal = "prefix+u"
 split_vertical = "prefix+i"
 focus_pane_left = "ctrl+h"

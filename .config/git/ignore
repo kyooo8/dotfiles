@@ -5,3 +5,5 @@ mise.toml
 **/.claude/settings.local.json
 .claude/
 .codex/
+CLAUDE.md
+graphify-out/

@@ -409,32 +409,11 @@
                         }
                     ],
                     "from": {
-                        "key_code": "semicolon"
-                    },
-                    "to": [
-                        {
-                            "key_code": "quote",
-                            "modifiers": [
-                                "shift"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "basic",
-                    "conditions": [
-                        {
-                            "name": "symbol_layer",
-                            "type": "variable_if",
-                            "value": 1
-                        }
-                    ],
-                    "from": {
                         "key_code": "z"
                     },
                     "to": [
                         {
-                            "key_code": "grave_accent_and_tilde"
+                            "key_code": "quote"
                         }
                     ]
                 },
@@ -474,6 +453,27 @@
                     "to": [
                         {
                             "key_code": "6",
+                            "modifiers": [
+                                "shift"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "conditions": [
+                        {
+                            "name": "symbol_layer",
+                            "type": "variable_if",
+                            "value": 1
+                        }
+                    ],
+                    "from": {
+                        "key_code": "v"
+                    },
+                    "to": [
+                        {
+                            "key_code": "quote",
                             "modifiers": [
                                 "shift"
                             ]
@@ -565,29 +565,11 @@
                         }
                     ],
                     "from": {
-                        "key_code": "slash"
+                        "key_code": "period"
                     },
                     "to": [
                         {
-                            "key_code": "quote"
-                        }
-                    ]
-                },
-                {
-                    "type": "basic",
-                    "conditions": [
-                        {
-                            "name": "symbol_layer",
-                            "type": "variable_if",
-                            "value": 1
-                        }
-                    ],
-                    "from": {
-                        "key_code": "escape"
-                    },
-                    "to": [
-                        {
-                            "key_code": "quote"
+                            "key_code": "grave_accent_and_tilde"
                         }
                     ]
                 },

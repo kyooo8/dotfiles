@@ -44,11 +44,8 @@ SendSlash(*)  => SendFW('/', '・')
 SendQuestion(*)  => SendFW('?', '？')
 
 SymbolLayerActive(*) {
-    global symbolLayerHeld, SpacePressTime, OverlapThreshold
-    if !symbolLayerHeld
-        return false
-    ; オーバーラップ保護: Space を押してから OverlapThreshold ms 未満はレイヤー無効
-    return A_TickCount - SpacePressTime >= OverlapThreshold
+    global symbolLayerHeld
+    return symbolLayerHeld
 }
 
 Layer1_Init() {
@@ -71,17 +68,16 @@ Layer1_Init() {
         "j", SendParenR,
         "k", SendAmp,
         "l", SendBackslash,
-        ";", SendDoubleQuote,
-        
-        "z", SendBackQuote,
+
+        "z", SendQuote,
         "x", SendStar,
         "c", SendCaret,
+        "v", SendDoubleQuote,
         "b", SendBracketL,
         "n", SendBracketR,
         "m", SendMinus,
         ",", SendPlus,
-        "/", SendQuote,
-        "[", (*) => Send("{Delete}")
+        ".", SendBackQuote,
     )
 
     HotIf SymbolLayerActive

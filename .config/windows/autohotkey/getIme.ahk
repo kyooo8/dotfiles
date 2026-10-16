@@ -1,4 +1,3 @@
-
 #SingleInstance Force
 
 GetTargetHwnd(WinTitle := "A") {

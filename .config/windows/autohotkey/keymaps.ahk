@@ -1,5 +1,3 @@
-#HotIf !SymbolLayerActive()
-*[::Send "{Blind}{Backspace}"
-#HotIf
 *'::Send "{Blind}{Enter}"
-*/::Send "{Blind}{Esc}"
+*/::Send "{Blind}{Backspace}"
+*RShift::Send "{Blind}{Esc}"

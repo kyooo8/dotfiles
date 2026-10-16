@@ -30,16 +30,15 @@ NumberLayerActive(*) {
 
 Layer2_Init() {
     global layer2Keys := Map(
-        "z", NumSend1,
-        "x", NumSend2,
-        "c", NumSend3,
-        "a", NumSend4,
-        "s", NumSend5,
-        "d", NumSend6,
-        "q", NumSend7,
-        "w", NumSend8,
-        "e", NumSend9,
-        "v", NumSend0,
+        ; Shift 併用で範囲選択になるよう {Blind}
+        "e", (*) => Send("{Blind}{End}"),
+        "a", (*) => Send("{Blind}{Home}"),
+        "f", (*) => Send("{Blind}{Right}"),
+        "b", (*) => Send("{Blind}{Left}"),
+        "n", (*) => Send("{Blind}{Down}"),
+        "p", (*) => Send("{Blind}{Up}"),
+        "d", (*) => Send("{Blind}{Delete}"),
+        "h", (*) => Send("{Blind}{Backspace}"),
 
         "m", NumSend1,
         ",", NumSend2,
@@ -50,7 +49,7 @@ Layer2_Init() {
         "u", NumSend7,
         "i", NumSend8,
         "o", NumSend9,
-        "n", NumSend0,
+        ";", NumSend0,
     )
 
     HotIf NumberLayerActive

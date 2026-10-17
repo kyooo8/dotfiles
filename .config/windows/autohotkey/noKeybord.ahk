@@ -8,12 +8,12 @@ global numberLayerHeld := false
 #Include ".\symbol-layer.ahk"
 #Include ".\number-layer.ahk"
 
-; keymap.yaml の Symbol キー（P の右）。押している間だけ Symbol レイヤー
-*[::
+; keymap.yaml の Symbol キー（F24 を送出）。押している間だけ Symbol レイヤー
+*F24::
 {
     global symbolLayerHeld
     symbolLayerHeld := true
-    KeyWait "["
+    KeyWait "F24"
     symbolLayerHeld := false
 }
 

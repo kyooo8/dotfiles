@@ -419,134 +419,154 @@ function M.open_at_cursor()
 	M.open(base_path, this_note)
 end
 
--- ── Inline auto-render ───────────────────────────────────────────────────
--- Mirrors obsidian-tasks.nvim: no command needed, just open the note (or the
--- .base file) and the result shows up. Unlike obsidian-tasks.nvim's rendered
--- rows, these need to be real buffer lines (not virt_lines) so the cursor
--- can land on a row and <CR> can jump to its note. That means two problems
--- obsidian-tasks.nvim also had to solve: (1) never let these rows reach
--- disk, and (2) don't let obsidian.nvim's own buffer-local <CR> (smart_action,
--- set in obsidian.lua's callbacks.enter_note) silently win the race and
--- swallow jumps on non-row lines.
--- ponytail: full-vault rescan on every render; fine at this vault's size,
--- add caching keyed on mtime if it ever gets noticeably slow.
-
+-- Base tables are decorations, never buffer text: rendering must not touch undo.
 local render_ns = vim.api.nvim_create_namespace("kyooo8_obsidian_base")
--- [bufnr] = { [extmark_id] = note_path }; rebuilt on every render.
-local ROW_NOTE_PATH = {}
+local BLOCKS = {}
+local NAV_INSTALLED = {}
 
---- Build the table and parallel note/style maps without a redundant view title.
-local function render_view_lines(view, rows)
-	local columns = view.order
-	if not columns or #columns == 0 then
-		columns = { "file.name" }
+local function block_row(bufnr, block)
+	if block.id then
+		return vim.api.nvim_buf_get_extmark_by_id(bufnr, render_ns, block.id, {})[1]
 	end
-	local lines, styles = render_table(columns, rows)
-	local note_for_line = {}
-	for i, note in ipairs(rows) do
-		note_for_line[i + 2] = note -- header and separator have no note
-	end
-	return lines, note_for_line, styles
+	return block.row
 end
 
---- Delete every line this module previously injected into `bufnr`, in
---- bottom-to-top order so not-yet-processed extmarks' rows stay valid.
---- Leaves `vim.bo[bufnr].modified` exactly as it was before the call.
---- @param bufnr integer
-function M.strip_buffer(bufnr)
-	if not vim.api.nvim_buf_is_valid(bufnr) then
+local function draw_block(bufnr, block)
+	local row = block_row(bufnr, block)
+	if not row then
 		return
 	end
-	local marks = vim.api.nvim_buf_get_extmarks(bufnr, render_ns, 0, -1, {})
-	if #marks == 0 then
-		return
+	local selected = block.targets[block.selected or 0]
+	local virtual = {}
+	for i, line in ipairs(block.lines) do
+		local style = block.styles[i] or {}
+		local active = selected and selected.line == i
+		local function highlight(group)
+			return active and { group, "Visual" } or group
+		end
+		local chunks = { { active and "› " or "  ", highlight("Normal") } }
+		local start_col = style.start_col or 0
+		local end_col = style.end_col or 0
+		if start_col > 0 then
+			chunks[#chunks + 1] = { line:sub(1, start_col), highlight("Normal") }
+		end
+		chunks[#chunks + 1] = { line:sub(start_col + 1, end_col), highlight(style.hl_group or "Normal") }
+		chunks[#chunks + 1] = { line:sub(end_col + 1), highlight("Normal") }
+		virtual[#virtual + 1] = chunks
 	end
-	local was_modified = vim.bo[bufnr].modified
-	local save_undolevels = vim.bo[bufnr].undolevels
-	vim.bo[bufnr].undolevels = -1
-	table.sort(marks, function(a, b)
-		return a[2] > b[2]
-	end)
-	for _, mk in ipairs(marks) do
-		local row = mk[2]
-		pcall(vim.api.nvim_buf_set_lines, bufnr, row, row + 1, false, {})
-	end
-	vim.api.nvim_buf_clear_namespace(bufnr, render_ns, 0, -1)
-	ROW_NOTE_PATH[bufnr] = nil
-	vim.bo[bufnr].undolevels = save_undolevels
-	vim.bo[bufnr].modified = was_modified
+	block.id = vim.api.nvim_buf_set_extmark(bufnr, render_ns, row, 0, {
+		id = block.id,
+		virt_lines = virtual,
+		virt_lines_overflow = "scroll",
+	})
 end
 
---- Insert `lines` at `row` (0-indexed) and tag each inserted line with an
---- extmark; lines whose `note_for_line[i]` is set are recorded so <CR> can
---- jump to that note later.
-local function inject_lines(bufnr, row, lines, note_for_line, styles)
-	vim.api.nvim_buf_set_lines(bufnr, row, row, false, lines)
-	ROW_NOTE_PATH[bufnr] = ROW_NOTE_PATH[bufnr] or {}
-	for i = 1, #lines do
-		local r = row + i - 1
-		local style = styles[i] or {}
-		local id = vim.api.nvim_buf_set_extmark(bufnr, render_ns, r, style.start_col or 0, {
-			end_row = r,
-			end_col = style.end_col or 0,
-			hl_group = style.hl_group,
-			line_hl_group = style.line_hl_group,
-		})
-		if note_for_line[i] then
-			ROW_NOTE_PATH[bufnr][id] = note_for_line[i].path
+local function clear_selection(bufnr)
+	for _, block in ipairs(BLOCKS[bufnr] or {}) do
+		if block.selected then
+			block.selected = nil
+			draw_block(bufnr, block)
 		end
 	end
 end
 
---- Wire <CR> on each note entry to jump when the cursor is on an
---- injected row, falling back to obsidian.nvim's own smart_action otherwise
---- (replicating what its expr-mapping would have done, since we can't be
---- an expr-mapping ourselves and still branch on "is this one of our rows").
+local function move(bufnr, direction)
+	for _ = 1, vim.v.count1 do
+		local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+		local handled = false
+		for _, block in ipairs(BLOCKS[bufnr] or {}) do
+			local anchor = block_row(bufnr, block)
+			local next_index
+			if anchor == row and block.selected then
+				next_index = block.selected + direction
+			elseif anchor == row and direction == 1 then
+				next_index = 1
+			elseif anchor == row - 1 and direction == -1 then
+				next_index = #block.targets
+			end
+			if next_index and #block.targets > 0 then
+				clear_selection(bufnr)
+				if next_index >= 1 and next_index <= #block.targets then
+					vim.api.nvim_win_set_cursor(0, { anchor + 1, 0 })
+					block.selected = next_index
+					draw_block(bufnr, block)
+					handled = true
+				elseif next_index == 0 then
+					-- Moving up out of a table returns to its embed/source line.
+					handled = true
+				end
+				break
+			end
+		end
+		if not handled then
+			clear_selection(bufnr)
+			vim.cmd("normal! " .. (direction == 1 and "j" or "k"))
+		end
+	end
+end
+
+local function setup_navigation(bufnr)
+	if NAV_INSTALLED[bufnr] then
+		return
+	end
+	NAV_INSTALLED[bufnr] = true
+	for key, direction in pairs({ j = 1, k = -1, ["<Down>"] = 1, ["<Up>"] = -1 }) do
+		vim.keymap.set("n", key, function()
+			move(bufnr, direction)
+		end, { buffer = bufnr, desc = "Move through note and Base rows" })
+	end
+	vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+		buffer = bufnr,
+		callback = function(ev)
+			local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+			for _, block in ipairs(BLOCKS[bufnr] or {}) do
+				if block.selected and (ev.event == "InsertEnter" or block_row(bufnr, block) ~= row) then
+					block.selected = nil
+					draw_block(bufnr, block)
+				end
+			end
+		end,
+	})
+	vim.api.nvim_create_autocmd("BufWipeout", {
+		buffer = bufnr,
+		once = true,
+		callback = function()
+			BLOCKS[bufnr], NAV_INSTALLED[bufnr] = nil, nil
+		end,
+	})
+end
+
 function M.setup_cr_override(bufnr)
 	vim.keymap.set("n", "<CR>", function()
 		local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-		local marks = vim.api.nvim_buf_get_extmarks(bufnr, render_ns, { row, 0 }, { row, -1 }, {})
-		for _, mk in ipairs(marks) do
-			local note_path = (ROW_NOTE_PATH[bufnr] or {})[mk[1]]
-			if note_path then
-				vim.cmd.edit(vim.fn.fnameescape(note_path))
+		for _, block in ipairs(BLOCKS[bufnr] or {}) do
+			local target = block.targets[block.selected or 0]
+			if target and block_row(bufnr, block) == row then
+				vim.cmd.edit(vim.fn.fnameescape(target.path))
 				return
 			end
 		end
-		local ok, obsidian_api = pcall(require, "obsidian.api")
-		if ok then
-			local keys = obsidian_api.smart_action()
-			if type(keys) == "string" then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", false)
-			end
+		local keys = require("obsidian.api").smart_action()
+		if type(keys) == "string" then
+			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", false)
 		end
-	end, { buffer = bufnr, desc = "Jump to note under cursor (Obsidian Base row), else Obsidian smart action" })
+	end, { buffer = bufnr, desc = "Open selected Base note, else Obsidian smart action" })
 end
 
---- Re-render every Base embed in a markdown buffer, or every view in a
---- .base buffer, as real (but disk-invisible) buffer lines. Safe to call
---- repeatedly: always strips its own previous output first.
---- @param bufnr integer
+--- Refresh the display without modifying buffer contents or the native undo tree.
 function M.render_buffer(bufnr)
-	if not vim.api.nvim_buf_is_valid(bufnr) then
+	if not vim.api.nvim_buf_is_loaded(bufnr) then
 		return
 	end
-	local bufname = vim.api.nvim_buf_get_name(bufnr)
-	if bufname == "" then
+	local name = vim.api.nvim_buf_get_name(bufnr)
+	local is_base = name:match("%.base$") ~= nil
+	if not (is_base or name:match("%.md$")) then
 		return
 	end
-	local is_base = bufname:match("%.base$") ~= nil
-	local is_md = bufname:match("%.md$") ~= nil
-	if not (is_base or is_md) then
-		return
-	end
-
-	-- Cheap short-circuit: skip the vault scan entirely for notes that have
-	-- never had anything injected and have no embed to render now.
-	local had_previous = #vim.api.nvim_buf_get_extmarks(bufnr, render_ns, 0, -1, {}) > 0
-	if is_md and not had_previous then
+	local source = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+	if not is_base and not BLOCKS[bufnr] then
 		local has_embed = false
-		for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+		for _, line in ipairs(source) do
 			if line:match("!%[%[[^%]#]+%.base") then
 				has_embed = true
 				break
@@ -556,100 +576,66 @@ function M.render_buffer(bufnr)
 			return
 		end
 	end
-
 	if not (_G.Obsidian and _G.Obsidian.workspace) then
-		-- .base files are filetype=yaml, so they never trigger obsidian.nvim's
-		-- own ft="markdown" lazy-load; force it so Obsidian.workspace exists.
 		pcall(function()
 			require("lazy").load({ plugins = { "obsidian.nvim" } })
 		end)
 	end
-	if not (_G.Obsidian and _G.Obsidian.workspace) then
+	if not (_G.Obsidian and _G.Obsidian.workspace) or not vim.fs.relpath(vault_root(), name) then
 		return
 	end
 
-	local root = vault_root()
-	if not vim.fs.relpath(root, bufname) then
-		return -- outside this vault
-	end
-
-	M.strip_buffer(bufnr)
-
-	local was_modified = vim.bo[bufnr].modified
-	local save_undolevels = vim.bo[bufnr].undolevels
-	vim.bo[bufnr].undolevels = -1
-
-	local scan
-	local function get_scan()
-		scan = scan or M.scan_vault()
-		return scan
-	end
-
-	if is_base then
-		local ok, parsed = pcall(M.load, bufname)
-		if ok then
-			local insert_at = vim.api.nvim_buf_line_count(bufnr)
-			for _, view in ipairs(parsed.views or {}) do
-				local ok2, rows = pcall(M.run_view, parsed, view, nil, get_scan())
-				if ok2 then
-					local lines, note_for_line, styles = render_view_lines(view, rows)
-					lines[#lines + 1] = ""
-					inject_lines(bufnr, insert_at, lines, note_for_line, styles)
-					insert_at = insert_at + #lines
-				end
-			end
+	local scan, blocks
+	blocks = {}
+	local function add_block(row, path, view_name, this_note)
+		local ok, parsed = pcall(M.load, path)
+		if not ok then
+			return
 		end
-	else
-		local Note = require("obsidian.note")
-		local ok_this, this_note = pcall(Note.from_buffer, bufnr)
-		this_note = ok_this and this_note or nil
-
-		local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-		local offset = 0
-		for i, line in ipairs(lines) do
-			local embed_path, view_name = line:match("!%[%[([^%]#]+%.base)#?([^%]]*)%]%]")
-			if embed_path then
-				local full = resolve_base_path(root, embed_path)
-				if full and vim.uv.fs_stat(full) then
-					local ok2, parsed = pcall(M.load, full)
-					if ok2 then
-						local views = parsed.views or {}
-						if view_name and view_name ~= "" then
-							local filtered = {}
-							for _, v in ipairs(views) do
-								if v.name == view_name then
-									filtered[#filtered + 1] = v
-								end
-							end
-							views = filtered
-						end
-						local block_lines, block_notes, block_styles = {}, {}, {}
-						for _, view in ipairs(views) do
-							local ok3, rows = pcall(M.run_view, parsed, view, this_note, get_scan())
-							if ok3 then
-								local vlines, vnotes, vstyles = render_view_lines(view, rows)
-								-- Notes are sparse; use the display line count for offsets.
-								local start = #block_lines
-								for j, vline in ipairs(vlines) do
-									block_lines[start + j] = vline
-									block_notes[start + j] = vnotes[j]
-									block_styles[start + j] = vstyles[j]
-								end
-							end
-						end
-						if #block_lines > 0 then
-							local insert_at = i + offset
-							inject_lines(bufnr, insert_at, block_lines, block_notes, block_styles)
-							offset = offset + #block_lines
-						end
+		local block = { row = row, lines = {}, styles = {}, targets = {} }
+		for _, view in ipairs(parsed.views or {}) do
+			if not view_name or view_name == "" or view.name == view_name then
+				scan = scan or M.scan_vault()
+				local valid, rows = pcall(M.run_view, parsed, view, this_note, scan)
+				if valid then
+					local columns = view.order and #view.order > 0 and view.order or { "file.name" }
+					local lines, styles = render_table(columns, rows)
+					local offset = #block.lines
+					vim.list_extend(block.lines, lines)
+					vim.list_extend(block.styles, styles)
+					for i, note in ipairs(rows) do
+						block.targets[#block.targets + 1] = { line = offset + i + 2, path = note.path }
 					end
 				end
 			end
 		end
+		if #block.lines > 0 then
+			blocks[#blocks + 1] = block
+		end
 	end
 
-	vim.bo[bufnr].undolevels = save_undolevels
-	vim.bo[bufnr].modified = was_modified
+	if is_base then
+		add_block(#source - 1, name)
+	else
+		local ok, this_note = pcall(require("obsidian.note").from_buffer, bufnr)
+		for i, line in ipairs(source) do
+			local path, view = line:match("!%[%[([^%]#]+%.base)#?([^%]]*)%]%]")
+			if path then
+				local full = resolve_base_path(vault_root(), path)
+				if full then
+					add_block(i - 1, full, view, ok and this_note or nil)
+				end
+			end
+		end
+	end
+	vim.api.nvim_buf_clear_namespace(bufnr, render_ns, 0, -1)
+	BLOCKS[bufnr] = #blocks > 0 and blocks or nil
+	for _, block in ipairs(blocks) do
+		draw_block(bufnr, block)
+	end
+	if #blocks > 0 then
+		setup_navigation(bufnr)
+	end
 	M.setup_cr_override(bufnr)
 end
 

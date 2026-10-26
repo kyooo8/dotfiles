@@ -65,23 +65,12 @@ do
 		end)
 	end
 
-	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
+	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave", "TextChanged" }, {
 		pattern = { "*.md", "*.base" },
 		callback = function(ev)
 			render_obsidian_base(ev.buf)
 		end,
 		desc = "Auto-render Obsidian Bases embeds/views inline",
-	})
-
-	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = { "*.md", "*.base" },
-		callback = function(ev)
-			local ok, obsidian_base = pcall(require, "kyooo8.util.obsidian_base")
-			if ok then
-				pcall(obsidian_base.strip_buffer, ev.buf)
-			end
-		end,
-		desc = "Strip injected Obsidian Bases rows before they can reach disk",
 	})
 
 	vim.api.nvim_create_autocmd("FocusGained", {

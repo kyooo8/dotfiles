@@ -117,5 +117,8 @@ if [ -f '${HOME}/google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 eval "$(mise activate zsh)"
 
+# wt (worktree agent slots)
+export PATH="$HOME/dev/tools/wt/bin:$PATH"
+
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

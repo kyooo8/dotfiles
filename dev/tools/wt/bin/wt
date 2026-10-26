@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+AGENTS_DIR="$HOME/dev/agents"
+VALID_AGENTS=(jarvis friday edith)
+
+is_valid_agent() {
+  local name="$1"
+  local a
+  for a in "${VALID_AGENTS[@]}"; do
+    [ "$a" = "$name" ] && return 0
+  done
+  return 1
+}
+
+usage() {
+  cat <<EOF
+Usage: wt open <name> <branch>   create/switch an agent slot's worktree
+       wt remove <name-or-branch>  remove an agent slot's worktree
+       wt list                     show status of all agent slots
+
+Valid agent names: ${VALID_AGENTS[*]}
+EOF
+}
+
+resolve_agent_dir() {
+  local identifier="$1"
+
+  if is_valid_agent "$identifier"; then
+    echo "$AGENTS_DIR/$identifier"
+    return 0
+  fi
+
+  local matches=()
+  local dir
+  for dir in "$AGENTS_DIR"/*/; do
+    [ -d "$dir" ] || continue
+    local branch
+    branch=$(git -C "$dir" branch --show-current 2>/dev/null || echo "")
+    [ "$branch" = "$identifier" ] && matches+=("${dir%/}")
+  done
+
+  if [ "${#matches[@]}" -eq 0 ]; then
+    echo "ERROR: no agent or branch matching '$identifier'" >&2
+    exit 1
+  elif [ "${#matches[@]}" -gt 1 ]; then
+    echo "ERROR: branch '$identifier' matches multiple agents: ${matches[*]}" >&2
+    exit 1
+  fi
+  echo "${matches[0]}"
+}
+
+remove_worktree() {
+  local target="$1"
+  local name="$2"
+
+  check_clean_and_pushed "$target" "$name"
+  local workspace_id
+  workspace_id=$(herdr worktree list --cwd "$target" | jq -r --arg path "$target" '.result.worktrees[] | select(.path == $path) | .open_workspace_id')
+  [ -n "$workspace_id" ] || { echo "ERROR: could not resolve workspace id for $target" >&2; exit 1; }
+  herdr worktree remove --workspace "$workspace_id"
+}
+
+check_clean_and_pushed() {
+  local dir="$1"
+  local name="$2"
+
+  if [ -n "$(git -C "$dir" status --porcelain)" ]; then
+    echo "ERROR: agent '$name' has uncommitted changes. Refusing to remove." >&2
+    git -C "$dir" status --short >&2
+    exit 1
+  fi
+
+  local branch
+  branch=$(git -C "$dir" branch --show-current)
+
+  if ! git -C "$dir" rev-parse --abbrev-ref "${branch}@{upstream}" >/dev/null 2>&1; then
+    echo "ERROR: agent '$name' branch '$branch' has never been pushed (no upstream). Refusing to remove." >&2
+    exit 1
+  fi
+
+  local unpushed
+  unpushed=$(git -C "$dir" log "@{upstream}..HEAD" --oneline)
+  if [ -n "$unpushed" ]; then
+    echo "ERROR: agent '$name' has unpushed commits on '$branch'. Refusing to remove." >&2
+    echo "$unpushed" >&2
+    exit 1
+  fi
+}
+
+cmd_open() {
+  local name="${1:-}"
+  local branch="${2:-}"
+  [ -n "$name" ] && [ -n "$branch" ] || { usage >&2; exit 1; }
+
+  if ! is_valid_agent "$name"; then
+    echo "ERROR: '$name' is not a known agent. Valid names: ${VALID_AGENTS[*]}" >&2
+    exit 1
+  fi
+
+  local target="$AGENTS_DIR/$name"
+  mkdir -p "$AGENTS_DIR"
+
+  local repo_root
+  repo_root=$(git rev-parse --show-toplevel)
+
+  [ -d "$target" ] && remove_worktree "$target" "$name"
+
+  herdr worktree create --branch "$branch" --cwd "$repo_root" --path "$target" --label "$name"
+
+  # .claude/settings.local.json はコピー不要。Claude Codeはworktreeでもメインチェックアウトの
+  # ルートにあるファイルを自動的に読み書きする(公式ドキュメントで確認済み)。
+  [ -f "$repo_root/mise.toml" ] && cp "$repo_root/mise.toml" "$target/mise.toml"
+
+  echo "Ready: $target"
+}
+
+cmd_remove() {
+  local identifier="${1:-}"
+  [ -n "$identifier" ] || { usage >&2; exit 1; }
+
+  local target
+  target=$(resolve_agent_dir "$identifier")
+  local name
+  name=$(basename "$target")
+
+  remove_worktree "$target" "$name"
+  echo "Removed: $target"
+}
+
+cmd_list() {
+  [ -d "$AGENTS_DIR" ] || { echo "No agents yet."; return; }
+  for dir in "$AGENTS_DIR"/*/; do
+    [ -d "$dir" ] || continue
+    local name
+    name=$(basename "$dir")
+    local repo branch status
+    repo=$(basename "$(dirname "$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null)")" 2>/dev/null || echo "?")
+    branch=$(git -C "$dir" branch --show-current 2>/dev/null || echo "?")
+    status=""
+    if [ -n "$(git -C "$dir" status --porcelain 2>/dev/null)" ]; then
+      status="${status} [uncommitted]"
+    fi
+    if git -C "$dir" rev-parse --abbrev-ref "${branch}@{upstream}" >/dev/null 2>&1; then
+      local unpushed_count
+      unpushed_count=$(git -C "$dir" log "@{upstream}..HEAD" --oneline 2>/dev/null | wc -l | tr -d ' ')
+      [ "$unpushed_count" != "0" ] && status="${status} [unpushed:${unpushed_count}]"
+    else
+      status="${status} [no upstream]"
+    fi
+    echo "${name}: ${repo} @ ${branch}${status}"
+  done
+}
+
+case "${1:-}" in
+  open) shift; cmd_open "$@" ;;
+  remove) shift; cmd_remove "$@" ;;
+  list) cmd_list ;;
+  -h|--help|help) usage ;;
+  *) usage >&2; exit 1 ;;
+esac

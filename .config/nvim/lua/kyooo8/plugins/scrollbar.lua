@@ -1,30 +1,33 @@
 return {
 	{
 		"petertriho/nvim-scrollbar",
+		branch = "refactor/v2", -- mainがv2化(2026-11-16予定)されたらbranch指定を外す
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			local C = require("catppuccin.palettes").get_palette("macchiato")
 
 			require("scrollbar").setup({
-				handle = {
-					color = C.surface2,
-				},
 				marks = {
-					Cursor = { color = C.surface2 }, -- カーソル位置
-					Search = { color = C.yellow }, -- / 検索
-					Error = { color = C.red }, -- LSP Diagnostic
-					Warn = { color = C.peach },
-					Info = { color = C.sky },
-					Hint = { color = C.teal },
-					Misc = { color = C.mauve }, -- その他
-					GitAdd = { color = C.green },
-					GitChange = { color = C.blue },
-					GitDelete = { color = C.red },
+					Cursor = { highlight = { fg = C.surface2 } }, -- カーソル位置
+					Search = { highlight = { fg = C.yellow } }, -- / 検索
+					Error = { highlight = { fg = C.red } }, -- LSP Diagnostic
+					Warn = { highlight = { fg = C.peach } },
+					Info = { highlight = { fg = C.sky } },
+					Hint = { highlight = { fg = C.teal } },
+					Misc = { highlight = { fg = C.mauve } }, -- その他
+					GitAdd = { highlight = { fg = C.green } },
+					GitChange = { highlight = { fg = C.blue } },
+					GitDelete = { highlight = { fg = C.red } },
+				},
+				providers = {
+					gitsigns = true,
+				},
+				scrollbar = {
+					thumb = {
+						highlight = { bg = C.surface2 },
+					},
 				},
 			})
-
-			require("scrollbar.handlers.search").setup()
-			require("scrollbar.handlers.gitsigns").setup()
 		end,
 	},
 

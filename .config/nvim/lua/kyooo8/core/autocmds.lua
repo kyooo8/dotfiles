@@ -1,6 +1,7 @@
 vim.filetype.add({
 	extension = {
 		slim = "slim",
+		base = "yaml", -- Obsidian Bases file; see ObsidianBaseView for rendering
 	},
 })
 
@@ -43,3 +44,55 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 	desc = "Wrap long lines at word boundaries for md/txt",
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		-- required for obsidian.nvim to conceal wikilink brackets ([[note|Label]] -> Label)
+		vim.opt_local.conceallevel = 2
+		vim.opt_local.concealcursor = "nc"
+	end,
+	desc = "Conceal markup for obsidian.nvim wikilinks",
+})
+
+do
+	local function render_obsidian_base(bufnr)
+		vim.schedule(function()
+			local ok, obsidian_base = pcall(require, "kyooo8.util.obsidian_base")
+			if ok then
+				pcall(obsidian_base.render_buffer, bufnr)
+			end
+		end)
+	end
+
+	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
+		pattern = { "*.md", "*.base" },
+		callback = function(ev)
+			render_obsidian_base(ev.buf)
+		end,
+		desc = "Auto-render Obsidian Bases embeds/views inline",
+	})
+
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = { "*.md", "*.base" },
+		callback = function(ev)
+			local ok, obsidian_base = pcall(require, "kyooo8.util.obsidian_base")
+			if ok then
+				pcall(obsidian_base.strip_buffer, ev.buf)
+			end
+		end,
+		desc = "Strip injected Obsidian Bases rows before they can reach disk",
+	})
+
+	vim.api.nvim_create_autocmd("FocusGained", {
+		pattern = "*",
+		callback = function()
+			local bufnr = vim.api.nvim_get_current_buf()
+			local name = vim.api.nvim_buf_get_name(bufnr)
+			if name:match("%.md$") or name:match("%.base$") then
+				render_obsidian_base(bufnr)
+			end
+		end,
+		desc = "Refresh Obsidian Bases render on focus",
+	})
+end

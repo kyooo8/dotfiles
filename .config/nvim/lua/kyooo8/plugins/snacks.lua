@@ -192,7 +192,7 @@ return {
 			desc = "Zoom Window",
 		},
 		{
-			"<leader>tt",
+			"<leader>to",
 			function()
 				Snacks.terminal()
 			end,

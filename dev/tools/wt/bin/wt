@@ -16,8 +16,10 @@ is_valid_agent() {
 usage() {
   cat <<EOF
 Usage: wt open <name> <branch>   create/switch an agent slot's worktree
+       wt <name>                   move to this repository's agent worktree (requires shell-init)
        wt remove <name-or-branch>  remove an agent slot's worktree
        wt list                     show status of all agent slots
+       wt shell-init               print shell integration for bash/zsh
 
 Valid agent names: ${VALID_AGENTS[*]}
 EOF
@@ -152,10 +154,39 @@ cmd_list() {
   done
 }
 
+cmd_path() {
+  [ "$#" -eq 1 ] && is_valid_agent "$1" || { usage >&2; exit 1; }
+  local target="$AGENTS_DIR/$1"
+  local repo_common target_common
+  repo_common=$(git rev-parse --path-format=absolute --git-common-dir) || return 1
+  target_common=$(git -C "$target" rev-parse --path-format=absolute --git-common-dir) || return 1
+  if [ "$repo_common" != "$target_common" ]; then
+    echo "ERROR: agent '$1' is not a worktree of this repository." >&2
+    return 1
+  fi
+  printf '%s\n' "$target"
+}
+
+cmd_shell_init() {
+  cat <<'EOF'
+wt() {
+  case "${1:-}" in
+    open|remove|list|shell-init|-h|--help|help|'') command wt "$@" ;;
+    *)
+      local target
+      target=$(command wt "$@") || return
+      cd -- "$target"
+      ;;
+  esac
+}
+EOF
+}
+
 case "${1:-}" in
   open) shift; cmd_open "$@" ;;
   remove) shift; cmd_remove "$@" ;;
   list) cmd_list ;;
+  shell-init) cmd_shell_init ;;
   -h|--help|help) usage ;;
-  *) usage >&2; exit 1 ;;
+  *) cmd_path "$@" ;;
 esac

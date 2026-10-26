@@ -119,6 +119,7 @@ eval "$(mise activate zsh)"
 
 # wt (worktree agent slots)
 export PATH="$HOME/dev/tools/wt/bin:$PATH"
+eval "$(wt shell-init)"
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

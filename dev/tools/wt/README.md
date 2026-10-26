@@ -10,13 +10,26 @@ worktreeをブランチごとに作って消すのは、ディレクトリが増
 
 ## 使い方
 
+bash / zsh の設定ファイル（`~/.bashrc` / `~/.zshrc`）で、`wt` の PATH 設定の後に追加する。
+
+```sh
+eval "$(wt shell-init)"
+```
+
+現在のシェルでもこの行を実行すれば有効になる。
+
 ```sh
 # 対象リポジトリのディレクトリで実行する
 wt open jarvis feature/foo   # ~/dev/agents/jarvis にworktreeを作成/切り替え
+wt jarvis                    # このリポジトリの jarvis worktree に移動
 wt remove feature/foo        # エージェント名でもブランチ名でも指定できる
 wt list                      # 各スロットの状態を一覧表示
 wt --help
 ```
+
+`wt <name>` はメインのチェックアウトやその配下、同じリポジトリのworktreeから使える。
+スロットが未作成、または別リポジトリのworktreeならエラーにし、移動しない。
+スロットは従来どおり全リポジトリで共有する。シェル連携なしの場合は移動先のパスを出力する。
 
 `wt open` は次の順で動く。
 

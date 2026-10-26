@@ -58,9 +58,12 @@ remove_worktree() {
 
   check_clean_and_pushed "$target" "$name"
   local workspace_id
-  workspace_id=$(herdr worktree list --cwd "$target" | jq -r --arg path "$target" '.result.worktrees[] | select(.path == $path) | .open_workspace_id')
-  [ -n "$workspace_id" ] || { echo "ERROR: could not resolve workspace id for $target" >&2; exit 1; }
-  herdr worktree remove --workspace "$workspace_id"
+  workspace_id=$(herdr worktree list --cwd "$target" | jq -r --arg path "$target" '.result.worktrees[] | select(.path == $path) | .open_workspace_id // empty')
+  if [ -n "$workspace_id" ]; then
+    herdr worktree remove --workspace "$workspace_id"
+  else
+    git -C "$target" worktree remove "$target"
+  fi
 }
 
 check_clean_and_pushed() {
@@ -77,7 +80,10 @@ check_clean_and_pushed() {
   branch=$(git -C "$dir" branch --show-current)
 
   if ! git -C "$dir" rev-parse --abbrev-ref "${branch}@{upstream}" >/dev/null 2>&1; then
-    echo "ERROR: agent '$name' branch '$branch' has never been pushed (no upstream). Refusing to remove." >&2
+    if [ -n "$(git -C "$dir" for-each-ref --contains=HEAD --format='%(refname)' refs/remotes)" ]; then
+      return 0
+    fi
+    echo "ERROR: agent '$name' branch '$branch' has no upstream and HEAD is not contained in any remote-tracking branch. Refusing to remove." >&2
     exit 1
   fi
 

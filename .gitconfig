@@ -25,3 +25,5 @@
 
 [url "git@github.com:"]
   insteadOf = https://github.com/
+[alias]
+	clean-branch = !git fetch -p && git branch -vv | awk \"/: gone\\\\]/{print \\$1}\" | xargs -r git branch -D

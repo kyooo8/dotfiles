@@ -34,7 +34,7 @@ keymap.set("n", "tf", "<cmd>tabfirst<CR>")
 keymap.set("n", "tn", "<cmd>tabn<CR>")
 keymap.set("n", "tp", "<cmd>tabp<CR>")
 keymap.set("n", "tl", "<cmd>tablast<CR>")
-keymap.set("n", "tt", "<cmd>tab .<CR>")
+keymap.set("n", "tt", "<cmd>tabedit .<CR>")
 keymap.set("n", "ts", "<cmd>tab split<CR>")
 keymap.set("n", "tq", "<cmd>tabclose<CR>")
 

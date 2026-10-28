@@ -20,9 +20,9 @@ eval "$(wt shell-init)"
 
 ```sh
 # 対象リポジトリのディレクトリで実行する
-wt open jarvis feature/foo   # ~/dev/agents/jarvis にworktreeを作成/切り替え
+wt hi jarvis feature/foo     # ~/dev/agents/jarvis にworktreeを作成/切り替え
 wt jarvis                    # このリポジトリの jarvis worktree に移動
-wt remove feature/foo        # エージェント名でもブランチ名でも指定できる
+wt bye feature/foo           # エージェント名でもブランチ名でも指定できる
 wt list                      # 各スロットの状態を一覧表示
 wt --help
 ```
@@ -31,7 +31,7 @@ wt --help
 スロットが未作成、または別リポジトリのworktreeならエラーにし、移動しない。
 スロットは従来どおり全リポジトリで共有する。シェル連携なしの場合は移動先のパスを出力する。
 
-`wt open` は次の順で動く。
+`wt hi` は次の順で動く。
 
 1. 名前が `jarvis` / `friday` / `edith` のいずれでもなければ、確認すら出さずエラーで終了する
 2. `~/dev/agents/<name>` が既にあれば、未コミットの変更・未pushのコミットがないか確認する

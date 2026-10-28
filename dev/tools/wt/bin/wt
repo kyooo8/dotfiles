@@ -15,9 +15,9 @@ is_valid_agent() {
 
 usage() {
   cat <<EOF
-Usage: wt open <name> <branch>   create/switch an agent slot's worktree
+Usage: wt hi <name> <branch>     create/switch an agent slot's worktree
        wt <name>                   move to this repository's agent worktree (requires shell-init)
-       wt remove <name-or-branch>  remove an agent slot's worktree
+       wt bye <name-or-branch>     remove an agent slot's worktree
        wt list                     show status of all agent slots
        wt shell-init               print shell integration for bash/zsh
 
@@ -96,7 +96,7 @@ check_clean_and_pushed() {
   fi
 }
 
-cmd_open() {
+cmd_hi() {
   local name="${1:-}"
   local branch="${2:-}"
   [ -n "$name" ] && [ -n "$branch" ] || { usage >&2; exit 1; }
@@ -123,7 +123,7 @@ cmd_open() {
   echo "Ready: $target"
 }
 
-cmd_remove() {
+cmd_bye() {
   local identifier="${1:-}"
   [ -n "$identifier" ] || { usage >&2; exit 1; }
 
@@ -177,7 +177,7 @@ cmd_shell_init() {
   cat <<'EOF'
 wt() {
   case "${1:-}" in
-    open|remove|list|shell-init|-h|--help|help|'') command wt "$@" ;;
+    hi|bye|list|shell-init|-h|--help|help|'') command wt "$@" ;;
     *)
       local target
       target=$(command wt "$@") || return
@@ -189,8 +189,8 @@ EOF
 }
 
 case "${1:-}" in
-  open) shift; cmd_open "$@" ;;
-  remove) shift; cmd_remove "$@" ;;
+  hi) shift; cmd_hi "$@" ;;
+  bye) shift; cmd_bye "$@" ;;
   list) cmd_list ;;
   shell-init) cmd_shell_init ;;
   -h|--help|help) usage ;;

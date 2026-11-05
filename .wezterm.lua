@@ -7,7 +7,7 @@ local is_mac = wezterm.target_triple:find("apple") ~= nil
 local is_win = wezterm.target_triple:find("windows") ~= nil
 local win_wsl_home = "/home/kyosu"
 
-local DEFAULT_OPACITY = 0.9
+local DEFAULT_OPACITY = 0.7
 local BLUR_ON = 30
 local BLUR_OFF = 0
 

@@ -5,11 +5,11 @@ export PATH="$(dirname "$WT_BIN"):$PATH"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 export HOME="$tmp/home"
-mkdir -p "$HOME/dev/agents" "$tmp/repo with spaces"
+mkdir -p "$HOME/dev/.worktrees" "$tmp/repo with spaces"
 git init -q "$tmp/repo with spaces"
 git -C "$tmp/repo with spaces" -c user.name=Test -c user.email=test@example.com commit -qm initial --allow-empty
-git -C "$tmp/repo with spaces" worktree add -qb agent "$HOME/dev/agents/jarvis"
-git init -q "$HOME/dev/agents/friday"
+git -C "$tmp/repo with spaces" worktree add -qb agent "$HOME/dev/.worktrees/jarvis"
+git init -q "$HOME/dev/.worktrees/friday"
 
 for shell in bash zsh; do
   "$shell" -c '
@@ -17,7 +17,7 @@ for shell in bash zsh; do
     eval "$(wt shell-init)"
     cd "$1"
     wt jarvis
-    [ "$PWD" = "$HOME/dev/agents/jarvis" ]
+    [ "$PWD" = "$HOME/dev/.worktrees/jarvis" ]
     wt --help >/dev/null
     cd "$1"
     for name in friday edith unknown; do

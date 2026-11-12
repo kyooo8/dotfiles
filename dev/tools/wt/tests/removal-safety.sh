@@ -18,4 +18,15 @@ if (check_clean_and_pushed "$tmp" friday) >/dev/null 2>&1; then
   echo 'uncommitted changes were accepted' >&2
   exit 1
 fi
+rm "$tmp/untracked"
+git -C "$tmp" -c user.name=Test -c user.email=test@example.com commit -qm squashed --allow-empty
+branch=$(git -C "$tmp" branch --show-current)
+git -C "$tmp" remote add origin "$tmp/does-not-exist"
+git -C "$tmp" config "branch.${branch}.remote" origin
+git -C "$tmp" config "branch.${branch}.merge" "refs/heads/${branch}"
+if ! (check_clean_and_pushed "$tmp" friday) >/dev/null 2>&1; then
+  echo 'squash-merged branch with gone upstream was rejected' >&2
+  exit 1
+fi
+
 echo 'removal safety tests passed'

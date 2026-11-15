@@ -1,15 +1,19 @@
+#Requires AutoHotkey v2.0
 #SingleInstance Force
 
-; Symbol レイヤーだけを単体で起動する。noKeybord.ahk と同時に起動すると F24 を取り合うので併用しない
+; F24 を出すファームウェア用の従来の入口。全レイヤー版とは併用しない。
 global symbolLayerHeld := false
-
 #Include ".\symbol-layer.ahk"
+RegisterSymbolLayer((*) => symbolLayerHeld)
 
-; keymap.yaml の Symbol キー（F24 を送出）。押している間だけ Symbol レイヤー
 *F24::
 {
     global symbolLayerHeld
     symbolLayerHeld := true
-    KeyWait "F24"
+}
+
+*F24 up::
+{
+    global symbolLayerHeld
     symbolLayerHeld := false
 }

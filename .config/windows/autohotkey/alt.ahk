@@ -1,5 +1,12 @@
 ﻿#SingleInstance Force
 
+; 単体起動も可能。レイヤー中は配列を優先し、Hyper を横取りしない。
+BaseShortcutsAllowed() {
+    global layerState, hyperState
+    return !IsSet(layerState) || (layerState.Active = "" && hyperState.Active = "")
+}
+
+#HotIf BaseShortcutsAllowed()
 ;--- Alt + Q → アプリを閉じる（macの⌘+Q）---
 !q::WinClose("A")
 
@@ -8,7 +15,7 @@ IsWezTermActive() {
 }
 
 ; wezterm以外
-#HotIf !IsWezTermActive()
+#HotIf BaseShortcutsAllowed() && !IsWezTermActive()
 !c::Send("^c")
 !v::Send("^v")
 !x::Send("^x")
@@ -25,7 +32,7 @@ IsWezTermActive() {
 #HotIf
 
 ; wezterm 専用
-#HotIf IsWezTermActive()
+#HotIf BaseShortcutsAllowed() && IsWezTermActive()
 !c::Send("^+c")
 !v::Send("^+v")
 !x::Send("^+x")

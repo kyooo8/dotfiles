@@ -1,61 +1,43 @@
-﻿#Include ".\getIme.ahk"
+#Include ".\keymap-input.ahk"
 
-NumSendModifier(keyName) {
-    Send("{" . keyName . "}")
-}
-
-NumSendLiteral(text) {
-    SendText(text)
-}
-
-NumSendNumpadDigit(digit) {
-    Send("{Numpad" . digit . "}")
-}
-
-NumSend1(*) => NumSendNumpadDigit("1")
-NumSend2(*) => NumSendNumpadDigit("2")
-NumSend3(*) => NumSendNumpadDigit("3")
-NumSend4(*) => NumSendNumpadDigit("4")
-NumSend5(*) => NumSendNumpadDigit("5")
-NumSend6(*) => NumSendNumpadDigit("6")
-NumSend7(*) => NumSendNumpadDigit("7")
-NumSend8(*) => NumSendNumpadDigit("8")
-NumSend9(*) => NumSendNumpadDigit("9")
-NumSend0(*) => NumSendNumpadDigit("0")
-
-NumberLayerActive(*) {
-    global numberLayerHeld
-    return numberLayerHeld 
-}
-
-Layer2_Init() {
-    global layer2Keys := Map(
-        ; Shift 併用で範囲選択になるよう {Blind}
-        "e", (*) => Send("{Blind}{End}"),
-        "a", (*) => Send("{Blind}{Home}"),
-        "f", (*) => Send("{Blind}{Right}"),
-        "b", (*) => Send("{Blind}{Left}"),
-        "n", (*) => Send("{Blind}{Down}"),
-        "p", (*) => Send("{Blind}{Up}"),
-        "d", (*) => Send("{Blind}{Delete}"),
-        "h", (*) => Send("{Blind}{Backspace}"),
-
-        "m", NumSend1,
-        ",", NumSend2,
-        ".", NumSend3,
-        "j", NumSend4,
-        "k", NumSend5,
-        "l", NumSend6,
-        "u", NumSend7,
-        "i", NumSend8,
-        "o", NumSend9,
-        ";", NumSend0,
+; 数字は参照元と同じ通常の数字キー。NumLock OFF でも数字を入力する。
+NumberKeys() {
+    ; ナビゲーションは旧 Windows 配列を優先。Q/W/S/G は参照元の別名として残す。
+    return Map(
+        "q", "Home",
+        "w", "Up",
+        "e", "End",
+        "y", "0",
+        "u", "7",
+        "i", "8",
+        "o", "9",
+        "a", "Home",
+        "s", "Down",
+        "d", "Delete",
+        "f", "Right",
+        "b", "Left",
+        "p", "Up",
+        "n", "Down",
+        "g", "Delete",
+        "h", "Backspace",
+        "j", "4",
+        "k", "5",
+        "l", "6",
+        "m", "1",
+        ",", "2",
+        ".", "3",
+        "/", "NumLock"
     )
-
-    HotIf NumberLayerActive
-    for key, fn in layer2Keys
-        Hotkey("*" . key, fn, "On")
-    HotIf
 }
 
-Layer2_Init()
+SendNumberKey(key, *) {
+    ; Shift 選択、Ctrl+矢印など、押されている修飾キーを維持する。
+    Send("{Blind}{" key "}")
+}
+
+RegisterNumberLayer(predicate) {
+    HotIf(predicate)
+    for key, target in NumberKeys()
+        Hotkey("*" key, RunMappedKey.Bind(key, SendNumberKey.Bind(target)), "On")
+    HotIf()
+}

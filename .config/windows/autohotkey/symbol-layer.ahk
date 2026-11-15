@@ -1,89 +1,44 @@
-﻿#Include ".\getIme.ahk"
+#Include ".\getIme.ahk"
+#Include ".\keymap-input.ahk"
 
-SendConditionalSymbol(fullWidth, halfWidth) {
-    SendText(IME_Get() ? fullWidth : halfWidth)
-}
-
-SendLiteralSymbol(char) {
-    SendText(char)
-}
-
-SendArrow(keyName) {
-    Send("{" . keyName . "}")
-}
-
-SendFW(half, full) {
-    SendText( IME_Get() ? full : half )
-}
-
-SendTilde(*)        => SendFW("~", "～")
-SendAt(*)           => SendFW("@", "＠")
-SendExclam(*)       => SendFW("!", "！")
-SendHash(*)         => SendFW("#", "＃")
-SendStar(*)         => SendFW("*", "＊")
-SendEqual(*)        => SendFW("=", "＝")
-SendDollar(*)       => SendFW("$", "＄")
-SendCaret(*)        => SendFW("^", "＾")
-SendBraceL(*)       => SendFW("{", "｛")
-SendParenL(*)       => SendFW("(", "（")
-SendBracketL(*)     => SendFW("[", "［")
-SendBraceR(*)       => SendFW("}", "｝")
-SendParenR(*)       => SendFW(")", "）")
-SendBracketR(*)     => SendFW("]", "］")
-SendUnderscore(*)   => SendFW("_", "＿")
-SendPlus(*)         => SendFW("+", "＋")
-SendMinus(*)        => SendFW("-", "－")
-SendPipe(*)         => SendFW("|", "｜")
-SendAmp(*)          => SendFW("&", "＆")
-SendPercent(*)      => SendFW("%", "％")
-SendBackslash(*)    => SendFW("\", "＼")
-SendBackQuote(*) => SendFW(Chr(0x60), "｀")
-SendQuote(*)        => SendFW("'", "’")
-SendDoubleQuote(*)  => SendFW('"', '”')
-SendSlash(*)  => SendFW('/', '・')
-SendQuestion(*)  => SendFW('?', '？')
-
-SymbolLayerActive(*) {
-    global symbolLayerHeld
-    return symbolLayerHeld
-}
-
-Layer1_Init() {
-    global layer1Keys := Map(
-        "q", SendQuestion,
-        "w", SendExclam,
-        "e", SendEqual,
-        "t", SendTilde,
-        "u", SendUnderscore,
-        "i", SendPipe,
-        "o", SendSlash,
-        "p", SendPercent,
-
-        "a", SendAt,
-        "s", SendHash,
-        "d", SendDollar,
-        "f", SendParenL,
-        "g", SendBraceL,
-        "h", SendBraceR,
-        "j", SendParenR,
-        "k", SendAmp,
-        "l", SendBackslash,
-
-        "z", SendQuote,
-        "x", SendStar,
-        "c", SendCaret,
-        "v", SendDoubleQuote,
-        "b", SendBracketL,
-        "n", SendBracketR,
-        "m", SendMinus,
-        ",", SendPlus,
-        ".", SendBackQuote,
+; Karabiner symbol-layer.json / homemade-keyboard keymap.yaml の Symbol 配列。
+; IME ON 時の全角入力は既存の Windows 版の振る舞いを保つ。
+SymbolKeys() {
+    return Map(
+        "q", ["'", "’"],
+        "w", ["!", "！"],
+        "e", ["=", "＝"],
+        "r", ["%", "％"],
+        "t", ["~", "～"],
+        "u", ["_", "＿"],
+        "i", ["{", "｛"],
+        "o", ["}", "｝"],
+        "p", ["|", "｜"],
+        "a", ["@", "＠"],
+        "s", ["#", "＃"],
+        "d", ["$", "＄"],
+        "j", ["+", "＋"],
+        "k", ["(", "（"],
+        "l", [")", "）"],
+        ";", ["&", "＆"],
+        "z", ["``", "｀"],
+        "x", ["*", "＊"],
+        "c", ["^", "＾"],
+        "v", ['"', '”'],
+        "b", ["\", "＼"],
+        "m", ["-", "－"],
+        ",", ["[", "［"],
+        ".", ["]", "］"]
     )
-
-    HotIf SymbolLayerActive
-    for key, fn in layer1Keys
-        Hotkey("*" . key, fn, "On")
-    HotIf
 }
 
-Layer1_Init()
+SendFW(half, full, *) {
+    SendText(IME_GET() ? full : half)
+}
+
+RegisterSymbolLayer(predicate) {
+    HotIf(predicate)
+    for key, chars in SymbolKeys()
+        Hotkey("*" key, RunMappedKey.Bind(key, SendFW.Bind(chars[1], chars[2])), "On")
+    HotIf()
+}

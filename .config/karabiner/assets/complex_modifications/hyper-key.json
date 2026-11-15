@@ -1,0 +1,56 @@
+{
+    "title": "Hyper Key (Escape: tap Escape, hold Hyper)",
+    "rules": [
+        {
+            "description": "Hyper Key (Escape: tap Escape, hold Hyper)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "escape",
+                        "modifiers": {
+                            "optional": [
+                                "any"
+                            ]
+                        }
+                    },
+                    "to": [
+                        {
+                            "key_code": "left_shift",
+                            "modifiers": [
+                                "left_control",
+                                "left_option",
+                                "left_command"
+                            ]
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "identifiers": [
+                                {
+                                    "product_id": 12292,
+                                    "vendor_id": 14000
+                                }
+                            ],
+                            "type": "device_unless"
+                        },
+                        {
+                            "identifiers": [
+                                {
+                                    "product_id": 12484,
+                                    "vendor_id": 14000
+                                }
+                            ],
+                            "type": "device_unless"
+                        }
+                    ],
+                    "to_if_alone": [
+                        {
+                            "key_code": "escape"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

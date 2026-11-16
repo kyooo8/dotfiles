@@ -112,6 +112,16 @@ cmd_hi() {
     exit 1
   fi
 
+  if [ -d "$target" ]; then
+    local workspace_id
+    workspace_id=$(herdr worktree list --cwd "$target" | jq -r --arg path "$target" '.result.worktrees[] | select(.path == $path) | .open_workspace_id // empty')
+    if [ -z "$workspace_id" ]; then
+      herdr worktree open --cwd "$repo_root" --path "$target" --label "$name"
+      echo "Ready: $target"
+      return
+    fi
+  fi
+
   local remote_ref
   remote_ref=$(git -C "$repo_root" for-each-ref --format='%(refname)' "refs/remotes/*/$branch" | head -1)
   if [ -n "$remote_ref" ]; then

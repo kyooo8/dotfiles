@@ -1,13 +1,13 @@
 {
-    "title": "Hyper Key (Escape: tap Escape, hold Hyper)",
+    "title": "Hyper Key (F18: tap F18, hold Hyper)",
     "rules": [
         {
-            "description": "Hyper Key (Escape: tap Escape, hold Hyper)",
+            "description": "Hyper Key (F18: tap F18, hold Hyper)",
             "manipulators": [
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "escape",
+                        "key_code": "f18",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -46,7 +46,7 @@
                     ],
                     "to_if_alone": [
                         {
-                            "key_code": "escape"
+                            "key_code": "f18"
                         }
                     ]
                 }

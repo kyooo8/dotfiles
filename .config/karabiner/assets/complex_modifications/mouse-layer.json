@@ -1,8 +1,8 @@
 {
-    "title": "Mouse Layer (hold Right Shift)",
+    "title": "Mouse Layer (Right Shift: tap Escape, hold Mouse)",
     "rules": [
         {
-            "description": "Mouse Layer (hold Right Shift)",
+            "description": "Mouse Layer (Right Shift: tap Escape, hold Mouse)",
             "manipulators": [
                 {
                     "type": "basic",
@@ -58,6 +58,11 @@
                                 "name": "mouse_layer",
                                 "value": 0
                             }
+                        }
+                    ],
+                    "to_if_alone": [
+                        {
+                            "key_code": "escape"
                         }
                     ]
                 },

@@ -21,8 +21,8 @@ AutoHotkey **v2**、US 配列向け。Karabiner の `assets/complex_modification
 | --- | --- | --- |
 | `;` | `;`（Shift 併用は `:`） | Number |
 | `/` | `/`（Shift 併用は `?`） | Symbol |
-| 右 Shift | 出力なし | Mouse |
-| Esc | Esc | Hyper = 左 Ctrl + 左 Alt + 左 Shift + 左 Win |
+| 右 Shift | Esc | Mouse |
+| F18（Change Key で CapsLock の位置に割り当て） | F18（Google 日本語入力の IME 切り替え用） | Hyper = 左 Ctrl + 左 Alt + 左 Shift + 左 Win |
 
 Hyper＋Space は現在のキーボードレイアウトを維持したまま、日本語 IME と英数入力を切り替える。
 Copilot の起動は Windows 側で無効化している前提。
@@ -33,12 +33,12 @@ Copilot の起動は Windows 側で無効化している前提。
 から短くしている。閾値は `layer-state.ahk` の `TapTimeoutMs`。
 キーの自動リピートで判定時間を延長しない。
 ホットキーで抑制される入力は `RunMappedKey` で単独押しを取り消し、
-通常入力だけを InputHook で補足する。Esc / Hyper にも同じ判定を適用する。
+通常入力だけを InputHook で補足する。F18 / Hyper にも同じ判定を適用する。
 
 Number・Symbol・Mouse は同時に有効にならず、先に押したレイヤーが優先される。
 例えば Number 中の `/` は NumLock、Symbol 中の `;` は `&` になる。
 未割り当てキーは通常入力を通す。Mouse 以外では `[` → Backspace、`'` → Enter。
-以前の `/` → Backspace、右 Shift → Esc は新しい切り替え操作に置き換わる。
+以前の `/` → Backspace は新しい切り替え操作に置き換わる。
 
 ## 配列
 
@@ -139,10 +139,10 @@ AutoHotkey64.exe /ErrorStdOut tests\layer-state.test.ahk
 | レイヤー中に未割り当てキー・マウスを操作 | その操作が通り、解放時の単独文字は出ない |
 | 右 Shift+I を保持して O/K/L/`;`、I または右 Shift を先に離す | ドラッグと停止。クリックが押しっぱなしにならない |
 | Mouse 中に F、各ホイール・追加ボタン・音量・輝度 | 表の操作。非対応輝度では通知 |
-| `;` / `/` / Esc を200ms以上保持して離す | 単独でも `;` / `/` / Esc を送らない |
-| `;`+Q、`/`+Q、Esc+`'` を200ms未満で押して離す | Home / 記号 / Hyper+Enter のみ。解放時に `;` / `/` / Esc を追加しない |
-| Esc 短押し、Esc+文字、押下中の終了 | Esc または Hyper。解放後に修飾キーが残らない |
-| 左 Shift/Ctrl/Alt/Win を押す → Esc を押す → 最初の修飾キーを離す → 文字 → Esc を離す | Esc 保持中は4修飾を維持し、解放後に残らない |
+| `;` / `/` / F18 を200ms以上保持して離す | 単独でも `;` / `/` / F18 を送らない |
+| `;`+Q、`/`+Q、F18+`'` を200ms未満で押して離す | Home / 記号 / Hyper+Enter のみ。解放時に `;` / `/` / F18 を追加しない |
+| F18 短押し、F18+文字、押下中の終了 | F18 または Hyper。解放後に修飾キーが残らない |
+| 左 Shift/Ctrl/Alt/Win を押す → F18 を押す → 最初の修飾キーを離す → 文字 → F18 を離す | F18 保持中は4修飾を維持し、解放後に残らない |
 | Number/Symbol/Mouse のトリガーを異なる順序で押す | 先のレイヤーを保持し、解放後は通常入力に戻る |
 | custom の Alt+C/V、WezTerm 内の Alt+C/V | 既存ショートカットが維持され、レイヤー中は配列が優先される |
 

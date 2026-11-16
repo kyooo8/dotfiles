@@ -64,8 +64,9 @@ StartHoldLayer(key, layer, *) {
     hyperState.Observe(key)
     if !layerState.Press(layer, key, A_TickCount)
         return
-    ; 短押しは元のキー、保持中はレイヤー。レイヤー利用後は送らない。
-    layerTap := TapSequence(key)
+    ; 短押しは元のキー（Mouse のみ Esc）、保持中はレイヤー。レイヤー利用後は送らない。
+    ; Hyper を F18 に移したため、Esc は Mouse の短押しで補う。
+    layerTap := TapSequence(layer = "mouse" ? "Esc" : key)
     if layer = "mouse"
         SetTimer(MouseLayerTick, 16)
 }
@@ -76,7 +77,7 @@ EndHoldLayer(key, *) {
     tap := layerState.Release(key, A_TickCount)
     if wasMouse
         StopMouseLayer()
-    else if tap
+    if tap
         Send(layerTap)
 }
 
@@ -96,10 +97,10 @@ ObserveMouse(*) {
 
 StartHyper(*) {
     global hyperState, layerState, hyperTap
-    layerState.Observe("Esc")
-    if !hyperState.Press("hyper", "Esc", A_TickCount)
+    layerState.Observe("F18")
+    if !hyperState.Press("hyper", "F18", A_TickCount)
         return
-    hyperTap := TapSequence("Esc")
+    hyperTap := TapSequence("F18")
     Send("{Blind}{LCtrl downR}{LAlt downR}{LShift downR}{LWin downR}")
 }
 
@@ -115,7 +116,7 @@ EndHyper(*) {
     global hyperState, hyperTap
     if hyperState.Active = ""
         return
-    tap := hyperState.Release("Esc", A_TickCount)
+    tap := hyperState.Release("F18", A_TickCount)
     ReleaseHyperModifiers()
     if tap
         Send(hyperTap)
@@ -134,15 +135,15 @@ ReleaseHeldInputs(*) {
 *'::RunMappedKey("'", Send.Bind("{Blind}{Enter}"))
 #HotIf
 
-*Esc::StartHyper()
-*Esc up::EndHyper()
+*F18::StartHyper()
+*F18 up::EndHyper()
 
 #HotIf hyperState.Active != ""
 ; Hyper+Space は現在のキーボードレイアウトを変えず、IME の日本語/英数を切り替える。
 *Space::HyperSpaceSwitch()
 *Space up::return
 ; 物理 up を通してから down を再送すると、その間に次の文字が届き得る。
-; Hyper 中は up 自体を止め、Esc 解放時に ReleaseHyperModifiers が解放する。
+; Hyper 中は up 自体を止め、F18 解放時に ReleaseHyperModifiers が解放する。
 ; down 側も定義し、up-only ホットキーが down まで奪うのを防ぐ。
 ~*LCtrl::return
 ~*LAlt::return

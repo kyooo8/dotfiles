@@ -69,7 +69,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "q",
+                        "key_code": "a",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -110,7 +110,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "w",
+                        "key_code": "p",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -356,7 +356,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "a",
+                        "key_code": "b",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -397,7 +397,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "s",
+                        "key_code": "n",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -438,7 +438,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "d",
+                        "key_code": "f",
                         "modifiers": {
                             "optional": [
                                 "any"
@@ -479,7 +479,7 @@
                 {
                     "type": "basic",
                     "from": {
-                        "key_code": "g",
+                        "key_code": "d",
                         "modifiers": {
                             "optional": [
                                 "any"
